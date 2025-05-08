@@ -1,0 +1,973 @@
+<head>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='/home/css/styles.css') }}"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;700&family=Inter:wght@400;600&family=Nunito:wght@400;700&family=Montserrat:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
+</head>
+<style>
+    header {
+        background-color: transparent;
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        margin: 0 auto;
+        z-index: 1000;
+        height: 80px;
+        transition: background-color 0.3s ease;
+    }
+
+    .desktop-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .logo img {
+        width: 150px;
+    }
+
+    nav {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        gap: 40px;
+        padding: auto 20px;
+        width: 100%;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        font-family: 'Poppins', sans-serif;
+        color: #080808;
+        font-weight: 550;
+        font-size: 1.2rem;
+    }
+
+    .auth-menu {
+        display: flex;
+        align-items: center;
+    }
+
+    .signup-btn, .login-btn {
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .signup-btn {
+        background-color: #000000;
+        color: white;
+        font-size: 1.2rem !important;
+    }
+
+    .signup-btn:hover {
+        background-color: #171717;
+    }
+
+    .login-btn {
+        background-color: transparent;
+        color: black;
+        font-size: 1.2rem !important;
+    }
+
+    .login-btn:hover {
+        color: #000;
+    }
+
+    .user-menu {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+    }
+
+    .sidebar .nav li a {
+        color: #1a1a1a;
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+
+    .auth-menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* padding: 10px; */
+    }
+
+    .user-icon {
+        width: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 1px solid #000;
+        border-radius: 50%;
+    }
+
+    .sidebar-user-icon {
+        width: 30px !important;
+        border-radius: 50%;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    .sidebar-user-menu {
+        position: relative;
+        width: 100%;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+    }
+
+    .sidebar-user-menu p {
+        margin-left: 5px;
+        margin-bottom: 2px;
+        position: relative;
+        font-family: 'Lato', sans-serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #000000;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .dropdown i {
+        position: absolute;
+        color: #000;
+        font-size: 1.4rem;
+    }
+
+    .bi-three-dots {
+        position: absolute;
+        right: 20px;
+        color: #000;
+        font-size: 1.2rem;
+        margin-top: 3px !important;
+    }
+
+    .sidebar-user-icon {
+        width: 20px;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        right: 0;
+        border: 50%;
+        border: 2px solid #000;
+    }
+
+    .sidebar-user-menu p {
+        margin-left: 5px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #000000;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .bi-three-dots {
+        position: absolute;
+        rotate: 90deg;
+        color:#000;
+        right: 20px;
+        align-self: center;
+        font-size: 1.2rem;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #fff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        min-width: 160px;
+        z-index: 1;
+    }
+
+    .dropdown-content span, .dropdown-content a {
+        display: block;
+        padding: 12px 16px;
+        text-decoration: none;
+        color: #000;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+
+    #user-menu-btn:hover + .dropdown-content, .dropdown-content:hover {
+        display: block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        text-decoration: none;
+        color: black;
+        display: block;
+        margin: 5px 0;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+
+    .dropdown-content span {
+        font-weight: bold;
+    }
+
+    .show {
+        display: block;
+    }
+
+    @media (max-width: 768px) {
+        .logo img {
+            width: 190px;
+        }
+    }
+
+
+    @media (max-width: 1024px) {
+        .desktop-container {
+            display: none;
+        }
+    }
+
+    @media only screen and (min-height: 500px) and (orientation: landscape) {
+        .mobile-container {
+            display: none;
+        }
+        .sidebar {
+            height: 100% !important;
+        }
+    }
+
+    @media only screen and (max-width: 1024px) {
+        .mobile-container {
+            display: flex;
+        }
+    }
+
+    .sidebar {
+        width: 250px;
+        position: fixed;
+        left: -250px;
+        top: 0;
+        bottom: 0;
+        background: #ffffff;
+        color: white;
+        transition: left 0.3s;
+        border-radius: 0px 20px 20px 0px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+
+    .toggle-switch {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        cursor: pointer;
+        color: rgb(0, 0, 0);
+        font-size: 26px;
+    }
+
+    .sidebar .logo {
+        padding-top: 20px;
+        padding-left: 6px;
+        text-align: left;
+    }
+
+    .sidebar .logo a {
+        text-decoration: none;
+        color: #000;
+        font-size: 20px;
+        font-weight: bold;
+        z-index: 1;
+    }
+
+    .sidebar .logo i {
+        top: 10px;
+        right: 20px;
+        position: absolute;
+        top: 28px;
+        cursor: pointer;
+        color: #000;
+        font-size: 26px;
+        transform: rotate(90deg);
+    }
+
+    .sidebar ul {
+        padding: 20px 0;
+        list-style: none;
+        padding: 20px;
+    }
+
+    .sidebar ul li {
+        padding: 10px;
+    }
+
+    .sidebar ul li:hover {
+        background-color: #f1f1f1;
+        color: #323232;
+        border-radius: 12px;
+    }
+
+    .sidebar ul li a {
+        text-decoration: none;
+        color: #3d3535;
+        font-weight: 600;
+    }
+
+    .sidebar ul li a i {
+        margin-right: 10px;
+    }
+
+    .sidebar ul li a span {
+        font-size: 18px;
+    }
+
+    .sidebar ul li a span:hover {
+        color: #333;
+    }
+
+    .sidebar {
+        width: 250px;
+        position: fixed;
+        left: -250px;
+        top: 0;
+        bottom: 0;
+        background: #ffffff;
+        color: white;
+        transition: left 0.3s;
+        border-radius: 0px 20px 20px 0px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+
+    .toggle-switch {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        cursor: pointer;
+        color: rgb(0, 0, 0);
+        font-size: 26px;
+    }
+
+    .sidebar .logo {
+        padding-top: 20px;
+        padding-left: 6px;
+        text-align: left;
+    }
+
+    .sidebar .logo a {
+        text-decoration: none;
+        color: #000;
+        font-size: 20px;
+        font-weight: bold;
+        z-index: 1;
+    }
+
+    .sidebar .logo i {
+        top: 10px;
+        right: 20px;
+        position: absolute;
+        top: 28px;
+        cursor: pointer;
+        color: #000;
+        font-size: 26px;
+        transform: rotate(90deg);
+    }
+
+    .sidebar ul {
+        padding: 20px 0;
+        list-style: none;
+        padding: 20px;
+    }
+
+    .sidebar ul li {
+        padding: 10px;
+    }
+
+    .sidebar ul li:hover {
+        background-color: #f1f1f1;
+        color: #323232;
+        border-radius: 12px;
+    }
+
+    .sidebar ul li a {
+        text-decoration: none;
+        color: #3d3535;
+        font-weight: 600;
+    }
+
+    .sidebar ul li a i {
+        margin-right: 10px;
+    }
+
+    .sidebar ul li a span {
+        font-size: 18px;
+    }
+
+    .sidebar ul li a span:hover {
+        color: #333;
+    }
+
+    .login-signup {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        margin-top: auto;
+    }
+    
+    #sidebar-login-btn {
+        border: 1px solid #000;
+        width: 100%;
+        text-align: center;
+        margin: 20px;
+    }
+
+    #sidebar-signup-btn {
+        border: 1px solid #000;
+        width: 100%;
+        text-align: center;
+    }
+
+    #sidebar-auth-menu {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        margin-top: auto;
+    }
+
+    .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-content {
+        background: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        width: 300px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .popup-content h3 {
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .popup-content p {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .popup-actions {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .popup-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .popup-btn.danger {
+        background-color: #e74c3c;
+        color: #fff;
+    }
+
+    .popup-btn {
+        background-color: #ccc;
+        color: #333;
+    }
+
+    .popup-btn:hover {
+        opacity: 0.9;
+    }
+
+
+    .dropdown-tooltip {
+        display: flex;
+        position: absolute;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
+        border-radius: 20px;
+        left: 10px;
+        right: 10px;
+        top: 80px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+        z-index: 10;
+        justify-content: space-around;
+        opacity: 0;
+        transform: translateY(-10px);
+        visibility: hidden;
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    }
+
+    .dropdown-tooltip h2 {
+        position: absolute;
+        color: #898989;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        font-weight: 100;
+        text-align: center;
+        margin-top: 0;
+    }
+
+    .column {
+        flex: 1;
+        padding: 20px;
+        margin: 40px 10px;
+    }
+
+    .column h3 {
+        text-decoration: none;
+        color: #898989;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 100;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+
+    .column ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .column ul li a {
+        text-decoration: none;
+        color: #080808;
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 100;
+        padding: 3px 0;
+        transition: color 0.3s ease;
+    }
+
+    .column ul li a:hover {
+        color: #000;
+    }
+
+
+    #explore-btn:hover + .dropdown-tooltip,
+    .dropdown-tooltip:hover {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
+
+    #developers-btn:hover + #developers-area,
+    .developers-area:hover {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
+
+    #blogs-btn:hover + #blogs-area,
+    #blogs-area:hover {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
+
+    #support-btn:hover + #support-area,
+    #support-area:hover {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
+
+</style>
+<header>
+    <div class="desktop-container">
+        <div class="logo">
+            <a href="{{ url_for('index') }}">
+                <!-- <img src="{{ url_for('static', filename='/img/toolbuddy-logo.webp') }}" alt="ToolsGPT"> -->
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li>
+                    <a id="explore-btn" href="#tools-section">Explore</a>
+                    <div class="dropdown-tooltip" id="explore-area">
+                        <h2 id="heading">Explore tools</h2>
+                        <div class="column">
+                            <h3>Text & Audio Tools</h3>
+                            <ul>
+                                <li><a href="#">Text to Speech Converter</a></li>
+                                <li><a href="#">Speech to Text Converter</a></li>
+                                <li><a href="#">Text to PDF Converter</a></li>
+                                <li><a href="#">PDF to Text Converter</a></li>
+                                <li><a href="#">Document to Text Converter</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="column">
+                            <h3>Video & Audio Tools</h3>
+                            <ul>
+                                <li><a href="#">YouTube Video Downloader</a></li>
+                                <li><a href="#">YouTube Audio Downloader</a></li>
+                                <li><a href="#">Spotify Audio Downloader</a></li>
+                                <li><a href="#">Video to Audio Converter</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="column">
+                            <h3>Image Conversion Tools</h3>
+                            <ul>
+                                <li><a href="#">PNG to JPG Converter</a></li>
+                                <li><a href="#">GIF to PNG Converter</a></li>
+                                <li><a href="#">BMP to JPG Converter</a></li>
+                                <li><a href="#">TIFF to JPG Converter</a></li>
+                                <li><a href="#">SVG to PNG Converter</a></li>
+                                <li><a href="#">RAW to JPG Converter</a></li>
+                            </ul>                                
+                        </div>
+
+                        <div class="column">
+                            <h3>PDF Management Tools</h3>
+                            <ul>
+                                <li><a href="#">JPG to PDF Converter</a></li>
+                                <li><a href="#">PNG to PDF Converter</a></li>
+                                <li><a href="#">PDF Compressor</a></li>
+                                <li><a href="#">PDF Merger</a></li>
+                                <li><a href="#">PDF Splitter</a></li>
+                                <li><a href="#">PDF to Image Converter</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a id="blogs-btn" href="#blogs-section">Blogs</a>
+                    <div class="dropdown-tooltip" id="blogs-area">
+                        <h2 id="heading">Explore Blogs</h2>
+                        <div class="column">
+                            <h3>Technology</h3>
+                            <ul>
+                                <li><a href="#">AI & Machine Learning</a></li>
+                                <li><a href="#">Web Development</a></li>
+                                <li><a href="#">Cloud Computing</a></li>
+                                <li><a href="#">Cybersecurity</a></li>
+                                <li><a href="#">DevOps</a></li>
+                            </ul>
+                        </div>
+                
+                        <div class="column">
+                            <h3>How-to Guides</h3>
+                            <ul>
+                                <li><a href="#">Getting Started with APIs</a></li>
+                                <li><a href="#">Building a Flask App</a></li>
+                                <li><a href="#">Integrating SDKs</a></li>
+                                <li><a href="#">Deploying on Azure</a></li>
+                                <li><a href="#">Optimizing Performance</a></li>
+                            </ul>
+                        </div>
+                
+                        <div class="column">
+                            <h3>Industry Insights</h3>
+                            <ul>
+                                <li><a href="#">Latest Tech Trends</a></li>
+                                <li><a href="#">Future of Automation</a></li>
+                                <li><a href="#">Open Source Projects</a></li>
+                                <li><a href="#">Best Practices in Development</a></li>
+                                <li><a href="#">Career in Tech</a></li>
+                            </ul>
+                        </div>
+                
+                        <div class="column">
+                            <h3>Community Highlights</h3>
+                            <ul>
+                                <li><a href="#">Developer Stories</a></li>
+                                <li><a href="#">Open Source Contributors</a></li>
+                                <li><a href="#">Featured Projects</a></li>
+                                <li><a href="#">Upcoming Events</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                
+                <li>
+                    <a id="developers-btn" href="#developers-section">For Developers</a>
+                    <div class="dropdown-tooltip" id="developers-area">
+                        <h2 id="heading">Developer Resources</h2>
+                        <div class="column">
+                            <h3>APIs</h3>
+                            <ul>
+                                <li><a href="#">API Overview</a></li>
+                                <li><a href="#">Text Tools API</a></li>
+                                <li><a href="#">Video Tools API</a></li>
+                                <li><a href="#">Image Tools API</a></li>
+                                <li><a href="#">PDF Tools API</a></li>
+                            </ul>
+                        </div>
+            
+                        <div class="column">
+                            <h3>SDKs</h3>
+                            <ul>
+                                <li><a href="#">Python SDK</a></li>
+                                <li><a href="#">JavaScript SDK</a></li>
+                                <li><a href="#">Java SDK</a></li>
+                                <li><a href="#">C# SDK</a></li>
+                                <li><a href="#">PHP SDK</a></li>
+                            </ul>
+                        </div>
+            
+                        <div class="column">
+                            <h3>Documentation</h3>
+                            <ul>
+                                <li><a href="#">Getting Started Guide</a></li>
+                                <li><a href="#">API Authentication</a></li>
+                                <li><a href="#">Request & Response Format</a></li>
+                                <li><a href="#">Rate Limits</a></li>
+                                <li><a href="#">Error Codes</a></li>
+                            </ul>
+                        </div>
+            
+                        <div class="column">
+                            <h3>Developer Tools</h3>
+                            <ul>
+                                <li><a href="#">API Playground</a></li>
+                                <li><a href="#">Code Samples</a></li>
+                                <li><a href="#">Webhooks</a></li>
+                                <li><a href="#">CLI Tools</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a id="support-btn" href="#support-section">Support</a>
+                    <div class="dropdown-tooltip" id="support-area">
+                        <h2 id="heading">Get Support</h2>
+                        <div class="column">
+                            <h3>Help Center</h3>
+                            <ul>
+                                <li><a href="#">FAQs</a></li>
+                                <li><a href="#">Getting Started Guide</a></li>
+                                <li><a href="#">Troubleshooting</a></li>
+                                <li><a href="#">Account Management</a></li>
+                                <li><a href="#">Billing & Subscriptions</a></li>
+                            </ul>
+                        </div>
+                
+                        <div class="column">
+                            <h3>Contact Us</h3>
+                            <ul>
+                                <li><a href="#">Submit a Ticket</a></li>
+                                <li><a href="#">Live Chat Support</a></li>
+                                <li><a href="#">Email Support</a></li>
+                                <li><a href="#">Community Forum</a></li>
+                                <li><a href="#">Feedback</a></li>
+                            </ul>
+                        </div>
+                
+                        <div class="column">
+                            <h3>Developer Support</h3>
+                            <ul>
+                                <li><a href="#">API Documentation</a></li>
+                                <li><a href="#">SDK Integration Help</a></li>
+                                <li><a href="#">Webhooks Troubleshooting</a></li>
+                                <li><a href="#">Error Code Reference</a></li>
+                                <li><a href="#">Rate Limit Issues</a></li>
+                            </ul>
+                        </div>
+                
+                        <div class="column">
+                            <h3>Resources</h3>
+                            <ul>
+                                <li><a href="#">Video Tutorials</a></li>
+                                <li><a href="#">User Guides</a></li>
+                                <li><a href="#">Product Updates</a></li>
+                                <li><a href="#">System Status</a></li>
+                                <li><a href="#">Security & Privacy</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                
+            </ul>
+        </nav>
+
+
+        <div id="delete-popup" class="popup-overlay">
+            <div class="popup-content">
+                <h3>Confirm Deletion</h3>
+                <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                <div class="popup-actions">
+                    <button id="confirm-delete" class="popup-btn danger">Delete</button>
+                    <button id="cancel-delete" class="popup-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</header>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteAccountButton = document.getElementById("delete-account");
+        const popup = document.getElementById("delete-popup");
+        const confirmDeleteButton = document.getElementById("confirm-delete");
+        const cancelDeleteButton = document.getElementById("cancel-delete");
+
+        deleteAccountButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            popup.style.display = "flex";
+        });
+
+        confirmDeleteButton.addEventListener("click", function () {
+            fetch("/delete-account", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            })
+            .then(response => {
+                if (response.ok) {
+                    // alert("Account deleted successfully.");
+
+                } else {
+                    return response.json().then(data => {
+                        alert(`Failed to delete account: ${data.error}`);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while deleting your account.");
+            })
+            .finally(() => {
+                popup.style.display = "none";
+            });
+        });
+
+        cancelDeleteButton.addEventListener("click", function () {
+            popup.style.display = "none";
+        });
+
+        window.addEventListener("click", function (event) {
+            if (event.target === popup) {
+                popup.style.display = "none";
+            }
+        });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const header = document.querySelector('header');
+
+        function handleScroll() {
+            if (window.scrollY > 0) {
+                header.style.backgroundColor = '#f9f9f9';
+            } else {
+                header.style.backgroundColor = 'transparent';
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+
+        const toggleSwitch = document.querySelector('.toggle-switch');
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarState = localStorage.getItem('sidebarOpen');
+        if (sidebarState === 'true') {
+            sidebar.classList.add('open');
+            toggleSwitch.innerHTML = '<i class="fas fa-times"></i>';
+        } else {
+            toggleSwitch.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+
+        toggleSwitch.addEventListener('click', function(event) {
+            event.stopPropagation();
+            sidebar.classList.toggle('open');
+            const isOpen = sidebar.classList.contains('open');
+            toggleSwitch.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            localStorage.setItem('sidebarOpen', isOpen);
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!sidebar.contains(event.target) && !toggleSwitch.contains(event.target)) {
+                sidebar.classList.remove('open');
+                toggleSwitch.innerHTML = '<i class="fas fa-bars"></i>';
+                localStorage.setItem('sidebarOpen', false);
+            }
+        });
+
+        sidebar.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggle = document.getElementById("dropdown-toggle");
+        const dropdownMenu = document.getElementById("dropdown-menu");
+
+        // toggle.addEventListener("click", function () {
+        //     dropdownMenu.classList.toggle("show");
+        // });
+
+        // window.addEventListener("click", function (event) {
+        //     if (!toggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        //         dropdownMenu.classList.remove("show");
+        //     }
+        // });
+    });
+
+</script>
