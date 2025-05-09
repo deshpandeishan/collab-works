@@ -6,12 +6,28 @@
 
 .cta-section {
     display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 50px;
 }
 
+.cta-line {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 4rem;
+}
+
+.search-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
+}
+
+/* code for search bar */
 #search-bar {
     width: 100%;
     height: 50px;
