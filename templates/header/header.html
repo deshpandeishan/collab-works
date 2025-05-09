@@ -59,6 +59,7 @@
     }
 
     .signup-btn, .login-btn {
+        font-family: 'Poppins', sans-serif;
         padding: 10px 20px;
         text-decoration: none;
         border-radius: 50px;
@@ -637,7 +638,7 @@
     <div class="desktop-container">
         <div class="logo">
             <a href="{{ url_for('index') }}">
-                <!-- <img src="{{ url_for('static', filename='/img/toolbuddy-logo.webp') }}" alt="ToolsGPT"> -->
+                <img src="{{ url_for('static', filename='/img/sample-logo.png') }}" alt="CollabWorks">
             </a>
         </div>
         <nav>
@@ -841,6 +842,12 @@
                 
             </ul>
         </nav>
+        <div class="auth">
+            <div class="auth-menu">
+                <a href="login-btn" id="" class="login-btn">Login</a>
+                <a href="signup-btn" class="signup-btn">Sign Up</a>
+            </div>
+        </div>
 
 
         <div id="delete-popup" class="popup-overlay">
