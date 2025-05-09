@@ -36,10 +36,21 @@
 .btn {
     font-family: 'Poppins', sans-serif;
     padding: 10px 20px;
-    margin: 10px;
     text-decoration: none;
     border-radius: 50px;
     border: none;
     font-weight: bold;
     transition: background-color 0.3s ease;
+}
+
+#search-btn {
+    font-size: 1.1rem;
+    margin-left: 5px;
+    cursor: pointer;
+    height: 50px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    color: white;
 }
