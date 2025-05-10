@@ -31,7 +31,7 @@
     </div>
 
     <script>
-        // this part is for detecting the OS
+        // this line detects the OS
         function detectOS() {
             const userAgent = window.navigator.userAgent;
             if (userAgent.indexOf('Mac') !== -1) {
@@ -42,7 +42,7 @@
             return 'other';
         }
 
-        // this part alters the shortcut hint based on the OS
+        // this will update the shortcut hint
         function updateShortcut() {
             const os = detectOS();
             const shortcutHint = document.querySelector('.shortcut-hint');
@@ -53,7 +53,27 @@
             }
         }
 
+        function setupKeyboardShortcut() {
+            document.addEventListener('keydown', function(event) {
+                const isCmd = (event.metaKey && event.key === 'k');
+                const isCtrl = (event.ctrlKey && event.key === 'k');
+
+                if (isCmd || isCtrl) {
+                    event.preventDefault();
+                    const searchBar = document.getElementById('search-bar');
+                    searchBar.focus();
+                }
+
+                if (event.key === 'Escape') {
+                    const searchBar = document.getElementById('search-bar');
+                    searchBar.blur();
+                }
+            });
+        }
+
         updateShortcut();
+        setupKeyboardShortcut();
+
     </script>
 </body>
 </html>
