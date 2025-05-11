@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CollabWorks</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/collabWorks.ico') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index/index.css') }}">
 </head>
@@ -12,25 +13,51 @@
     {% include 'header/header.html' %}
 
     <div class="cta-section">
+        <img id="upper-mockup" src="{{ url_for('static', filename='img/cta/upperside.png') }}" alt="Mockup" class="mockup">
+
 
         <div class="line-section">
             <p>
-                <span class="cta-line">Find your</span><br>
-                <span class="cta-line">next collaboration project.</span>
+              <span class="cta-line">Find your</span><br>
+              <span class="cta-line">next collaboration project</span>
             </p>
         </div>
 
-        <div class="search-section">
-            <div class="search-input-wrapper">
-                <input id="search-bar" type="text" placeholder="Search for projects, people, or topics..." class="search-bar">
-                <span class="shortcut-hint">⌘ + K</span>
-            </div>
-            <button id="search-btn" class="btn">Search</button>
-        </div>        
-        
+        <button id="cta-btn" class="btn">Get Started</button>
+        <img id="bottom-mockup" src="{{ url_for('static', filename='img/cta/bottomside.png') }}" alt="Mockup" class="mockup">
     </div>
 
+    <div id="#search-section" class="search-section">
+        <div class="search-input-wrapper">
+            <input id="search-bar" type="text" placeholder="Search for projects, people, or topics..." class="search-bar">
+            <span class="shortcut-hint">⌘ + K</span>
+        </div>
+        <button id="search-btn" class="btn">Search</button>
+    </div>  
+
     <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".cta-line").forEach((el, i) => {
+                el.style.animationDelay = `${i * 0.3}s`;
+                el.classList.add("animate");
+            });
+
+            document.getElementById("cta-btn").classList.add("animate");
+
+            document.getElementById("upper-mockup").classList.add("animate");
+            document.getElementById("bottom-mockup").classList.add("animate");
+        });
+
+        window.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".cta-line").forEach((el, i) => {
+            el.style.animationDelay = `${i * 0.3}s`;
+            el.classList.add("animate");
+        });
+
+        document.getElementById("cta-btn").classList.add("animate");
+        });
+
+
         // this line detects the OS
         function detectOS() {
             const userAgent = window.navigator.userAgent;
@@ -52,6 +79,11 @@
                 shortcutHint.textContent = 'Ctrl + K';
             }
         }
+
+        document.getElementById('cta-btn').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.querySelector('.search-section').scrollIntoView({ behavior: 'smooth' });
+            });
 
         function setupKeyboardShortcut() {
             document.addEventListener('keydown', function(event) {
