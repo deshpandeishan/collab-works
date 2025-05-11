@@ -15,9 +15,10 @@
 }
 
 .cta-line {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Arial', sans-serif;
     font-weight: 600;
-    font-size: 4rem;
+    font-size: 5rem;
+    line-height: 8rem;
 }
 
 /* code for search bar */
