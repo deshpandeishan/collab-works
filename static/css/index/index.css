@@ -206,7 +206,7 @@ body {
     position: absolute;
     right: 30px;
     height: 25px;
-    top: 50%;
+    top: 33%;
     transform: translateY(-50%);
     background: #f0f0f0;
     color: #555;
@@ -263,3 +263,66 @@ body {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
 }
+
+.search-section span,
+.search-section .search-bar-wrapper,
+.search-section #search-instruction {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out, transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.search-section.animate span,
+.search-section.animate .search-bar-wrapper,
+.search-section.animate #search-instruction {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.search-section.animate span {
+    animation: scaleUp 1s ease-out forwards;
+}
+
+.search-section.animate .search-bar-wrapper {
+    animation: scaleUp 1s ease-out forwards;
+}
+
+.search-section.animate #search-instruction {
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(50px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleUp {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

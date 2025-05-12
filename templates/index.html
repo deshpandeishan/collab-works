@@ -68,6 +68,24 @@
         });
 
 
+        const searchSection = document.getElementById("search-section");
+
+        const observer = new IntersectionObserver(
+        (entries, observer) => {
+            entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                searchSection.classList.add("animate");
+                observer.unobserve(searchSection);
+            }
+            });
+        },
+        { threshold: 0.3 }
+        );
+
+        observer.observe(searchSection);
+
+
+
         // this line detects the OS
         function detectOS() {
             const userAgent = window.navigator.userAgent;
