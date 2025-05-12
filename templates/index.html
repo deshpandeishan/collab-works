@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/collabWorks.ico') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index/index.css') }}">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css'>
 </head>
 <body>
     <!-- this next line points to the header file stored inside the templates directory -->
@@ -23,7 +24,7 @@
             </p>
         </div>
 
-        <button id="cta-btn" class="btn">Get Started</button>
+        <button id="cta-btn" class="btn">Get Started <i class="fi fi-bs-arrow-up-right"></i></button>
         <img id="bottom-mockup" src="{{ url_for('static', filename='img/cta/bottomside.png') }}" alt="Mockup" class="mockup">
     </div>
 

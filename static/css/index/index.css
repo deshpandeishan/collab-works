@@ -46,6 +46,11 @@
     opacity: 0;
 }
 
+.fi-bs-arrow-up-right {
+    font-size: 0.9rem;
+    margin-left: 5px;
+}
+
 #cta-btn.animate {
     animation: popIn 1s cubic-bezier(0.25, 1.25, 0.5, 1) forwards;
     animation-delay: 0.8s;
