@@ -97,15 +97,23 @@
             return 'other';
         }
 
-        // this will update the shortcut hint
         function updateShortcut() {
             const os = detectOS();
             const shortcutHint = document.querySelector('.shortcut-hint');
-            if (os === 'mac') {
-                shortcutHint.textContent = '⌘ + k';
-            } else {
-                shortcutHint.textContent = 'Ctrl + k';
-            }
+            const searchBar = document.getElementById('search-bar');
+
+            if (!shortcutHint || !searchBar) return;
+
+            const defaultHint = os === 'mac' ? '⌘ + k' : 'Ctrl + k';
+            shortcutHint.textContent = defaultHint;
+
+            searchBar.addEventListener('focus', () => {
+                shortcutHint.textContent = '↵ Enter';
+            });
+
+            searchBar.addEventListener('blur', () => {
+                shortcutHint.textContent = defaultHint;
+            });
         }
 
         document.getElementById('cta-btn').addEventListener('click', function(event) {

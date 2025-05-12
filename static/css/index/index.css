@@ -233,9 +233,9 @@ body {
     color: transparent;
 }
 
-#search-bar:focus + .shortcut-hint {
+/* #search-bar:focus + .shortcut-hint {
     display: none;
-}
+} */
 
 #search-btn {
     font-weight: 600;
