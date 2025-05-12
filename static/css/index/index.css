@@ -6,6 +6,23 @@
 
 body {
     background-color: #f1f1f1;
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn {
+    font-family: 'Poppins', sans-serif;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 50px;
+    border: none;
+    border-radius: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #e3e3e3;
+    color: #0c0c0c;
 }
 
 .cta-section {
@@ -142,22 +159,35 @@ body {
 /* code for search bar */
 .search-section {
     display: flex;
-    margin-top: 100px;
-    margin-bottom: 200px;
-    padding: 50px;
+    flex-direction: column; /* This stacks children vertically */
+    height: 100vh;
     justify-content: center;
     align-items: center;
     width: 100%;
 }
 
+#search-firstline, #search-secondline {
+    display: inline-block;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 4rem;
+    line-height: 5rem;
+}
+
 .search-input-wrapper {
-    max-width: 800px;
+    margin-top: 5rem;
     position: relative;
     flex: 1;
 }
 
+.search-bar-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 #search-bar {
-    width: 800px;
+    width: 750px;
     height: 50px;
     margin: 10px 10px 10px 0;
     padding: 10px;
@@ -166,7 +196,7 @@ body {
     border-radius: 16px;
     background-color: #fcfbfb;
     border: none;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.1s ease-in-out;
     font-size: 1.1rem;
     color: #636363;
@@ -174,7 +204,7 @@ body {
 
 .shortcut-hint {
     position: absolute;
-    right: 22px;
+    right: 30px;
     height: 25px;
     top: 50%;
     transform: translateY(-50%);
@@ -190,7 +220,7 @@ body {
 
 #search-bar:focus {
     outline: none;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
 }
 
 #search-bar::placeholder {
@@ -203,15 +233,8 @@ body {
     color: transparent;
 }
 
-.btn {
-    font-family: 'Poppins', sans-serif;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 50px;
-    border: none;
-    border-radius: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+#search-bar:focus + .shortcut-hint {
+    display: none;
 }
 
 #search-btn {
@@ -225,7 +248,18 @@ body {
     background-color: black;
 }
 
-.btn:hover {
-    background-color: #e3e3e3;
-    color: #0c0c0c;
+#search-instruction {
+    font-size: 0.8rem;
+    margin-top: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    text-align: center;
+}
+
+#search-instruction {
+    color: #636363;
+    font-size: 0.8rem;
+    margin-top: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
 }

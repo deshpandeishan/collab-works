@@ -30,13 +30,20 @@
         <img id="bottom-mockup" src="{{ url_for('static', filename='img/cta/bottomside.png') }}" alt="Mockup" class="mockup">
     </div>
 
-    <div id="#search-section" class="search-section">
-        <div class="search-input-wrapper">
-            <input id="search-bar" class="search-bar" type="text" placeholder="Search for projects, people, or topics..." class="search-bar">
-            <span class="shortcut-hint">⌘ + K</span>
+    <div id="search-section" class="search-section">
+
+        <span id="search-firstline">Describe your need or</span><br>
+        <span id="search-secondline">search by role</span>
+
+        <div class="search-bar-wrapper">
+            <div class="search-input-wrapper">
+                <input id="search-bar" class="search-bar" type="text" placeholder="Search for projects, people, or topics...">
+                <span class="shortcut-hint">⌘ + K</span>
+            </div>
+            <!-- <button id="search-btn" class="btn">Search</button> -->
         </div>
-        <button id="search-btn" class="btn">Search</button>
-    </div>  
+        <p id="search-instruction">We use Natural Language Processing to understand your request to show results.</p>
+    </div>
 
     <script>
         window.addEventListener("DOMContentLoaded", () => {
