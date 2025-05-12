@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    background-color: #f1f1f1;
+}
+
 .cta-section {
     display: flex;
     height: 100vh;
@@ -45,6 +49,12 @@
     cursor: pointer;
     transform: scale(0.8);
     opacity: 0;
+    background-color: #e3e3e3;
+}
+
+#cta-btn:hover {
+    background-color: #0c0c0c;
+    color: #e3e3e3;
 }
 
 .fi-bs-arrow-up-right {
@@ -119,7 +129,7 @@
     height: auto;
     position: absolute;
     z-index: -1;
-  }
+}
   
 #upper-mockup {
     top: 80px;
@@ -132,28 +142,34 @@
 /* code for search bar */
 .search-section {
     display: flex;
-    margin: 0 auto;
+    margin-top: 100px;
+    margin-bottom: 200px;
+    padding: 50px;
     justify-content: center;
     align-items: center;
-    width: 800px;
+    width: 100%;
 }
 
 .search-input-wrapper {
+    max-width: 800px;
     position: relative;
     flex: 1;
 }
 
 #search-bar {
-    width: 100%;
+    width: 800px;
     height: 50px;
     margin: 10px 10px 10px 0;
     padding: 10px;
     padding-left: 20px;
     padding-right: 60px;
-    border-radius: 50px;
-    border: 1px solid #ccc;
+    border-radius: 16px;
+    background-color: #fcfbfb;
+    border: none;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.1s ease-in-out;
-    font-size: 14px;
+    font-size: 1.1rem;
+    color: #636363;
 }
 
 .shortcut-hint {
@@ -183,12 +199,17 @@
     font-family: 'Poppins', sans-serif;
 }
 
+#search-bar:focus::placeholder {
+    color: transparent;
+}
+
 .btn {
     font-family: 'Poppins', sans-serif;
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 50px;
     border: none;
+    border-radius: 16px;
     font-weight: bold;
     transition: background-color 0.3s ease;
 }
@@ -198,10 +219,13 @@
     font-size: 1rem;
     margin-left: 10px;
     cursor: pointer;
+    border-radius: 16px;
     height: 50px;
+    color: #e3e3e3;
+    background-color: black;
 }
 
 .btn:hover {
-    background-color: #0c0c0c;
-    color: white;
+    background-color: #e3e3e3;
+    color: #0c0c0c;
 }
