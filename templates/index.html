@@ -29,7 +29,7 @@
 
     <div id="#search-section" class="search-section">
         <div class="search-input-wrapper">
-            <input id="search-bar" type="text" placeholder="Search for projects, people, or topics..." class="search-bar">
+            <input id="search-bar" class="search-bar" type="text" placeholder="Search for projects, people, or topics..." class="search-bar">
             <span class="shortcut-hint">⌘ + K</span>
         </div>
         <button id="search-btn" class="btn">Search</button>
@@ -74,9 +74,9 @@
             const os = detectOS();
             const shortcutHint = document.querySelector('.shortcut-hint');
             if (os === 'mac') {
-                shortcutHint.textContent = '⌘ + K';
+                shortcutHint.textContent = '⌘ + k';
             } else {
-                shortcutHint.textContent = 'Ctrl + K';
+                shortcutHint.textContent = 'Ctrl + k';
             }
         }
 
