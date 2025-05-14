@@ -11,11 +11,12 @@
         background-color: transparent;
         position: fixed;
         top: 0;
-        width: 100%;
-        margin: 0 auto;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1100px;
         z-index: 1000;
         height: 80px;
-        transition: background-color 0.3s ease;
+        /* transition: background-color 0.1s ease; */
     }
 
     .desktop-container {
@@ -24,7 +25,7 @@
         justify-content: space-between;
         max-width: 1200px;
         margin: 0 auto;
-        padding: 20px 20px;
+        padding: 20px 30px 30px;
         border-radius: 0 0 20px 20px;
     }
 
@@ -42,7 +43,7 @@
         display: flex;
         justify-content: space-between;
         gap: 40px;
-        padding: auto 20px;
+        /* padding: auto 20px; */
         width: 100%;
     }
 
@@ -927,7 +928,8 @@
 
         function handleScroll() {
             if (window.scrollY > 0) {
-                header.style.backgroundColor = '#f9f9f9';
+                header.style.backgroundColor = '#ffffff';
+                header.style.borderRadius = '20px';
             } else {
                 header.style.backgroundColor = 'transparent';
             }
