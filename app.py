@@ -11,6 +11,10 @@ def index():
 def header():
     return render_template('header.html')
 
+# footer/footer
+@app.route('/footer')
+def footer():
+    return render_template('footer.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)
