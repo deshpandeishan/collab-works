@@ -466,7 +466,7 @@ body {
 }
 
 .clients-logo-section img {
-    width: 130px;
+    width: 150px;
 }
 
 .clients-feedback-section.fade-in .clients-logo-section img:nth-child(1) {
@@ -483,6 +483,8 @@ body {
 }
 .clients-feedback-section.fade-in .clients-logo-section img:nth-child(5) {
     animation-delay: 0.9s;
+    width: 100%;
+    max-width: 200px;
 }
 
 @keyframes fadeIn {
