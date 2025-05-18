@@ -422,3 +422,72 @@ body {
     animation: fadeIn 1s ease-out forwards;
     animation-delay: 1s;
 }
+
+/* feedback section code */
+.clients-feedback-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: 100px; */
+    height: 100vh;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.clients-feedback-section h1,
+.clients-logo-section img {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.clients-feedback-section.fade-in h1,
+.clients-feedback-section.fade-in .clients-logo-section img {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.clients-feedback-section h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 3rem;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    line-height: 3.5rem;
+    color: #0c0c0c;
+}
+
+.clients-logo-section {
+    display: flex;
+    flex-direction: row;
+    width: 1100px;
+    height: fit-content;
+    margin-top: 100px;
+    justify-content: space-between;
+}
+
+.clients-logo-section img {
+    width: 130px;
+}
+
+.clients-feedback-section.fade-in .clients-logo-section img:nth-child(1) {
+    animation-delay: 0.5s;
+}
+.clients-feedback-section.fade-in .clients-logo-section img:nth-child(2) {
+    animation-delay: 0.6s;
+}
+.clients-feedback-section.fade-in .clients-logo-section img:nth-child(3) {
+    animation-delay: 0.7s;
+}
+.clients-feedback-section.fade-in .clients-logo-section img:nth-child(4) {
+    animation-delay: 0.8s;
+}
+.clients-feedback-section.fade-in .clients-logo-section img:nth-child(5) {
+    animation-delay: 0.9s;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

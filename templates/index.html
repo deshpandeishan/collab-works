@@ -56,6 +56,19 @@
         </div>
     </div>
 
+    <!-- feedback section -->
+    <div class="clients-feedback-section">
+        <h1>Loved by agencies and their clients</h1>
+
+        <div class="clients-logo-section">
+            <img src="{{ url_for('static', filename='img/clients-logo/out-brand-them.png') }}" alt="Agency 1" class="logo">
+            <img src="{{ url_for('static', filename='img/clients-logo/pro-narrative.png') }}" alt="Agency 2" class="logo">
+            <img src="{{ url_for('static', filename='img/clients-logo/ply.png') }}" alt="Agency 3" class="logo">
+            <img src="{{ url_for('static', filename='img/clients-logo/tsd.png') }}" alt="Agency 4" class="logo">
+            <img src="{{ url_for('static', filename='img/clients-logo/like-noa.png') }}" alt="Agency 5" class="logo">
+        </div>
+    </div>
+
     <script>
         window.addEventListener("DOMContentLoaded", () => {
             document.querySelectorAll(".cta-line").forEach((el, i) => {
@@ -169,6 +182,23 @@
                 observer.observe(target);
             }
         });
+
+        const feedbackSection = document.querySelector('.clients-feedback-section');
+        const feedbackObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    feedbackSection.classList.add('fade-in');
+                    feedbackObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const feedbackTarget = document.querySelector('.clients-logo-section');
+        if (feedbackTarget) {
+            feedbackObserver.observe(feedbackTarget);
+        }
+
+        
 
     </script>
 </body>
