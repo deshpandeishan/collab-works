@@ -194,6 +194,14 @@ def check_email():
     return jsonify({'exists': False})
 
 
+@app.route('/terms-of-service')
+def terms_of_service():
+    return render_template('terms_of_service.html')
+
+@app.route('/privacy-policy')
+def privacy_policy():
+    return render_template('privacy_policy.html')
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
