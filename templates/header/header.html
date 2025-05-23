@@ -1,5 +1,4 @@
 <head>
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='/home/css/styles.css') }}"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -849,10 +848,27 @@
             </ul>
         </nav>
         <div class="auth">
+            {% if current_user.is_authenticated %}
+                <div class="user-menu">
+                    <div class="dropdown">
+                        <a href="#" id="user-menu-btn">
+                            <img src="{{ url_for('static', filename='img/user.jpeg') }}" alt="User Icon" class="user-icon">
+                        </a>
+                        <div id="dropdown-menu" class="dropdown-content">
+                            <span>{{ current_user.first_name }}</span>
+                            <a href="{{ url_for('delete_account') }}" id="delete-account">Delete Account</a>
+                            <a href="{{ url_for('logout') }}">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+            {% else %}
             <div class="auth-menu">
-                <a href="login-btn" id="" class="login-btn">Login</a>
-                <a href="signup-btn" class="signup-btn">Sign Up</a>
+                <a href="{{ url_for('login') }}" id="" class="login-btn">Login</a>
+                <a href="{{ url_for('register') }}" class="signup-btn">Sign Up</a>
             </div>
+            {% endif %}
+
         </div>
 
 

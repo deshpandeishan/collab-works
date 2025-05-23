@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CollabWorks - Login</title>
+    <link rel="icon" href="{{ url_for('static', filename='/img/logo/collabworks.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/auth/login/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <div class="container fade-in">
+        <div class="login-section">
+
+            <div class="logo-container">
+                <a href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='/img/logo/icon-logo.png') }}" alt="CollabWorks Logo">
+                </a>
+            </div>
+            
+            <h4>Welcome back!</h4>
+            <p id="below-head">Login in to get back to work.</p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('login', next=request.args.get('next')) }}">
+
+                <div class="form-group input-group">
+                    <input type="email" name="email" id="email" class="input" required autocomplete="off">
+                    <label for="email" class="label">Email</label>
+                </div>
+
+                <div class="form-group input-group">
+                    <input type="password" name="password" id="password" class="input" required autocomplete="off">
+                    <label for="password" class="label">Password</label>
+                    <span class="password-toggle" onclick="togglePasswordVisibility()">
+                        <i id="toggleIcon" class="fas fa-eye"></i>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+
+                <div class="register-link">
+                    <p>Not a member? <a href="{{ url_for('register') }}">Register now</a></p>
+                </div>
+            </form>
+
+            <div class="or-divider"><span>or continue with</span></div>
+            <div class="social-login">
+                <img src="static/img/login/google-logo.webp" alt="Google">
+                <img src="static/img/login/apple-logo.webp" alt="Apple">
+                <img src="static/img/login/x-logo.webp" alt="Facebook">
+            </div>
+        </div>
+    </div>
+    <script>
+                function togglePasswordVisibility() {
+                    const passwordInput = document.getElementById('password');
+                    const toggleIcon = document.getElementById('toggleIcon');
+
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        toggleIcon.classList.remove('fa-eye');
+                        toggleIcon.classList.add('fa-eye-slash');
+                    } else {
+                        passwordInput.type = 'password';
+                        toggleIcon.classList.remove('fa-eye-slash');
+                        toggleIcon.classList.add('fa-eye');
+                    }
+                }
+    </script>
+</body>
+
+</html>

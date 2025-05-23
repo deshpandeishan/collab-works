@@ -1,1 +1,6 @@
 Flask
+Flask-Login
+Flask-WTF
+Flask-Bcrypt
+Flask-SQLAlchemy
+WTForms
