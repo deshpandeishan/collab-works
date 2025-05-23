@@ -23,14 +23,6 @@ def index():
 def header():
     return render_template('header.html')
 
-# @app.route('/login')
-# def login():
-#     return render_template('auth/login.html')
-
-# @app.route('/register')
-# def register():
-#     return render_template('auth/register.html')
-
 @app.route('/footer')
 def footer():
     return render_template('footer.html')
@@ -42,7 +34,7 @@ app.config['SECRET_KEY'] = 'thisisasecretkey'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
-login_manager = LoginManager()
+login_manager = LoginManager(app)
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
@@ -86,13 +78,14 @@ class LoginForm(FlaskForm):
                              InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
     submit = SubmitField('Login')
 
-@app.route('/terms-of-service')
-def terms_of_service():
-    return render_template('terms_of_service.html')
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
-@app.route('/privacy-policy')
-def privacy_policy():
-    return render_template('privacy_policy.html')
+from flask import request, redirect, url_for, flash, render_template
+from flask_login import current_user, login_user
+from urllib.parse import urlparse, urljoin
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
@@ -101,25 +94,41 @@ def is_safe_url(target):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print("Inside login route")
+    
     if current_user.is_authenticated:
+        print("User is already authenticated")
         next_page = request.args.get('next')
         if next_page and is_safe_url(next_page):
+            print("Redirecting to next page:", next_page)
             return redirect(next_page)
+        print("Redirecting to index")
         return redirect(url_for('index'))
 
     form = LoginForm()
     if form.validate_on_submit():
+        print("Form validated")
         user = User.query.filter_by(email=form.email.data).first()
+        print("User found:", user)
+
         if user and bcrypt.check_password_hash(user.password, form.password.data):
+            print("Password match. Logging in user.")
             login_user(user)
             next_page = request.args.get('next')
             if next_page and is_safe_url(next_page):
+                print("Redirecting to next page after login:", next_page)
                 return redirect(next_page)
+            print("Redirecting to index after login")
             return redirect(url_for('index'))
         else:
+            print("Login failed. Invalid credentials.")
             flash('Login unsuccessful. Please check your email and password.', 'danger')
+    else:
+        if request.method == 'POST':
+            print("Form submission failed:", form.errors)
 
     return render_template('auth/login.html', form=form)
+
 
 
 @app.route('/logout', methods=['GET', 'POST'])

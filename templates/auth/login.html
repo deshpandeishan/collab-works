@@ -8,7 +8,7 @@
     <title>CollabWorks - Login</title>
     <link rel="icon" href="{{ url_for('static', filename='/img/logo/collabworks.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/css/auth/login/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth/login/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
@@ -27,15 +27,17 @@
 
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                    {{ message }}
+                    </div>
+                {% endfor %}
                 {% endif %}
             {% endwith %}
+          
 
             <form method="POST" action="{{ url_for('login', next=request.args.get('next')) }}">
+                {{ form.hidden_tag() }}
 
                 <div class="form-group input-group">
                     <input type="email" name="email" id="email" class="input" required autocomplete="off">
