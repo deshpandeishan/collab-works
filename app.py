@@ -94,34 +94,24 @@ def is_safe_url(target):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print("Inside login route")
     
     if current_user.is_authenticated:
-        print("User is already authenticated")
         next_page = request.args.get('next')
         if next_page and is_safe_url(next_page):
-            print("Redirecting to next page:", next_page)
             return redirect(next_page)
-        print("Redirecting to index")
         return redirect(url_for('index'))
 
     form = LoginForm()
     if form.validate_on_submit():
-        print("Form validated")
         user = User.query.filter_by(email=form.email.data).first()
-        print("User found:", user)
 
         if user and bcrypt.check_password_hash(user.password, form.password.data):
-            print("Password match. Logging in user.")
             login_user(user)
             next_page = request.args.get('next')
             if next_page and is_safe_url(next_page):
-                print("Redirecting to next page after login:", next_page)
                 return redirect(next_page)
-            print("Redirecting to index after login")
             return redirect(url_for('index'))
         else:
-            print("Login failed. Invalid credentials.")
             flash('Login unsuccessful. Please check your email and password.', 'danger')
     else:
         if request.method == 'POST':
