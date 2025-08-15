@@ -42,6 +42,39 @@
             <!-- <button id="search-btn" class="btn">Search</button> -->
         </div>
         <p id="search-instruction">We use Natural Language Processing to understand your request to show results.</p>
+        
+        <!-- search results will be shown here  -->
+        <div id="search-results" class="search-results">
+            <div class="card">
+                <div id="card-data">
+                    <image src="{{ url_for('static', filename='img/search/user-pfp.webp') }}" alt="User pfp" class="result-image">
+                    <div class="name-title">
+                        <span id="name">Tommy Robinson</span>
+                        <span id="role">Project Manager</span>
+                        <span id="tagline">Helping teams deliver faster with clarity.</span>
+                        <div class="extra-info">
+                            <span class="location">🇬🇧 London, UK</span>
+                            <span class="rate">₹1000/hr</span>
+                        </div>
+                        <div class="skills">
+                            <span class="skill-tag">Agile</span>
+                            <span class="skill-tag">Scrum</span>
+                            <span class="skill-tag">JIRA</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-wrapper">
+                    <button id="work-btn" class="btn">Choose to work</button>
+                    <div class="rating-wrapper" title="Based on 18 reviews">
+                        <image src="{{ url_for('static', filename='img/search/rating-icon.webp') }}" alt="Rating Icon" id="rating-icon" class="rating-icon">
+                        <span id="rate">4.8</span>
+                        <span id="rating-count">(18)</span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
     </div>
 
     <div class="info-section">
