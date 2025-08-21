@@ -44,36 +44,7 @@
         <p id="search-instruction">We use Natural Language Processing to understand your request to show results.</p>
         
         <!-- search results will be shown here  -->
-        <div id="search-results" class="search-results">
-            <div class="card">
-                <div id="card-data">
-                    <image src="{{ url_for('static', filename='img/search/user-pfp.webp') }}" alt="User pfp" class="result-image">
-                    <div class="name-title">
-                        <span id="name">Tommy Robinson</span>
-                        <span id="role">Project Manager</span>
-                        <span id="tagline">Helping teams deliver faster with clarity.</span>
-                        <div class="extra-info">
-                            <span class="location">🇬🇧 London, UK</span>
-                            <span class="rate">₹1000/hr</span>
-                        </div>
-                        <div class="skills">
-                            <span class="skill-tag">Agile</span>
-                            <span class="skill-tag">Scrum</span>
-                            <span class="skill-tag">JIRA</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="bottom-wrapper">
-                    <button id="work-btn" class="btn">Choose to work</button>
-                    <div class="rating-wrapper" title="Based on 18 reviews">
-                        <image src="{{ url_for('static', filename='img/search/rating-icon.webp') }}" alt="Rating Icon" id="rating-icon" class="rating-icon">
-                        <span id="rate">4.8</span>
-                        <span id="rating-count">(18)</span>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
+        <div id="search-results" class="search-results"></div>
 
     </div>
 
@@ -193,6 +164,115 @@
             });
         }
 
+        function createCard(data) {
+            // Main card container
+            const card = document.createElement("div");
+            card.className = "card";
+
+            // Card data container
+            const cardData = document.createElement("div");
+            cardData.id = "card-data";
+
+            // Profile image
+            const img = document.createElement("img");
+            img.src = data.image;
+            img.alt = "User pfp";
+            img.className = "result-image";
+
+            // Name & info wrapper
+            const nameTitle = document.createElement("div");
+            nameTitle.className = "name-title";
+
+            const name = document.createElement("span");
+            name.id = "name";
+            name.textContent = data.name;
+
+            const role = document.createElement("span");
+            role.id = "role";
+            role.textContent = data.role;
+
+            const tagline = document.createElement("span");
+            tagline.id = "tagline";
+            tagline.textContent = data.tagline;
+
+            // Extra info
+            const extraInfo = document.createElement("div");
+            extraInfo.className = "extra-info";
+
+            const location = document.createElement("span");
+            location.className = "location";
+            location.textContent = data.location;
+
+            const rate = document.createElement("span");
+            rate.className = "rate";
+            rate.textContent = data.rate;
+
+            extraInfo.append(location, rate);
+
+            // Skills
+            const skillsDiv = document.createElement("div");
+            skillsDiv.className = "skills";
+            data.skills.forEach(skill => {
+                const skillTag = document.createElement("span");
+                skillTag.className = "skill-tag";
+                skillTag.textContent = skill;
+                skillsDiv.appendChild(skillTag);
+            });
+
+            nameTitle.append(name, role, tagline, extraInfo, skillsDiv);
+            cardData.append(img, nameTitle);
+
+            // Bottom wrapper
+            const bottomWrapper = document.createElement("div");
+            bottomWrapper.className = "bottom-wrapper";
+
+            const workBtn = document.createElement("button");
+            workBtn.id = "work-btn";
+            workBtn.className = "btn";
+            workBtn.textContent = "Choose to work";
+
+            const ratingWrapper = document.createElement("div");
+            ratingWrapper.className = "rating-wrapper";
+            ratingWrapper.title = `Based on ${data.ratingCount} reviews`;
+
+            const ratingIcon = document.createElement("img");
+            ratingIcon.src = data.ratingIcon;
+            ratingIcon.alt = "Rating Icon";
+            ratingIcon.id = "rating-icon";
+            ratingIcon.className = "rating-icon";
+
+            const rateSpan = document.createElement("span");
+            rateSpan.id = "rate";
+            rateSpan.textContent = data.rating;
+
+            const ratingCount = document.createElement("span");
+            ratingCount.id = "rating-count";
+            ratingCount.textContent = `(${data.ratingCount})`;
+
+            ratingWrapper.append(ratingIcon, rateSpan, ratingCount);
+            bottomWrapper.append(workBtn, ratingWrapper);
+
+            // Assemble card
+            card.append(cardData, bottomWrapper);
+
+            // Append to results
+            document.getElementById("search-results").appendChild(card);
+        }
+
+        // Example usage
+        createCard({
+            image: "/static/img/search/user-pfp.webp",
+            name: "Tommy Robinson",
+            role: "Project Manager",
+            tagline: "Helping teams deliver faster with clarity.",
+            location: "🇬🇧 London, UK",
+            rate: "₹1000/hr",
+            skills: ["Agile", "Scrum", "JIRA"],
+            rating: "4.8",
+            ratingCount: 18,
+            ratingIcon: "/static/img/search/rating-icon.webp"
+        });
+
         updateShortcut();
         setupKeyboardShortcut();
 
@@ -227,6 +307,7 @@
         if (feedbackTarget) {
             feedbackObserver.observe(feedbackTarget);
         }
+
 
         
 

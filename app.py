@@ -11,9 +11,45 @@ from flask import Flask, render_template, redirect, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-
+import requests # freeze it in requirements.txt beforw deploying
+import json
+from datetime import datetime
 
 app = Flask(__name__)
+
+# Code for API handling to get roles for need statements
+
+AZURE_API_URL = "https://roles-predictor-bzg4fdfwgzb0hjh7.eastasia-01.azurewebsites.net/predict"
+
+@app.route('/predict_roles', methods=['POST'])
+def predict_roles():
+    need_statement = request.form.get("need_statement")
+    top_n = int(request.form.get("top_n", 3))
+
+    try:
+        response = requests.post(
+            AZURE_API_URL,
+            json={"need_statement": need_statement, "top_n": top_n},
+            headers={"Content-Type": "application/json"}
+        )
+
+        if response.status_code == 200:
+            result = response.json()
+
+            with open("roles.json", "a") as f:
+                entry = {
+                    "timestamp": datetime.now().isoformat(),
+                    "need_statement": result["need_statement"],
+                    "roles": result["predicted_roles"]
+                }
+                f.write(json.dumps(entry) + "\n")
+
+            return jsonify(result)
+        else:
+            return jsonify({"error": "Error fetching predictions from Azure API"}), 500
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/')
 def index():
