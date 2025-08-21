@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index/index.css') }}">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+    
 </head>
 <body>
     {% include 'header/header.html' %}
@@ -46,8 +48,12 @@
         <!-- search results will be shown here  -->
         <div id="search-results" class="search-results"></div>
 
+        <!-- Canvas element where the animation will be rendered -->
+        <canvas id="dotlottie-canvas" style="width: 300px; height:300px;"></canvas>
+
     </div>
 
+    
     <div class="info-section">
         <img id="info-image" src="{{ url_for('static', filename='img/info-section/image.jpg') }}" alt="People Working" class="info-img">
         <div class="info-text-container">
@@ -109,9 +115,6 @@
 
         observer.observe(searchSection);
 
-
-
-        // this line detects the OS
         function detectOS() {
             const userAgent = window.navigator.userAgent;
             if (userAgent.indexOf('Mac') !== -1) {
@@ -170,7 +173,17 @@
                 if (!needStatement) return;
 
                 const resultsDiv = document.getElementById("search-results");
-                resultsDiv.innerHTML = "<p>Loading...</p>";
+                resultsDiv.innerHTML = `
+    <dotlottie-wc 
+        src="https://lottie.host/30e41a28-779d-4ec6-834b-f6aa8343c895/IQDaPcRi0x.lottie" 
+        style="width: 300px; height: 300px;" 
+        speed="1" 
+        autoplay 
+        loop>
+    </dotlottie-wc>
+`;
+
+
 
                 try {
                     const response = await fetch("/predict_roles", {
@@ -191,7 +204,6 @@
                     if (rolesResponse.ok) {
                         const rolesData = await rolesResponse.json();
 
-                        // latest entry
                         const latest = rolesData[rolesData.length - 1];
 
                         createCard({
@@ -206,7 +218,6 @@
                             ratingIcon: "/static/img/search/rating-icon.webp"
                         }, latest.roles);
                     }
-
 
                 } catch (err) {
                     console.error(err);
