@@ -45,11 +45,7 @@
         </div>
         <p id="search-instruction">We use Natural Language Processing to understand your request to show results.</p>
         
-        <!-- search results will be shown here  -->
         <div id="search-results" class="search-results"></div>
-
-        <!-- Canvas element where the animation will be rendered -->
-        <canvas id="dotlottie-canvas" style="width: 300px; height:300px;"></canvas>
 
     </div>
 
@@ -174,12 +170,16 @@
                 
 
                 const resultsDiv = document.getElementById("search-results");
+
                 resultsDiv.innerHTML = `
                     <div class="searching-wrapper">
                         <video src="/static/img/searching/searching.mp4" autoplay muted loop></video>
                     </div>
                 `;
 
+                searchBar = document.getElementById("search-bar");
+                searchBar.scrollIntoView({ behavior: "smooth", block: "start" });
+                
                 try {
                     const response = await fetch("/predict_roles", {
                         method: "POST",
@@ -203,7 +203,7 @@
                         const profiles = generateDiverseProfiles(latest.roles);
 
                         profiles.forEach(profile => {
-                            createCard(profile, latest.roles); // give all roles as skills
+                            createCard(profile, latest.roles);
                         });
                     }
 
@@ -276,7 +276,7 @@
             roles.forEach(role => {
                 Object.keys(namePools).forEach((race, i) => {
                     let available = namePools[race].filter(p => !usedNames.has(p.name));
-                    if (available.length === 0) return; // skip if exhausted
+                    if (available.length === 0) return;
 
                     const chosen = available[Math.floor(Math.random() * available.length)];
                     usedNames.add(chosen.name);
@@ -390,12 +390,6 @@
             document.getElementById("search-results").appendChild(card);
         }
 
-
-
-
-        
-
-
         updateShortcut();
         setupKeyboardShortcut();
 
@@ -430,10 +424,6 @@
         if (feedbackTarget) {
             feedbackObserver.observe(feedbackTarget);
         }
-
-
-        
-
     </script>
 </body>
 </html>
