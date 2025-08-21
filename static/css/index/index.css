@@ -340,6 +340,27 @@ body {
     justify-content: center;
 }
 
+
+.searching-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.searching-wrapper video {
+    width: 280px;
+    border-radius: 10px;
+}
+
+#search-results:has(.searching-wrapper) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+}
+
 .card {
     display: flex;
     flex-direction: column;

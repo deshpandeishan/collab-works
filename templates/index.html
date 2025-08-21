@@ -171,10 +171,13 @@
             if (event.key === "Enter") {
                 const needStatement = event.target.value.trim();
                 if (!needStatement) return;
+                
 
                 const resultsDiv = document.getElementById("search-results");
                 resultsDiv.innerHTML = `
-                    <video src="/static/img/searching/searching.mp4" autoplay muted loop style="width:280px; border-radius:10px;"></video>
+                    <div class="searching-wrapper">
+                        <video src="/static/img/searching/searching.mp4" autoplay muted loop></video>
+                    </div>
                 `;
 
                 try {
@@ -200,9 +203,8 @@
                         const profiles = generateDiverseProfiles(latest.roles);
 
                         profiles.forEach(profile => {
-                            createCard(profile, latest.roles);
+                            createCard(profile, latest.roles); // give all roles as skills
                         });
-
                     }
 
                 } catch (err) {
@@ -212,28 +214,51 @@
             }
         });
 
+
         const namePools = {
-            "Western": ["Sophia Carter", "Liam Brown", "Emma Davis", "Noah Wilson", "Olivia Johnson", "Ethan Smith", "Mason Lee"],
-            "Indian": ["Aarav Sharma", "Isha Patel", "Rohan Mehta", "Kavya Reddy", "Arjun Singh", "Priya Nair"],
-            "Chinese": ["Li Wei", "Wang Fang", "Chen Jie", "Zhang Min", "Liu Yang", "Xu Lei"],
-            "African": ["Kwame Mensah", "Amina Abiola", "Samuel Okoro", "Zuri Kamau", "Thabo Ndlovu", "Fatima Diallo"],
-            "Arabic": ["Omar Al-Fayed", "Layla Hassan", "Yusuf Rahman", "Aisha Karim", "Hassan Jaber", "Fatima Zayed"]
+            "Western": [
+                { name: "Sophia Carter", gender: "female" },
+                { name: "Liam Brown", gender: "male" },
+                { name: "Emma Davis", gender: "female" },
+                { name: "Noah Wilson", gender: "male" },
+                { name: "Olivia Johnson", gender: "female" },
+                { name: "Ethan Smith", gender: "male" },
+                { name: "Mason Lee", gender: "male" }
+            ],
+            "Indian": [
+                { name: "Aarav Sharma", gender: "male" },
+                { name: "Isha Patel", gender: "female" },
+                { name: "Rohan Mehta", gender: "male" },
+                { name: "Kavya Reddy", gender: "female" },
+                { name: "Arjun Singh", gender: "male" },
+                { name: "Priya Nair", gender: "female" }
+            ],
+            "Chinese": [
+                { name: "Li Wei", gender: "male" },
+                { name: "Wang Fang", gender: "female" },
+                { name: "Chen Jie", gender: "male" },
+                { name: "Zhang Min", gender: "female" },
+                { name: "Liu Yang", gender: "male" },
+                { name: "Xu Lei", gender: "female" }
+            ],
+            "African": [
+                { name: "Kwame Mensah", gender: "male" },
+                { name: "Amina Abiola", gender: "female" },
+                { name: "Samuel Okoro", gender: "male" },
+                { name: "Zuri Kamau", gender: "female" },
+                { name: "Thabo Ndlovu", gender: "male" },
+                { name: "Fatima Diallo", gender: "female" }
+            ],
+            "Arabic": [
+                { name: "Omar Al-Fayed", gender: "male" },
+                { name: "Layla Hassan", gender: "female" },
+                { name: "Yusuf Rahman", gender: "male" },
+                { name: "Aisha Karim", gender: "female" },
+                { name: "Hassan Jaber", gender: "male" },
+                { name: "Fatima Zayed", gender: "female" }
+            ]
         };
 
-        let usedNames = new Set();
-
-        function getUniqueName(pool) {
-            if (usedNames.size >= Object.values(namePools).flat().length) {
-                usedNames.clear();
-            }
-            let name;
-            do {
-                const randomIndex = Math.floor(Math.random() * pool.length);
-                name = pool[randomIndex];
-            } while (usedNames.has(name));
-            usedNames.add(name);
-            return name;
-        }
 
         function generateDiverseProfiles(roles) {
             const taglines = [
@@ -246,13 +271,21 @@
             const locations = ["🇺🇸 New York, USA", "🇮🇳 Bengaluru, India", "🇨🇳 Beijing, China", "🇳🇬 Lagos, Nigeria", "🇸🇦 Riyadh, Saudi Arabia"];
 
             let profiles = [];
+            let usedNames = new Set();
 
             roles.forEach(role => {
                 Object.keys(namePools).forEach((race, i) => {
-                    const nameList = namePools[race];
+                    let available = namePools[race].filter(p => !usedNames.has(p.name));
+                    if (available.length === 0) return; // skip if exhausted
+
+                    const chosen = available[Math.floor(Math.random() * available.length)];
+                    usedNames.add(chosen.name);
+
                     const profile = {
-                        image: "/static/img/search/user-pfp.jpeg",
-                        name: getUniqueName(nameList),
+                        image: chosen.gender === "male"
+                            ? "/static/img/search/male-pfp.webp"
+                            : "/static/img/search/female-pfp.webp",
+                        name: chosen.name,
                         role: role,
                         tagline: taglines[Math.floor(Math.random() * taglines.length)],
                         location: locations[i % locations.length],
@@ -261,6 +294,7 @@
                         ratingCount: Math.floor(Math.random() * 200) + 5,
                         ratingIcon: "/static/img/search/rating-icon.webp"
                     };
+
                     profiles.push(profile);
                 });
             });
@@ -268,6 +302,7 @@
             profiles.sort((a, b) => b.rating - a.rating);
             return profiles;
         }
+
 
         function createCard(data, roles) {
             const card = document.createElement("div");
@@ -354,6 +389,7 @@
 
             document.getElementById("search-results").appendChild(card);
         }
+
 
 
 
