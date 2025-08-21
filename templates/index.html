@@ -177,7 +177,6 @@
                     <video src="/static/img/searching/searching.mp4" autoplay muted loop style="width:280px; border-radius:10px;"></video>
                 `;
 
-
                 try {
                     const response = await fetch("/predict_roles", {
                         method: "POST",
@@ -196,20 +195,14 @@
                     const rolesResponse = await fetch("/get_roles");
                     if (rolesResponse.ok) {
                         const rolesData = await rolesResponse.json();
-
                         const latest = rolesData[rolesData.length - 1];
 
-                        createCard({
-                            image: "/static/img/search/user-pfp.webp",
-                            name: "Tommy Robinson",
-                            role: "Project Manager",
-                            tagline: "Helping teams deliver faster with clarity.",
-                            location: "🇬🇧 London, UK",
-                            rate: "₹1000/hr",
-                            rating: "4.8",
-                            ratingCount: 18,
-                            ratingIcon: "/static/img/search/rating-icon.webp"
-                        }, latest.roles);
+                        const profiles = generateDiverseProfiles(latest.roles);
+
+                        profiles.forEach(profile => {
+                            createCard(profile, latest.roles);
+                        });
+
                     }
 
                 } catch (err) {
@@ -219,7 +212,62 @@
             }
         });
 
-        
+        const namePools = {
+            "Western": ["Sophia Carter", "Liam Brown", "Emma Davis", "Noah Wilson", "Olivia Johnson", "Ethan Smith", "Mason Lee"],
+            "Indian": ["Aarav Sharma", "Isha Patel", "Rohan Mehta", "Kavya Reddy", "Arjun Singh", "Priya Nair"],
+            "Chinese": ["Li Wei", "Wang Fang", "Chen Jie", "Zhang Min", "Liu Yang", "Xu Lei"],
+            "African": ["Kwame Mensah", "Amina Abiola", "Samuel Okoro", "Zuri Kamau", "Thabo Ndlovu", "Fatima Diallo"],
+            "Arabic": ["Omar Al-Fayed", "Layla Hassan", "Yusuf Rahman", "Aisha Karim", "Hassan Jaber", "Fatima Zayed"]
+        };
+
+        let usedNames = new Set();
+
+        function getUniqueName(pool) {
+            if (usedNames.size >= Object.values(namePools).flat().length) {
+                usedNames.clear();
+            }
+            let name;
+            do {
+                const randomIndex = Math.floor(Math.random() * pool.length);
+                name = pool[randomIndex];
+            } while (usedNames.has(name));
+            usedNames.add(name);
+            return name;
+        }
+
+        function generateDiverseProfiles(roles) {
+            const taglines = [
+                "Helping teams deliver faster with clarity.",
+                "Building scalable apps with modern tools.",
+                "Passionate about user-first experiences.",
+                "Turning coffee into code since 2015.",
+                "Your go-to expert for reliable solutions."
+            ];
+            const locations = ["🇺🇸 New York, USA", "🇮🇳 Bengaluru, India", "🇨🇳 Beijing, China", "🇳🇬 Lagos, Nigeria", "🇸🇦 Riyadh, Saudi Arabia"];
+
+            let profiles = [];
+
+            roles.forEach(role => {
+                Object.keys(namePools).forEach((race, i) => {
+                    const nameList = namePools[race];
+                    const profile = {
+                        image: "/static/img/search/user-pfp.jpeg",
+                        name: getUniqueName(nameList),
+                        role: role,
+                        tagline: taglines[Math.floor(Math.random() * taglines.length)],
+                        location: locations[i % locations.length],
+                        rate: `₹${(Math.floor(Math.random() * 90) + 10) * 100}/hr`,
+                        rating: (Math.random() * (5 - 3.5) + 3.5).toFixed(1),
+                        ratingCount: Math.floor(Math.random() * 200) + 5,
+                        ratingIcon: "/static/img/search/rating-icon.webp"
+                    };
+                    profiles.push(profile);
+                });
+            });
+
+            profiles.sort((a, b) => b.rating - a.rating);
+            return profiles;
+        }
 
         function createCard(data, roles) {
             const card = document.createElement("div");
@@ -306,6 +354,8 @@
 
             document.getElementById("search-results").appendChild(card);
         }
+
+
 
         
 

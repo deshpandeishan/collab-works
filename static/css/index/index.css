@@ -164,12 +164,15 @@ body {
 /* code for search bar */
 .search-section {
     display: flex;
-    flex-direction: column; /* This stacks children vertically */
-    height: 100vh;
-    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
+    padding: 40px 20px;
+    box-sizing: border-box;
 }
+
 
 #search-firstline, #search-secondline {
     display: inline-block;
@@ -237,20 +240,6 @@ body {
 #search-bar:focus::placeholder {
     color: transparent;
 }
-
-/* #search-bar:focus + .shortcut-hint {
-    display: none;
-} */
-
-.result-role {
-    background: #f3f3f3;
-    padding: 8px 12px;
-    margin: 5px 0;
-    border-radius: 10px;
-    font-weight: 500;
-    color: #333;
-}
-
 
 #search-btn {
     font-weight: 600;
@@ -344,6 +333,11 @@ body {
 /* search results */
 .search-results {
     margin-top: 100px;
+    width: 76%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-content: center;
 }
 
 .card {
@@ -351,13 +345,18 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: #fcfbfb;
-    padding: 8px 12px;
+    padding: 12px 16px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    max-width: 500px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     font-family: 'Segoe UI', sans-serif;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-  
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
 .result-image {
     width: 48px;
     height: 48px;
