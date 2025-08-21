@@ -14,6 +14,8 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 import requests # freeze it in requirements.txt beforw deploying
 import json
 from datetime import datetime
+from flask import send_file
+import os
 
 app = Flask(__name__)
 
@@ -36,13 +38,25 @@ def predict_roles():
         if response.status_code == 200:
             result = response.json()
 
-            with open("roles.json", "a") as f:
-                entry = {
-                    "timestamp": datetime.now().isoformat(),
-                    "need_statement": result["need_statement"],
-                    "roles": result["predicted_roles"]
-                }
-                f.write(json.dumps(entry) + "\n")
+            roles_file = "roles.json"
+            roles_data = []
+
+            if os.path.exists(roles_file):
+                with open(roles_file, "r") as f:
+                    try:
+                        roles_data = json.load(f)
+                    except json.JSONDecodeError:
+                        roles_data = []
+
+            entry = {
+                "timestamp": datetime.now().isoformat(),
+                "need_statement": result["need_statement"],
+                "roles": result["predicted_roles"]
+            }
+            roles_data.append(entry)
+
+            with open(roles_file, "w") as f:
+                json.dump(roles_data, f, indent=2)
 
             return jsonify(result)
         else:
@@ -50,6 +64,21 @@ def predict_roles():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@app.route("/get_roles", methods=["GET"])
+def get_roles():
+    roles_file = "roles.json"
+    if os.path.exists(roles_file):
+        with open(roles_file, "r") as f:
+            roles_data = json.load(f)
+
+        with open(roles_file, "w") as f:
+            json.dump([], f)
+
+        return jsonify(roles_data)
+    return jsonify({"error": "roles.json not found"}), 404
+
 
 @app.route('/')
 def index():

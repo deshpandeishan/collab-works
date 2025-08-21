@@ -164,22 +164,71 @@
             });
         }
 
-        function createCard(data) {
-            // Main card container
+        document.getElementById("search-bar").addEventListener("keypress", async function(event) {
+            if (event.key === "Enter") {
+                const needStatement = event.target.value.trim();
+                if (!needStatement) return;
+
+                const resultsDiv = document.getElementById("search-results");
+                resultsDiv.innerHTML = "<p>Loading...</p>";
+
+                try {
+                    const response = await fetch("/predict_roles", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: new URLSearchParams({
+                            "need_statement": needStatement,
+                            "top_n": 3
+                        })
+                    });
+
+                    const data = await response.json();
+                    resultsDiv.innerHTML = "";
+
+                    const rolesResponse = await fetch("/get_roles");
+                    if (rolesResponse.ok) {
+                        const rolesData = await rolesResponse.json();
+
+                        // latest entry
+                        const latest = rolesData[rolesData.length - 1];
+
+                        createCard({
+                            image: "/static/img/search/user-pfp.webp",
+                            name: "Tommy Robinson",
+                            role: "Project Manager",
+                            tagline: "Helping teams deliver faster with clarity.",
+                            location: "🇬🇧 London, UK",
+                            rate: "₹1000/hr",
+                            rating: "4.8",
+                            ratingCount: 18,
+                            ratingIcon: "/static/img/search/rating-icon.webp"
+                        }, latest.roles);
+                    }
+
+
+                } catch (err) {
+                    console.error(err);
+                    resultsDiv.innerHTML = "<p>Error fetching results.</p>";
+                }
+            }
+        });
+
+        
+
+        function createCard(data, roles) {
             const card = document.createElement("div");
             card.className = "card";
 
-            // Card data container
             const cardData = document.createElement("div");
             cardData.id = "card-data";
 
-            // Profile image
             const img = document.createElement("img");
             img.src = data.image;
             img.alt = "User pfp";
             img.className = "result-image";
 
-            // Name & info wrapper
             const nameTitle = document.createElement("div");
             nameTitle.className = "name-title";
 
@@ -195,7 +244,6 @@
             tagline.id = "tagline";
             tagline.textContent = data.tagline;
 
-            // Extra info
             const extraInfo = document.createElement("div");
             extraInfo.className = "extra-info";
 
@@ -209,20 +257,18 @@
 
             extraInfo.append(location, rate);
 
-            // Skills
             const skillsDiv = document.createElement("div");
             skillsDiv.className = "skills";
-            data.skills.forEach(skill => {
+            roles.forEach(roleName => {
                 const skillTag = document.createElement("span");
                 skillTag.className = "skill-tag";
-                skillTag.textContent = skill;
+                skillTag.textContent = roleName;
                 skillsDiv.appendChild(skillTag);
             });
 
             nameTitle.append(name, role, tagline, extraInfo, skillsDiv);
             cardData.append(img, nameTitle);
 
-            // Bottom wrapper
             const bottomWrapper = document.createElement("div");
             bottomWrapper.className = "bottom-wrapper";
 
@@ -252,26 +298,13 @@
             ratingWrapper.append(ratingIcon, rateSpan, ratingCount);
             bottomWrapper.append(workBtn, ratingWrapper);
 
-            // Assemble card
             card.append(cardData, bottomWrapper);
 
-            // Append to results
             document.getElementById("search-results").appendChild(card);
         }
 
-        // Example usage
-        createCard({
-            image: "/static/img/search/user-pfp.webp",
-            name: "Tommy Robinson",
-            role: "Project Manager",
-            tagline: "Helping teams deliver faster with clarity.",
-            location: "🇬🇧 London, UK",
-            rate: "₹1000/hr",
-            skills: ["Agile", "Scrum", "JIRA"],
-            rating: "4.8",
-            ratingCount: 18,
-            ratingIcon: "/static/img/search/rating-icon.webp"
-        });
+        
+
 
         updateShortcut();
         setupKeyboardShortcut();

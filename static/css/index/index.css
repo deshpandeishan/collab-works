@@ -242,6 +242,16 @@ body {
     display: none;
 } */
 
+.result-role {
+    background: #f3f3f3;
+    padding: 8px 12px;
+    margin: 5px 0;
+    border-radius: 10px;
+    font-weight: 500;
+    color: #333;
+}
+
+
 #search-btn {
     font-weight: 600;
     font-size: 1rem;
