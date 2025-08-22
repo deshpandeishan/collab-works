@@ -82,12 +82,16 @@
                 <div class="register-link">
                     <p>Already have an account? <a href="{{ url_for('freelancer_login') }}">Log In</a></p>
                 </div>
+
+                <div class="looking-for-talent">
+                    <p>Looking for talent? <a href="{{ url_for('client_register') }}">Join as a employer</a></p>
+                </div>
+
             </div>
         </div>
     </div>
 
     <script>
-        // Change label on focus/blur
         document.getElementById('freelancer_first_name').addEventListener('focus', function() {
             document.querySelector('label[for="freelancer_first_name"]').textContent = 'Name';
         });
@@ -96,7 +100,6 @@
             document.querySelector('label[for="freelancer_first_name"]').textContent = 'Tell us your name';
         });
 
-        // Step navigation
         function freelancerNextStep(step) {
             const currentStep = document.querySelector('.step.active');
             const nextStep = document.getElementById('freelancer_step' + step);
@@ -124,7 +127,6 @@
             return true;
         }
 
-        // Username validation
         const freelancerUsernameInput = document.getElementById('freelancer_username');
         const freelancerNextButton = document.getElementById('freelancer_nextButton');
         const freelancerWarning = document.getElementById('freelancer_username_warning');
@@ -165,7 +167,6 @@
             }, 500);
         });
 
-        // Email validation
         const freelancerEmailInput = document.getElementById('freelancer_email');
         const freelancerEmailMessage = document.getElementById('freelancer_emailMessage');
         const freelancerNextButton2 = document.getElementById('freelancer_nextButton2');
@@ -215,7 +216,6 @@
             return emailRegex.test(email);
         }
 
-        // Password visibility toggle
         function freelancerTogglePasswordVisibility() {
             const passwordInput = document.getElementById('freelancer_password');
             const toggleIcon = document.getElementById('freelancer_toggleIcon');
