@@ -250,19 +250,12 @@ def check_client_email():
         return jsonify({'exists': email_exists})
     return jsonify({'exists': False})
 
-
-# ============================
-# Static Policy Pages
-# ============================
-
 # ============================
 # Freelancer Account System
 # ============================
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'thisisasecretkey'
-
-# Same db, bcrypt, login_manager already initialized above
 
 login_manager.login_view = 'freelancer_login'
 
@@ -407,11 +400,6 @@ def terms_of_service():
 @app.route('/privacy-policy')
 def privacy_policy():
     return render_template('privacy_policy.html')
-
-
-# ============================
-# Main Entrypoint
-# ============================
 
 if __name__ == '__main__':
     with app.app_context():

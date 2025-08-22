@@ -147,19 +147,19 @@ body {
     color: #000000;
 }
 
-.register-link {
+.register-link, .freelancer-login {
     text-align: center;
     margin-top: 1rem;
     font-size: 0.875rem;
 }
 
-.register-link a {
+.register-link a, .freelancer-login a {
     text-decoration: none;
     color: #000000;
     font-weight: bold;
 }
 
-.register-link a:hover {
+.register-link a:hover, .freelancer-login a:hover {
     text-decoration: underline;
 }
 
