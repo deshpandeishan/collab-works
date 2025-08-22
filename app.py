@@ -22,7 +22,7 @@ AZURE_API_URL = "https://roles-predictor-bzg4fdfwgzb0hjh7.eastasia-01.azurewebsi
 @app.route('/predict_roles', methods=['POST'])
 def predict_roles():
     need_statement = request.form.get("need_statement")
-    top_n = int(request.form.get("top_n", 3))
+    top_n = int(request.form.get("top_n", 3)) # change this for more predicting roles
 
     try:
         response = requests.post(
