@@ -856,17 +856,18 @@
                         </a>
                         <div id="dropdown-menu" class="dropdown-content">
                             <span>{{ current_user.first_name }}</span>
-                            <a href="{{ url_for('delete_account') }}" id="delete-account">Delete Account</a>
-                            <a href="{{ url_for('logout') }}">Logout</a>
+                            <a href="{{ url_for('client_delete_account') }}" id="delete-account">Delete Account</a>
+                            <a href="{{ url_for('client_logout') }}">Logout</a>
                         </div>
                     </div>
                 </div>
 
             {% else %}
             <div class="auth-menu">
-                <a href="{{ url_for('login') }}" id="" class="login-btn">Login</a>
-                <a href="{{ url_for('register') }}" class="signup-btn">Sign Up</a>
+                <a href="{{ url_for('client_login') }}" class="login-btn">Login</a>
+                <a href="{{ url_for('client_register') }}" class="signup-btn">Sign Up</a>
             </div>
+            
             {% endif %}
 
         </div>

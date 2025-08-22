@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CollabWorks - Register</title>
+    <link rel="icon" href="{{ url_for('static', filename='/img/logo/collabworks.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth/register/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container fade-in">
+        <div class="register-section">
+            <div class="logo-container">
+                <a href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='/img/logo/icon-logo.png') }}" alt="CollabWorks logo">
+                </a>
+            </div>
+
+            <!-- client form -->
+            <div class="client-registration">
+                <form id="client_registrationForm" method="POST" action="{{ url_for('client_register') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <!-- Step 1 -->
+                    <div class="step active" id="client_step1">
+                        <h4>Join Us!</h4>
+                        <p>Sign up to meet talented minds</p>
+                        <div class="form-group input-group">
+                            {{ form.username(class="input", id="client_username", required="required", autocomplete="off") }}
+                            <label for="client_username" class="label">Username</label>
+                            <div id="client_username_warning" class="warning-message"></div>
+                        </div>
+                        <button type="button" class="btn btn-primary next-button" id="client_nextButton" disabled onclick="clientNextStep(2)">Next</button>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step" id="client_step2">
+                        <p>Enter Email and create password</p>
+
+                        <div class="form-group input-group">
+                            {{ form.email(class="input", id="client_email", required="required", autocomplete="off", oninput="checkClientEmail(this.value)") }}
+                            <label for="client_email" class="label">Email</label>
+                            <small id="client_emailMessage" class="form-text text-danger" style="display:none;"></small>
+                        </div>                    
+
+                        <div class="form-group input-group">
+                            {{ form.password(class="input", id="client_password", required="required", autocomplete="off") }}
+                            <label for="client_password" class="label">Password</label>
+                            <span class="password-toggle" onclick="clientTogglePasswordVisibility()">
+                                <i id="client_toggleIcon" class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="client_termsCheck" required>
+                            <label class="form-check-label" for="client_termsCheck">
+                                I agree to the <a href="{{ url_for('terms_of_service') }}">Terms of Service</a> and <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a>.
+                            </label>
+                        </div>
+                        <div class="button-container">
+                            <button type="button" class="btn btn-primary" onclick="clientPrevStep(1)">Back</button>
+                            <button type="button" class="btn btn-primary next-button" onclick="clientNextStep(3)" id="client_nextButton2" disabled>Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step" id="client_step3">
+                        <div class="form-group input-group">
+                            {{ form.first_name(class="input", id="client_first_name", required="required", autocomplete="off") }}
+                            <label for="client_first_name" class="label">Tell us your name</label>
+                        </div>
+
+                        <div class="submit-container">
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </div>
+                </form>
+
+                <div class="register-link">
+                    <p>Already have an account? <a href="{{ url_for('client_login') }}">Log In</a></p>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <script>
+        // Change label on focus/blur
+        document.getElementById('client_first_name').addEventListener('focus', function() {
+            document.querySelector('label[for="client_first_name"]').textContent = 'Name';
+        });
+
+        document.getElementById('client_first_name').addEventListener('blur', function() {
+            document.querySelector('label[for="client_first_name"]').textContent = 'Tell us your name';
+        });
+
+        // Step navigation
+        function clientNextStep(step) {
+            const currentStep = document.querySelector('.step.active');
+            const nextStep = document.getElementById('client_step' + step);
+            if (clientValidateStep(currentStep)) {
+                currentStep.classList.remove('active');
+                nextStep.classList.add('active');
+            } else {
+                console.log('Validation failed for current step.');
+            }
+        }
+
+        function clientPrevStep(step) {
+            const currentStep = document.querySelector('.step.active');
+            const prevStep = document.getElementById('client_step' + step);
+            currentStep.classList.remove('active');
+            prevStep.classList.add('active');
+        }
+
+        function clientValidateStep(stepElement) {
+            const inputs = stepElement.querySelectorAll('input');
+            for (let input of inputs) {
+                if (!input.checkValidity()) {
+                    console.log(`${input.id} is invalid`);
+                    input.reportValidity();
+                    return false;
+                }
+            }
+            console.log('Step is valid');
+            return true;
+        }
+
+        // Username validation
+        const clientUsernameInput = document.getElementById('client_username');
+        const clientNextButton = document.getElementById('client_nextButton');
+        const clientWarning = document.getElementById('client_username_warning');
+        let clientDebounceTimeout;
+
+        clientUsernameInput.addEventListener('input', function () {
+            this.value = this.value.toLowerCase();
+        });
+
+        const clientEmailInput = document.getElementById('client_email');
+        clientEmailInput.addEventListener('input', function () {
+            this.value = this.value.toLowerCase();
+        });
+
+        clientUsernameInput.addEventListener('input', function () {
+            const username = this.value.trim();
+            clearTimeout(clientDebounceTimeout);
+
+            clientDebounceTimeout = setTimeout(() => {
+                if (username.length > 3) {
+                    fetch(`/client/check_username?username=${encodeURIComponent(username)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!data.available) {
+                                clientWarning.textContent = 'That username is already taken. Please choose a different one.';
+                                clientWarning.style.display = 'block';
+                                clientNextButton.disabled = true;
+                            } else {
+                                clientWarning.style.display = 'none';
+                                clientNextButton.disabled = false;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            clientWarning.textContent = 'An error occurred while checking the username. Please try again.';
+                            clientWarning.style.display = 'block';
+                            clientNextButton.disabled = true;
+                        });
+                } else {
+                    clientWarning.textContent = 'Username must be at least 4 characters long.';
+                    clientWarning.style.display = 'block';
+                    clientNextButton.disabled = true;
+                }
+            }, 500);
+        });
+
+        // Email validation
+        let clientEmailMessage = document.getElementById('client_emailMessage');
+        let clientNextButton2 = document.getElementById('client_nextButton2');
+        let clientDebounceTimeoutEmail;
+        let clientEmailValid = false;
+
+        clientEmailInput.addEventListener('input', function () {
+            const email = this.value.trim();
+            clearTimeout(clientDebounceTimeoutEmail);
+
+            clientDebounceTimeoutEmail = setTimeout(() => {
+                if (!clientValidateEmail(email)) {
+                    clientEmailMessage.textContent = "Please enter a valid email address.";
+                    clientEmailMessage.style.display = "block";
+                    clientEmailValid = false;
+                } else {
+                    fetch(`/client/check_email?email=${encodeURIComponent(email)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.exists) {
+                                clientEmailMessage.textContent = "This email is already in use. Please choose a different one.";
+                                clientEmailMessage.style.display = "block";
+                                clientEmailValid = false;
+                            } else {
+                                clientEmailMessage.textContent = "";
+                                clientEmailMessage.style.display = "none";
+                                clientEmailValid = true;
+                            }
+                            clientToggleNextButton();
+                        })
+                        .catch(() => {
+                            clientEmailMessage.textContent = "An error occurred while checking the email.";
+                            clientEmailMessage.style.display = "block";
+                            clientEmailValid = false;
+                            clientToggleNextButton();
+                        });
+                }
+            }, 500);
+        });
+
+        function clientToggleNextButton() {
+            console.log(`Email valid: ${clientEmailValid}`);
+            clientNextButton2.disabled = !clientEmailValid;
+        }
+
+        function clientValidateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Password visibility toggle
+        function clientTogglePasswordVisibility() {
+            const passwordInput = document.getElementById('client_password');
+            const toggleIcon = document.getElementById('client_toggleIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Animation on step 3
+        document.getElementById('client_step3').addEventListener('transitionend', function() {
+            if (document.getElementById('client_step3').classList.contains('active')) {
+                setTimeout(() => {
+                    document.getElementById('client_step3').classList.add('slide-in');
+                }, 500);
+            }
+        });
+
+
+        // freelancer part from here
+        
+    </script>
+</body>
+</html>

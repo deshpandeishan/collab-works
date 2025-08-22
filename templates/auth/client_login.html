@@ -36,7 +36,7 @@
             {% endwith %}
           
 
-            <form method="POST" action="{{ url_for('login', next=request.args.get('next')) }}">
+            <form method="POST" action="{{ url_for('client_login', next=request.args.get('next')) }}">
                 {{ form.hidden_tag() }}
 
                 <div class="form-group input-group">
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="register-link">
-                    <p>Not a member? <a href="{{ url_for('register') }}">Register now</a></p>
+                    <p>Not a member? <a href="{{ url_for('client_register') }}">Register now</a></p>
                 </div>
             </form>
 
