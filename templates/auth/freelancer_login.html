@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CollabWorks - Freelancer Login</title>
+    <link rel="icon" href="{{ url_for('static', filename='/img/logo/collabworks.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth/login/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <div class="container fade-in">
+        <div class="login-section">
+
+            <div class="logo-container">
+                <a href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='/img/logo/icon-logo.png') }}" alt="CollabWorks Logo">
+                </a>
+            </div>
+            
+            <h4>Welcome back, Freelancer!</h4>
+            <p id="below-head">Login to continue your work opportunities.</p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                    {{ message }}
+                    </div>
+                {% endfor %}
+                {% endif %}
+            {% endwith %}
+          
+
+            <form method="POST" action="{{ url_for('freelancer_login', next=request.args.get('next')) }}">
+                {{ form.hidden_tag() }}
+
+                <div class="form-group input-group">
+                    <input type="email" name="email" id="freelancer_email" class="input" required autocomplete="off">
+                    <label for="freelancer_email" class="label">Email</label>
+                </div>
+
+                <div class="form-group input-group">
+                    <input type="password" name="password" id="freelancer_password" class="input" required autocomplete="off">
+                    <label for="freelancer_password" class="label">Password</label>
+                    <span class="password-toggle" onclick="freelancerTogglePasswordVisibility()">
+                        <i id="freelancer_toggleIcon" class="fas fa-eye"></i>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+
+                <div class="register-link">
+                    <p>Not a member? <a href="{{ url_for('freelancer_register') }}">Register now</a></p>
+                </div>
+            </form>
+
+            <div class="or-divider"><span>or continue with</span></div>
+            <div class="social-login">
+                <img src="static/img/login/google-logo.webp" alt="Google">
+                <img src="static/img/login/apple-logo.webp" alt="Apple">
+                <img src="static/img/login/x-logo.webp" alt="Facebook">
+            </div>
+        </div>
+    </div>
+    <script>
+        function freelancerTogglePasswordVisibility() {
+            const passwordInput = document.getElementById('freelancer_password');
+            const toggleIcon = document.getElementById('freelancer_toggleIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+
+</html>
