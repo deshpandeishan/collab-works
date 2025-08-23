@@ -166,44 +166,43 @@
             if (event.key === "Enter") {
                 const needStatement = event.target.value.trim();
                 if (!needStatement) return;
-                
 
                 const resultsDiv = document.getElementById("search-results");
-
                 resultsDiv.innerHTML = `
                     <div class="searching-wrapper">
                         <video src="/static/img/searching/searching.mp4" autoplay muted loop></video>
                     </div>
                 `;
 
-                searchBar = document.getElementById("search-bar");
+                const searchBar = document.getElementById("search-bar");
                 searchBar.scrollIntoView({ behavior: "smooth", block: "start" });
-                
+
                 try {
                     const response = await fetch("/predict_roles", {
                         method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: new URLSearchParams({
-                            "need_statement": needStatement,
-                            "top_n": 3 // change this for more predicting roles
-                        })
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams({ "need_statement": needStatement, "top_n": 3 })
                     });
-
                     const data = await response.json();
+
                     resultsDiv.innerHTML = "";
 
                     const rolesResponse = await fetch("/get_roles");
+                    let roles = [];
                     if (rolesResponse.ok) {
                         const rolesData = await rolesResponse.json();
                         const latest = rolesData[rolesData.length - 1];
+                        roles = latest.roles;
+                    }
 
-                        const profiles = generateDiverseProfiles(latest.roles);
-
+                    const profilesResponse = await fetch("/get_freelancers");
+                    if (profilesResponse.ok) {
+                        const profiles = await profilesResponse.json();
                         profiles.forEach(profile => {
-                            createCard(profile, latest.roles);
+                            createCard(profile, roles.length ? roles : ["Developer"]);
                         });
+                    } else {
+                        resultsDiv.innerHTML = "<p>Error fetching profiles from DB.</p>";
                     }
 
                 } catch (err) {
@@ -212,95 +211,6 @@
                 }
             }
         });
-
-
-        const namePools = {
-            "Western": [
-                { name: "Sophia Carter", gender: "female" },
-                { name: "Liam Brown", gender: "male" },
-                { name: "Emma Davis", gender: "female" },
-                { name: "Noah Wilson", gender: "male" },
-                { name: "Olivia Johnson", gender: "female" },
-                { name: "Ethan Smith", gender: "male" },
-                { name: "Mason Lee", gender: "male" }
-            ],
-            "Indian": [
-                { name: "Aarav Sharma", gender: "male" },
-                { name: "Isha Patel", gender: "female" },
-                { name: "Rohan Mehta", gender: "male" },
-                { name: "Kavya Reddy", gender: "female" },
-                { name: "Arjun Singh", gender: "male" },
-                { name: "Priya Nair", gender: "female" }
-            ],
-            "Chinese": [
-                { name: "Li Wei", gender: "male" },
-                { name: "Wang Fang", gender: "female" },
-                { name: "Chen Jie", gender: "male" },
-                { name: "Zhang Min", gender: "female" },
-                { name: "Liu Yang", gender: "male" },
-                { name: "Xu Lei", gender: "female" }
-            ],
-            "African": [
-                { name: "Kwame Mensah", gender: "male" },
-                { name: "Amina Abiola", gender: "female" },
-                { name: "Samuel Okoro", gender: "male" },
-                { name: "Zuri Kamau", gender: "female" },
-                { name: "Thabo Ndlovu", gender: "male" },
-                { name: "Fatima Diallo", gender: "female" }
-            ],
-            "Arabic": [
-                { name: "Omar Al-Fayed", gender: "male" },
-                { name: "Layla Hassan", gender: "female" },
-                { name: "Yusuf Rahman", gender: "male" },
-                { name: "Aisha Karim", gender: "female" },
-                { name: "Hassan Jaber", gender: "male" },
-                { name: "Fatima Zayed", gender: "female" }
-            ]
-        };
-
-
-        function generateDiverseProfiles(roles) {
-            const taglines = [
-                "Helping teams deliver faster with clarity.",
-                "Building scalable apps with modern tools.",
-                "Passionate about user-first experiences.",
-                "Turning coffee into code since 2015.",
-                "Your go-to expert for reliable solutions."
-            ];
-            const locations = ["🇺🇸 New York, USA", "🇮🇳 Bengaluru, India", "🇨🇳 Beijing, China", "🇳🇬 Lagos, Nigeria", "🇸🇦 Riyadh, Saudi Arabia"];
-
-            let profiles = [];
-            let usedNames = new Set();
-
-            roles.forEach(role => {
-                Object.keys(namePools).forEach((race, i) => {
-                    let available = namePools[race].filter(p => !usedNames.has(p.name));
-                    if (available.length === 0) return;
-
-                    const chosen = available[Math.floor(Math.random() * available.length)];
-                    usedNames.add(chosen.name);
-
-                    const profile = {
-                        image: chosen.gender === "male"
-                            ? "/static/img/search/male-pfp.webp"
-                            : "/static/img/search/female-pfp.webp",
-                        name: chosen.name,
-                        role: role,
-                        tagline: taglines[Math.floor(Math.random() * taglines.length)],
-                        location: locations[i % locations.length],
-                        rate: `₹${(Math.floor(Math.random() * 90) + 10) * 100}/hr`,
-                        rating: (Math.random() * (5 - 3.5) + 3.5).toFixed(1),
-                        ratingCount: Math.floor(Math.random() * 200) + 5,
-                        ratingIcon: "/static/img/search/rating-icon.webp"
-                    };
-
-                    profiles.push(profile);
-                });
-            });
-
-            profiles.sort((a, b) => b.rating - a.rating);
-            return profiles;
-        }
 
 
         function createCard(data, roles) {
@@ -385,7 +295,6 @@
             bottomWrapper.append(workBtn, ratingWrapper);
 
             card.append(cardData, bottomWrapper);
-
             document.getElementById("search-results").appendChild(card);
         }
 
@@ -404,25 +313,22 @@
             }, { threshold: 0.5 });
 
             const target = document.querySelector('.info-section');
-            if (target) {
-                observer.observe(target);
-            }
+            if (target) observer.observe(target);
+
+            const feedbackSection = document.querySelector('.clients-feedback-section');
+            const feedbackObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        feedbackSection.classList.add('fade-in');
+                        feedbackObserver.disconnect();
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            const feedbackTarget = document.querySelector('.clients-logo-section');
+            if (feedbackTarget) feedbackObserver.observe(feedbackTarget);
         });
 
-        const feedbackSection = document.querySelector('.clients-feedback-section');
-        const feedbackObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    feedbackSection.classList.add('fade-in');
-                    feedbackObserver.disconnect();
-                }
-            });
-        }, { threshold: 0.5 });
-
-        const feedbackTarget = document.querySelector('.clients-logo-section');
-        if (feedbackTarget) {
-            feedbackObserver.observe(feedbackTarget);
-        }
     </script>
 </body>
 </html>

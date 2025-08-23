@@ -22,7 +22,7 @@ AZURE_API_URL = "https://roles-predictor-bzg4fdfwgzb0hjh7.eastasia-01.azurewebsi
 @app.route('/predict_roles', methods=['POST'])
 def predict_roles():
     need_statement = request.form.get("need_statement")
-    top_n = int(request.form.get("top_n", 3)) # change this for more predicting roles
+    top_n = int(request.form.get("top_n", 3))
 
     try:
         response = requests.post(
@@ -69,12 +69,32 @@ def get_roles():
         with open(roles_file, "r") as f:
             roles_data = json.load(f)
 
-        # Clear roles file after reading
         with open(roles_file, "w") as f:
             json.dump([], f)
 
         return jsonify(roles_data)
     return jsonify({"error": "roles.json not found"}), 404
+
+@app.route("/get_freelancers", methods=["GET"])
+def get_freelancers():
+    freelancers = Freelancer.query.all()
+    result = []
+
+    for f in freelancers:
+        result.append({
+            "id": f.id,
+            "name": f"{f.first_name} {f.last_name}".strip(),
+            "username": f.username,
+            "role": "Developer",
+            "tagline": f.tagline,
+            "location": f.location,
+            "image": "/static/img/search/male-pfp.webp" if f.username[-1] not in "aeiou" else "/static/img/search/female-pfp.webp",
+            "rate": f"₹{(50 + f.id*10)}/hr",
+            "rating": round(3.5 + (f.id % 15)/10, 1),
+            "ratingCount": 20 + f.id*5,
+            "ratingIcon": "/static/img/search/rating-icon.webp"
+        })
+    return jsonify(result)
 
 
 # ============================
@@ -265,12 +285,17 @@ def load_freelancer(freelancer_id):
 
 
 # Freelancer Database Model
-class Freelancer(db.Model, UserMixin):
+class Freelancer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), nullable=False, unique=True)
-    email = db.Column(db.String(120), nullable=True, unique=True)
-    first_name = db.Column(db.String(20), nullable=True)
-    password = db.Column(db.String(80), nullable=False)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=True)  # ADD THIS
+    password = db.Column(db.String(200), nullable=False)
+    tagline = db.Column(db.String(200))
+    location = db.Column(db.String(100))
+
+
 
 
 # Freelancer Registration Form
