@@ -293,8 +293,10 @@
 
             ratingWrapper.append(ratingIcon, rateSpan, ratingCount);
             bottomWrapper.append(workBtn, ratingWrapper);
+            
 
             card.append(cardData, bottomWrapper);
+            card.style.animationDelay = `${document.querySelectorAll(".card").length * 0.1}s`;
             document.getElementById("search-results").appendChild(card);
         }
 
