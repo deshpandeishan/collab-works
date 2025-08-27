@@ -21,7 +21,7 @@
 
             <!-- freelancer form -->
             <div class="freelancer-registration">
-                <form id="freelancer_registrationForm" method="POST" action="{{ url_for('freelancer_register') }}">
+                <form id="freelancer_registrationForm" method="POST" action="{{ url_for('freelancer.freelancer_register') }}">
                     {{ form.hidden_tag() }}
                     
                     <!-- Step 1 -->
@@ -80,11 +80,11 @@
                 </form>
 
                 <div class="register-link">
-                    <p>Already have an account? <a href="{{ url_for('freelancer_login') }}">Log In</a></p>
+                    <p>Already have an account? <a href="{{ url_for('freelancer.freelancer_login') }}">Log In</a></p>
                 </div>
 
                 <div class="looking-for-talent">
-                    <p>Looking for talent? <a href="{{ url_for('client_register') }}">Join as a employer</a></p>
+                    <p>Looking for talent? <a href="{{ url_for('client.client_register') }}">Join as a employer</a></p>
                 </div>
 
             </div>

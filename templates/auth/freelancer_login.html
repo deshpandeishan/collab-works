@@ -36,7 +36,7 @@
             {% endwith %}
           
 
-            <form method="POST" action="{{ url_for('freelancer_login', next=request.args.get('next')) }}">
+            <form method="POST" action="{{ url_for('freelancer.freelancer_login', next=request.args.get('next')) }}">
                 {{ form.hidden_tag() }}
 
                 <div class="form-group input-group">
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="register-link">
-                    <p>Not a member? <a href="{{ url_for('freelancer_register') }}">Register now</a></p>
+                    <p>Not a member? <a href="{{ url_for('freelancer.freelancer_register') }}">Register now</a></p>
                 </div>
             </form>
 
@@ -69,7 +69,7 @@
             <div class="or-divider"><span>Find talent by</span></div>
             <!-- Login as a freeancer -->
             <div class="register-link">
-                <p>Join as a <a href="{{ url_for('client_login') }}">Employer</a></p>
+                <p>Join as a <a href="{{ url_for('client.client_login') }}">Employer</a></p>
             </div>
 
         </div>

@@ -1,22 +1,44 @@
-from flask import Flask, render_template, redirect, request, flash, jsonify, url_for, send_file
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Length, ValidationError
-from flask_bcrypt import Bcrypt
-from urllib.parse import urlparse, urljoin
-import requests
-import json
-import os
+from flask import Flask, render_template, jsonify, request
+from flask_login import LoginManager
 from datetime import datetime
+import requests, os, json
+from extensions import db, bcrypt
 
+from client_routes import client_bp, Client
+from freelancer_routes import freelancer_bp, Freelancer
+
+# ============================
+# App Config
+# ============================
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SECRET_KEY'] = 'thisisasecretkey'
+
+# Init extensions
+db.init_app(app)
+bcrypt.init_app(app)
+login_manager = LoginManager(app)
+
+# ============================
+# Register Blueprints
+# ============================
+app.register_blueprint(client_bp, url_prefix="/client")
+app.register_blueprint(freelancer_bp, url_prefix="/freelancer")
+
+# ============================
+# User Loader
+# ============================
+@login_manager.user_loader
+def load_user(user_id):
+    user = Client.query.get(int(user_id))
+    if not user:
+        user = Freelancer.query.get(int(user_id))
+    return user
+
 
 # ============================
 # API: Role Prediction Handling
 # ============================
-
 AZURE_API_URL = "https://roles-predictor-bzg4fdfwgzb0hjh7.eastasia-01.azurewebsites.net/predict"
 
 @app.route('/predict_roles', methods=['POST'])
@@ -75,6 +97,7 @@ def get_roles():
         return jsonify(roles_data)
     return jsonify({"error": "roles.json not found"}), 404
 
+
 @app.route("/get_freelancers", methods=["GET"])
 def get_freelancers():
     freelancers = Freelancer.query.all()
@@ -100,7 +123,6 @@ def get_freelancers():
 # ============================
 # Base Routes
 # ============================
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -113,311 +135,6 @@ def header():
 def footer():
     return render_template('footer.html')
 
-
-# ============================
-# Client Account System
-# ============================
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SECRET_KEY'] = 'thisisasecretkey'
-
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
-
-login_manager = LoginManager(app)
-login_manager.login_view = 'client_login'
-
-@login_manager.user_loader
-def load_client(client_id):
-    return Client.query.get(int(client_id))
-
-
-# Client Database Model
-class Client(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), nullable=False, unique=True)
-    email = db.Column(db.String(120), nullable=True, unique=True)
-    first_name = db.Column(db.String(20), nullable=True)
-    password = db.Column(db.String(80), nullable=False)
-
-
-# Client Registration Form
-class ClientRegisterForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": " "})
-    email = StringField(validators=[Length(max=120)], render_kw={"placeholder": " "})
-    first_name = StringField(validators=[Length(max=20)], render_kw={"placeholder": " "})
-    password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": " "})
-    submit = SubmitField('Register')
-
-    def validate_username(self, username):
-        existing_client = Client.query.filter_by(username=username.data).first()
-        if existing_client:
-            raise ValidationError('That username already exists. Please choose a different one.')
-
-    def validate_email(self, email):
-        existing_client = Client.query.filter_by(email=email.data).first()
-        if existing_client:
-            raise ValidationError('This email is already registered. Try logging in instead.')
-
-
-# Client Login Form
-class ClientLoginForm(FlaskForm):
-    email = StringField(validators=[InputRequired()], render_kw={"placeholder": "Email"})
-    password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
-    submit = SubmitField('Login')
-
-
-# ============================
-# Client Auth Utilities
-# ============================
-
-def is_safe_url(target):
-    ref_url = urlparse(request.host_url)
-    test_url = urlparse(urljoin(request.host_url, target))
-    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
-
-
-# ============================
-# Client Auth Routes
-# ============================
-
-@app.route('/client/login', methods=['GET', 'POST'])
-def client_login():
-    if current_user.is_authenticated:
-        next_page = request.args.get('next')
-        if next_page and is_safe_url(next_page):
-            return redirect(next_page)
-        return redirect(url_for('index'))
-
-    form = ClientLoginForm()
-    if form.validate_on_submit():
-        client = Client.query.filter_by(email=form.email.data).first()
-
-        if client and bcrypt.check_password_hash(client.password, form.password.data):
-            login_user(client)
-            next_page = request.args.get('next')
-            if next_page and is_safe_url(next_page):
-                return redirect(next_page)
-            return redirect(url_for('index'))
-        else:
-            flash('Login unsuccessful. Please check your email and password.', 'danger')
-    else:
-        if request.method == 'POST':
-            print("Form submission failed:", form.errors)
-
-    return render_template('auth/client_login.html', form=form)
-
-
-@app.route('/client/logout', methods=['GET', 'POST'])
-@login_required
-def client_logout():
-    logout_user()
-    return redirect(url_for('index'))
-
-
-@app.route('/client/register', methods=['GET', 'POST'])
-def client_register():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-
-    form = ClientRegisterForm()
-    if form.validate_on_submit():
-        existing_client = Client.query.filter_by(email=form.email.data).first()
-        if existing_client:
-            flash('This email is already registered. Try logging in instead.', 'danger')
-            return render_template('auth/client_register.html', form=form)
-        
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        new_client = Client(
-            username=form.username.data,
-            email=form.email.data,
-            first_name=form.first_name.data,
-            password=hashed_password
-        )
-        
-        db.session.add(new_client)
-        db.session.commit()
-        flash('Client account created successfully! You can now log in.', 'success')
-        return redirect(url_for('client_login'))
-    return render_template('auth/client_register.html', form=form)
-
-
-@app.route('/client/delete-account', methods=['POST'])
-@login_required
-def client_delete_account():
-    try:
-        client_id = current_user.id
-        Client.query.filter_by(id=client_id).delete()
-        db.session.commit()
-        logout_user()
-        return jsonify({"message": "Account deleted successfully"}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-@app.route('/client/check_username', methods=['GET'])
-def check_client_username():
-    username = request.args.get('username')
-    existing_client = Client.query.filter_by(username=username).first()
-    return jsonify({'available': not bool(existing_client)})
-
-
-@app.route('/client/check_email', methods=['GET'])
-def check_client_email():
-    email = request.args.get('email')
-    if email:
-        email_exists = Client.query.filter_by(email=email).first() is not None
-        return jsonify({'exists': email_exists})
-    return jsonify({'exists': False})
-
-# ============================
-# Freelancer Account System
-# ============================
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SECRET_KEY'] = 'thisisasecretkey'
-
-login_manager.login_view = 'freelancer_login'
-
-@login_manager.user_loader
-def load_freelancer(freelancer_id):
-    return Freelancer.query.get(int(freelancer_id))
-
-
-# Freelancer Database Model
-class Freelancer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50), nullable=True)  # ADD THIS
-    password = db.Column(db.String(200), nullable=False)
-    tagline = db.Column(db.String(200))
-    location = db.Column(db.String(100))
-
-
-
-
-# Freelancer Registration Form
-class FreelancerRegisterForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": " "})
-    email = StringField(validators=[Length(max=120)], render_kw={"placeholder": " "})
-    first_name = StringField(validators=[Length(max=20)], render_kw={"placeholder": " "})
-    password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": " "})
-    submit = SubmitField('Register')
-
-    def validate_username(self, username):
-        existing_freelancer = Freelancer.query.filter_by(username=username.data).first()
-        if existing_freelancer:
-            raise ValidationError('That username already exists. Please choose a different one.')
-
-    def validate_email(self, email):
-        existing_freelancer = Freelancer.query.filter_by(email=email.data).first()
-        if existing_freelancer:
-            raise ValidationError('This email is already registered. Try logging in instead.')
-
-
-# Freelancer Login Form
-class FreelancerLoginForm(FlaskForm):
-    email = StringField(validators=[InputRequired()], render_kw={"placeholder": "Email"})
-    password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
-    submit = SubmitField('Login')
-
-
-# ============================
-# Freelancer Auth Routes
-# ============================
-
-@app.route('/freelancer/login', methods=['GET', 'POST'])
-def freelancer_login():
-    if current_user.is_authenticated:
-        next_page = request.args.get('next')
-        if next_page and is_safe_url(next_page):
-            return redirect(next_page)
-        return redirect(url_for('index'))
-
-    form = FreelancerLoginForm()
-    if form.validate_on_submit():
-        freelancer = Freelancer.query.filter_by(email=form.email.data).first()
-
-        if freelancer and bcrypt.check_password_hash(freelancer.password, form.password.data):
-            login_user(freelancer)
-            next_page = request.args.get('next')
-            if next_page and is_safe_url(next_page):
-                return redirect(next_page)
-            return redirect(url_for('index'))
-        else:
-            flash('Login unsuccessful. Please check your email and password.', 'danger')
-    else:
-        if request.method == 'POST':
-            print("Form submission failed:", form.errors)
-
-    return render_template('auth/freelancer_login.html', form=form)
-
-
-@app.route('/freelancer/logout', methods=['GET', 'POST'])
-@login_required
-def freelancer_logout():
-    logout_user()
-    return redirect(url_for('index'))
-
-
-@app.route('/freelancer/register', methods=['GET', 'POST'])
-def freelancer_register():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-
-    form = FreelancerRegisterForm()
-    if form.validate_on_submit():
-        existing_freelancer = Freelancer.query.filter_by(email=form.email.data).first()
-        if existing_freelancer:
-            flash('This email is already registered. Try logging in instead.', 'danger')
-            return render_template('auth/freelancer_register.html', form=form)
-        
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        new_freelancer = Freelancer(
-            username=form.username.data,
-            email=form.email.data,
-            first_name=form.first_name.data,
-            password=hashed_password
-        )
-        
-        db.session.add(new_freelancer)
-        db.session.commit()
-        flash('Freelancer account created successfully! You can now log in.', 'success')
-        return redirect(url_for('freelancer_login'))
-    return render_template('auth/freelancer_register.html', form=form)
-
-
-@app.route('/freelancer/delete-account', methods=['POST'])
-@login_required
-def freelancer_delete_account():
-    try:
-        freelancer_id = current_user.id
-        Freelancer.query.filter_by(id=freelancer_id).delete()
-        db.session.commit()
-        logout_user()
-        return jsonify({"message": "Account deleted successfully"}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-@app.route('/freelancer/check_username', methods=['GET'])
-def check_freelancer_username():
-    username = request.args.get('username')
-    existing_freelancer = Freelancer.query.filter_by(username=username).first()
-    return jsonify({'available': not bool(existing_freelancer)})
-
-
-@app.route('/freelancer/check_email', methods=['GET'])
-def check_freelancer_email():
-    email = request.args.get('email')
-    if email:
-        email_exists = Freelancer.query.filter_by(email=email).first() is not None
-        return jsonify({'exists': email_exists})
-    return jsonify({'exists': False})
-
-
 @app.route('/terms-of-service')
 def terms_of_service():
     return render_template('terms_of_service.html')
@@ -426,6 +143,10 @@ def terms_of_service():
 def privacy_policy():
     return render_template('privacy_policy.html')
 
+
+# ============================
+# Run App
+# ============================
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
