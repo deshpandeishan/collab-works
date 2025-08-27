@@ -96,7 +96,6 @@
     </div>
 
     <script>
-        // Change label on focus/blur
         document.getElementById('client_first_name').addEventListener('focus', function() {
             document.querySelector('label[for="client_first_name"]').textContent = 'Name';
         });
@@ -105,7 +104,6 @@
             document.querySelector('label[for="client_first_name"]').textContent = 'Tell us your name';
         });
 
-        // Step navigation
         function clientNextStep(step) {
             const currentStep = document.querySelector('.step.active');
             const nextStep = document.getElementById('client_step' + step);
@@ -137,7 +135,6 @@
             return true;
         }
 
-        // Username validation
         const clientUsernameInput = document.getElementById('client_username');
         const clientNextButton = document.getElementById('client_nextButton');
         const clientWarning = document.getElementById('client_username_warning');
@@ -184,7 +181,6 @@
             }, 500);
         });
 
-        // Email validation
         let clientEmailMessage = document.getElementById('client_emailMessage');
         let clientNextButton2 = document.getElementById('client_nextButton2');
         let clientDebounceTimeoutEmail;
@@ -234,7 +230,6 @@
             return emailRegex.test(email);
         }
 
-        // Password visibility toggle
         function clientTogglePasswordVisibility() {
             const passwordInput = document.getElementById('client_password');
             const toggleIcon = document.getElementById('client_toggleIcon');
@@ -250,18 +245,13 @@
             }
         }
 
-        // Animation on step 3
         document.getElementById('client_step3').addEventListener('transitionend', function() {
             if (document.getElementById('client_step3').classList.contains('active')) {
                 setTimeout(() => {
                     document.getElementById('client_step3').classList.add('slide-in');
                 }, 500);
             }
-        });
-
-
-        // freelancer part from here
-        
+        });        
     </script>
 </body>
 </html>

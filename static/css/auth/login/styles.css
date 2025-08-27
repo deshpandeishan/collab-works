@@ -133,6 +133,10 @@ body {
     font-size: 1.1rem;
 }
 
+#email {
+    text-transform: lowercase;
+}
+
 .password-toggle {
     position: absolute;
     right: 10px;

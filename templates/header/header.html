@@ -633,6 +633,39 @@
         transform: translateY(0);
         visibility: visible;
     }
+    
+    .auth-menu .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .auth-menu .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        min-width: 120px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        border-radius: 8px;
+        z-index: 1000;
+        margin-top: 5px;
+        overflow: hidden;
+    }
+
+    .auth-menu .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: #333;
+        font-size: 14px;
+        transition: background-color 0.2s ease;
+    }
+
+    .auth-menu .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+
+    .auth-menu .dropdown-content.show {
+        display: block;
+    }
 
 </style>
 <header>
@@ -871,15 +904,15 @@
                     <div class="dropdown">
                         <a href="#" class="login-btn">Login</a>
                         <div class="dropdown-content login-dropdown">
-                            <a href="{{ url_for('client.client_login') }}">Login as Client</a>
-                            <a href="{{ url_for('freelancer.freelancer_login') }}">Login as Freelancer</a>
+                            <a href="{{ url_for('client.client_login') }}">Client</a>
+                            <a href="{{ url_for('freelancer.freelancer_login') }}">Freelancer</a>
                         </div>
                     </div>
                     <div class="dropdown">
                         <a href="#" class="signup-btn">Sign Up</a>
                         <div class="dropdown-content signup-dropdown">
-                            <a href="{{ url_for('client.client_register') }}">Sign Up as Client</a>
-                            <a href="{{ url_for('freelancer.freelancer_register') }}">Sign Up as Freelancer</a>
+                            <a href="{{ url_for('client.client_register') }}">Client</a>
+                            <a href="{{ url_for('freelancer.freelancer_register') }}">Freelancer</a>
                         </div>
                     </div>
                 </div>

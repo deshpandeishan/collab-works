@@ -104,6 +104,10 @@ p, .step p {
     transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+#client_email, #freelancer_email {
+    text-transform: lowercase;
+}
+
 .label {
     position: absolute;
     top: 0.6rem;
@@ -168,7 +172,9 @@ p, .step p {
 .warning-message {
     display: none;
     color: red;
-    font-size: 0.9em;
+    font-size: 0.7em;
+    margin-top: 3px;
+    text-align: left;
     animation: fadeIn 0.3s ease-in-out;
 }
 
