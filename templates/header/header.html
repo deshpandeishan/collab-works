@@ -644,6 +644,7 @@
         position: absolute;
         background-color: #fff;
         min-width: 120px;
+        width: min-content;
         box-shadow: 0 8px 16px rgba(0,0,0,0.2);
         border-radius: 8px;
         z-index: 1000;
@@ -651,10 +652,45 @@
         overflow: hidden;
     }
 
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        line-height: 1; 
+    }
+
+    .dropdown-icon {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .login-dropdown,
+    .signup-dropdown {
+        min-width: 220px;
+    }
+
+    .dropdown-content a {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        /* gap: 10px; */
+        white-space: nowrap;
+    }
+
+
     .auth-menu .dropdown-content a {
         display: block;
         padding: 10px 15px;
         color: #333;
+        border-radius: 8px;
         font-size: 14px;
         transition: background-color 0.2s ease;
     }
@@ -900,22 +936,35 @@
                     </div>
                 </div>
             {% else %}
-                <div class="auth-menu">
-                    <div class="dropdown">
-                        <a href="#" class="login-btn">Login</a>
-                        <div class="dropdown-content login-dropdown">
-                            <a href="{{ url_for('client.client_login') }}">Client</a>
-                            <a href="{{ url_for('freelancer.freelancer_login') }}">Freelancer</a>
-                        </div>
-                    </div>
-                    <div class="dropdown">
-                        <a href="#" class="signup-btn">Sign Up</a>
-                        <div class="dropdown-content signup-dropdown">
-                            <a href="{{ url_for('client.client_register') }}">Client</a>
-                            <a href="{{ url_for('freelancer.freelancer_register') }}">Freelancer</a>
-                        </div>
+            <div class="auth-menu">
+                <div class="dropdown">
+                    <a href="#" class="login-btn">Login</a>
+                    <div class="dropdown-content login-dropdown">
+                        <a href="{{ url_for('client.client_login') }}" class="dropdown-item">
+                            <img src="{{ url_for('static', filename='img/index/icons/client.png') }}" alt="Client Icon" class="dropdown-icon">
+                            Client
+                        </a>
+                        <a href="{{ url_for('freelancer.freelancer_login') }}" class="dropdown-item">
+                            <img src="{{ url_for('static', filename='img/index/icons/freelancer.png') }}" alt="Freelancer Icon" class="dropdown-icon">
+                            Freelancer
+                        </a>
                     </div>
                 </div>
+                <div class="dropdown">
+                    <a href="#" class="signup-btn">Sign Up</a>
+                    <div class="dropdown-content signup-dropdown">
+                        <a href="{{ url_for('client.client_register') }}" class="dropdown-item">
+                            <img src="{{ url_for('static', filename='img/index/icons/client.png') }}" alt="Client Icon" class="dropdown-icon">
+                            Client
+                        </a>
+                        <a href="{{ url_for('freelancer.freelancer_register') }}" class="dropdown-item">
+                            <img src="{{ url_for('static', filename='img/index/icons/freelancer.png') }}" alt="Freelancer Icon" class="dropdown-icon">
+                            Freelancer
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
             {% endif %}
         </div>
         
