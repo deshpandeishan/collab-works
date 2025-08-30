@@ -101,7 +101,24 @@ def freelancer_register():
         db.session.add(new_freelancer)
         db.session.commit()
         flash('Freelancer account created successfully! You can now log in.', 'success')
-        return redirect(url_for('freelancer.freelancer_login'))
+        if current_user.is_authenticated:
+            next_page = request.args.get('next')
+            if next_page and is_safe_url(next_page):
+                return redirect(next_page)
+            return redirect(url_for('index'))
+
+        form = FreelancerLoginForm()
+        if form.validate_on_submit():
+            freelancer = Freelancer.query.filter_by(email=form.email.data).first()
+            if freelancer and bcrypt.check_password_hash(freelancer.password, form.password.data):
+                login_user(freelancer)
+                next_page = request.args.get('next')
+                if next_page and is_safe_url(next_page):
+                    return redirect(next_page)
+                return redirect(url_for('index'))
+            else:
+                flash('Login unsuccessful. Please check your email and password.', 'danger')
+            return redirect(url_for('index'))
     return render_template('auth/freelancer_register.html', form=form)
 
 @freelancer_bp.route('/delete-account', methods=['POST'])

@@ -98,7 +98,22 @@ def client_register():
         db.session.add(new_client)
         db.session.commit()
         flash('Client account created successfully! You can now log in.', 'success')
-        return redirect(url_for('client.client_login'))
+        if current_user.is_authenticated:
+            next_page = request.args.get('next')
+            if next_page and is_safe_url(next_page):
+                return redirect(next_page)
+            return redirect(url_for('index'))
+        form = ClientLoginForm()
+        if form.validate_on_submit():
+            client = Client.query.filter_by(email=form.email.data).first()
+            if client and bcrypt.check_password_hash(client.password, form.password.data):
+                login_user(client)
+                next_page = request.args.get('next')
+                if next_page and is_safe_url(next_page):
+                    return redirect(next_page)
+                return redirect(url_for('index'))
+            else:
+                flash('Login unsuccessful. Please check your email and password.', 'danger')
     return render_template('auth/client_register.html', form=form)
 
 @client_bp.route('/delete-account', methods=['POST'])
