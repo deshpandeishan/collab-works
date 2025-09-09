@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from urllib.parse import urlparse, urljoin
-
+import uuid
 from extensions import db, bcrypt
 
 client_bp = Blueprint('client', __name__)
@@ -12,6 +12,7 @@ client_bp = Blueprint('client', __name__)
 class Client(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
+    unique_id = db.Column(db.String(36), unique=True, nullable=False, default=lambda: str(uuid.uuid4()))
     email = db.Column(db.String(120), nullable=True, unique=True)
     first_name = db.Column(db.String(20), nullable=True)
     password = db.Column(db.String(80), nullable=False)
