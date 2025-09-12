@@ -3,31 +3,20 @@ from flask_login import LoginManager
 from datetime import datetime
 import requests, os, json
 from extensions import db, bcrypt
-
 from client_routes import client_bp, Client
 from freelancer_routes import freelancer_bp, Freelancer
 
-# ============================
-# App Config
-# ============================
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'thisisasecretkey'
 
-# Init extensions
 db.init_app(app)
 bcrypt.init_app(app)
 login_manager = LoginManager(app)
 
-# ============================
-# Register Blueprints
-# ============================
 app.register_blueprint(client_bp, url_prefix="/client")
 app.register_blueprint(freelancer_bp, url_prefix="/freelancer")
 
-# ============================
-# User Loader
-# ============================
 @login_manager.user_loader
 def load_user(user_id):
     user = Client.query.get(int(user_id))
@@ -35,10 +24,7 @@ def load_user(user_id):
         user = Freelancer.query.get(int(user_id))
     return user
 
-
-# ============================
-# API: Role Prediction Handling
-# ============================
+# url to fetch predicted roles for the need statement
 AZURE_API_URL = "https://roles-predictor-bzg4fdfwgzb0hjh7.eastasia-01.azurewebsites.net/predict"
 
 @app.route('/predict_roles', methods=['POST'])
@@ -119,10 +105,6 @@ def get_freelancers():
         })
     return jsonify(result)
 
-
-# ============================
-# Base Routes
-# ============================
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -143,10 +125,6 @@ def terms_of_service():
 def privacy_policy():
     return render_template('privacy_policy.html')
 
-
-# ============================
-# Run App
-# ============================
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
