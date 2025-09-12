@@ -1,4 +1,3 @@
 venv/
-instance/database.db
+instance/
 seed_profiles.py
-__pycache__
