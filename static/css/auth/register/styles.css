@@ -116,13 +116,14 @@ p, .step p {
     font-size: 1rem;
     pointer-events: none;
     transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
+  }
+  
 .input:focus {
     border: 1px solid #000000;
 }
-
-.input:is(:focus, :valid) ~ .label {
+  
+.input:focus + .label,
+.input:valid + .label {
     transform: translateY(-100%) scale(0.7);
     background-color: #f4f7f6;
     padding-inline: 0.3rem;

@@ -10,6 +10,37 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/auth/register/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
+<style>
+    #freelancer_step1 {
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .name-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    #freelancer_first_name,
+    #freelancer_last_name {
+        flex: none;
+        max-width: 85%;
+        margin: 10px auto;
+    }
+
+    #fn_label {
+        top: 15%;
+    }
+
+    #sn_label {
+        animation: none;
+        top: 65%;
+    }
+</style>
 <body>
     <div class="container fade-in">
         <div class="register-section">
@@ -64,9 +95,14 @@
                     </div>
 
                     <div class="step" id="freelancer_step3">
-                        <div class="form-group input-group">
-                            {{ form.first_name(class="input", id="freelancer_first_name", required="required", autocomplete="off") }}
-                            <label for="freelancer_first_name" class="label">Tell us your name</label>
+                        <div class="name-container" id="#name-container">
+                            <div class="form-group input-group">
+                                {{ form.first_name(class="input", id="freelancer_first_name", required="required", autocomplete="off") }}
+                                <label id="fn_label" for="freelancer_first_name" class="label">First name</label>
+    
+                                {{ form.last_name(class="input", id="freelancer_last_name", required="required", autocomplete="off") }}
+                                <label id="sn_label" for="freelancer_last_name" class="label">Last Name</label>
+                            </div>
                         </div>
 
                         <div class="submit-container">
@@ -93,7 +129,7 @@
         });
 
         document.getElementById('freelancer_first_name').addEventListener('blur', function() {
-            document.querySelector('label[for="freelancer_first_name"]').textContent = 'Tell us your name';
+            document.querySelector('label[for="freelancer_first_name"]').textContent = 'First Name';
         });
 
         function freelancerNextStep(step) {
