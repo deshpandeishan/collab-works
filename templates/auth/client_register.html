@@ -19,12 +19,10 @@
                 </a>
             </div>
 
-            <!-- client form -->
             <div class="client-registration">
                 <form id="client_registrationForm" method="POST" action="{{ url_for('client.client_register') }}">
                     {{ form.hidden_tag() }}
                     
-                    <!-- Step 1 -->
                     <div class="step active" id="client_step1">
                         <h4>Join Us!</h4>
                         <p>Sign up to meet talented minds</p>
@@ -36,7 +34,6 @@
                         <button type="button" class="btn btn-primary next-button" id="client_nextButton" disabled onclick="clientNextStep(2)">Next</button>
                     </div>
 
-                    <!-- Step 2 -->
                     <div class="step" id="client_step2">
                         <p>Enter Email and create password</p>
 
@@ -66,7 +63,6 @@
                         </div>
                     </div>
 
-                    <!-- Step 3 -->
                     <div class="step" id="client_step3">
                         <div class="form-group input-group">
                             {{ form.first_name(class="input", id="client_first_name", required="required", autocomplete="off") }}
@@ -84,9 +80,6 @@
                 </div>
             </div>
 
-
-
-            <!-- join as a freelancer area -->
             <div class="freelancer-registration">
                 <div class="or-divider"><span>Turn your talent into opportunities</span></div>
                 <p><a href="{{ url_for('freelancer.freelancer_register') }}">Register</a> as Freelancer</p>

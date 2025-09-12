@@ -19,12 +19,10 @@
                 </a>
             </div>
 
-            <!-- freelancer form -->
             <div class="freelancer-registration">
                 <form id="freelancer_registrationForm" method="POST" action="{{ url_for('freelancer.freelancer_register') }}">
                     {{ form.hidden_tag() }}
                     
-                    <!-- Step 1 -->
                     <div class="step active" id="freelancer_step1">
                         <h4>Join as Freelancer!</h4>
                         <p>Showcase your talent to clients</p>
@@ -36,7 +34,6 @@
                         <button type="button" class="btn btn-primary next-button" id="freelancer_nextButton" disabled onclick="freelancerNextStep(2)">Next</button>
                     </div>
 
-                    <!-- Step 2 -->
                     <div class="step" id="freelancer_step2">
                         <p>Enter Email and create password</p>
 
@@ -66,7 +63,6 @@
                         </div>
                     </div>
 
-                    <!-- Step 3 -->
                     <div class="step" id="freelancer_step3">
                         <div class="form-group input-group">
                             {{ form.first_name(class="input", id="freelancer_first_name", required="required", autocomplete="off") }}

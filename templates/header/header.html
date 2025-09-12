@@ -1012,7 +1012,6 @@
             })
             .then(response => {
                 if (response.ok) {
-                    // Account deleted successfully
                 } else {
                     return response.json().then(data => {
                         alert(`Failed to delete account: ${data.error}`);
@@ -1114,6 +1113,4 @@
             }
         });
     });
-
-
 </script>
