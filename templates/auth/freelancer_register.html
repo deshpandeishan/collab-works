@@ -100,6 +100,22 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
+    #roles-section ul li:hover {
+        background: #eeeeee;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    #roles-section ul li.selected {
+        background: #28a745;
+        color: white;
+    }
+
+    #roles-section ul li.selected i {
+        color: white;
+    }
+
+
     .step { 
         display: none;
     }
@@ -353,6 +369,21 @@
                 toggleIcon.classList.add('fa-eye');
             }
         }
+
+        document.querySelectorAll('#roles-section ul li').forEach(item => {
+            item.addEventListener('click', () => {
+                const icon = item.querySelector('i');
+                if (item.classList.contains('selected')) {
+                    item.classList.remove('selected');
+                    icon.classList.remove('fa-check');
+                    icon.classList.add('fa-plus');
+                } else {
+                    item.classList.add('selected');
+                    icon.classList.remove('fa-plus');
+                    icon.classList.add('fa-check');
+                }
+            });
+        });
     </script>
 </body>
 </html>
