@@ -5,6 +5,8 @@ import requests, os, json
 from extensions import db, bcrypt
 from client_routes import client_bp, Client
 from freelancer_routes import freelancer_bp, Freelancer
+from flask_login import current_user
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -104,6 +106,12 @@ def get_freelancers():
             "ratingIcon": "/static/img/search/rating-icon.webp"
         })
     return jsonify(result)
+
+@app.route("/check_client_status", methods=["GET"])
+def check_client_status():
+    if current_user.is_authenticated and isinstance(current_user, Client):
+        return jsonify({"status": "ok"})
+    return jsonify({"status": "unauthorized"})
 
 @app.route('/')
 def index():

@@ -273,6 +273,24 @@
             workBtn.className = "btn";
             workBtn.textContent = "Choose to work";
 
+            workBtn.addEventListener("click", async () => {
+                try {
+                    const response = await fetch("/check_client_status");
+                    const data = await response.json();
+
+                    if (data.status === "ok") {
+                        alert(`You chose to work with ${data.name || "this freelancer"}`);
+                    } else {
+                        alert("Please log in as a Client to choose a freelancer.");
+                        window.location.href = "/client/login";
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("Error checking login status. Try again.");
+                }
+            });
+
+
             const ratingWrapper = document.createElement("div");
             ratingWrapper.className = "rating-wrapper";
             ratingWrapper.title = `Based on ${data.ratingCount} reviews`;

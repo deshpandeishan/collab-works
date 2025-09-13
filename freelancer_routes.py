@@ -105,7 +105,7 @@ def freelancer_register():
 
         db.session.add(new_freelancer)
         db.session.commit()
-        flash('Freelancer account created successfully! You can now log in.', 'success')
+        # flash('Freelancer account created successfully! You can now log in.', 'success')
         if current_user.is_authenticated:
             next_page = request.args.get('next')
             if next_page and is_safe_url(next_page):
