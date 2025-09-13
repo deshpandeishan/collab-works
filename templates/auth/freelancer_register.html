@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/auth/register/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <style>
     #freelancer_step3 {
@@ -40,6 +42,67 @@
         animation: none;
         top: 65%;
     }
+
+    #plus-icon {
+        color: #5c5c5c;
+        margin-right: 5px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    #freelancer_step4 {
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    #roles-section {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        padding: 10px;
+        border-radius: 5px;
+        margin: 0 auto;
+    }
+
+    #roles-tag-line {
+        text-align: center;
+        font-size: 20px;
+        color: #5c5c5c;
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 10px;
+        max-width: fit-content;
+    }
+
+    #roles-section ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 0;
+        list-style: none;
+        min-width: 900px;
+        justify-content: center;
+        align-items: center;
+        margin: 50px auto;
+    }
+
+    #roles-section ul li {
+        background: #f5f5f5;
+        padding: 8px 16px;
+        border-radius: 8px;
+        color: #5c5c5c;
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .step { 
+        display: none;
+    }
 </style>
 <body>
     <div class="container fade-in">
@@ -55,6 +118,7 @@
                     {{ form.hidden_tag() }}
                     
                     <div class="step active" id="freelancer_step1">
+
                         <h4>Join as Freelancer!</h4>
                         <p>Showcase your talent to clients</p>
                         <div class="form-group input-group">
@@ -104,7 +168,32 @@
                                 <label id="sn_label" for="freelancer_last_name" class="label">Last Name</label>
                             </div>
                         </div>
+                        
+                        <div class="submit-container">
+                            <button type="button" class="btn btn-primary" onclick="freelancerNextStep(4)">Next</button>
+                        </div>
+                          
+                    </div>
 
+                    <div class="step" id="freelancer_step4">
+                        <p id="roles-tag-line">Select a role to showcase your expertise</p>
+                        
+                        <div class="roles-section" id="roles-section">
+                            <ul>
+                                <li> <i id="plus-icon" class="fa-solid fa-plus"></i>Frontend Developer</li>
+                                <li> <i id="plus-icon" class="fa-solid fa-plus"></i>Backend Developer</li>
+                                <li><i id="plus-icon" class="fa-solid fa-plus"></i>Machine Learning Engineer</li>
+                                <li><i id="plus-icon" class="fa-solid fa-plus"></i>UI/UX Designer</li>
+                                <li><i id="plus-icon" class="fa-solid fa-plus"></i>Mobile App Developer</li>
+                                <li><i id="plus-icon" class="fa-solid fa-plus"></i>Data Engineer</li>
+                                <li><i id="plus-icon" class="fa-solid fa-plus"></i>Game Developer</li>
+                                <li><i id="plus-icon" class="fa-solid fa-plus"></i>DevOps Engineer</li>
+                                <li><i id="plus-icon" class="fa-solid fa-plus"></i>Cybersecurity Specialist</li>
+                                <li><i id="plus-icon" class="fa-solid fa-plus"></i>Cloud Engineer</li>
+                                <li><i id="plus-icon" class="fa-solid fa-plus"></i>Database Administrator</li>
+                                <li><i id="plus-icon" class="fa-solid fa-plus"></i>QA Tester</li>
+                            </ul>
+                        </div>
                         <div class="submit-container">
                             {{ form.submit(class="btn btn-primary") }}
                         </div>
@@ -158,6 +247,8 @@
             }
             return true;
         }
+
+
 
         const freelancerUsernameInput = document.getElementById('freelancer_username');
         const freelancerNextButton = document.getElementById('freelancer_nextButton');
