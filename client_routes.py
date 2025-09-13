@@ -15,6 +15,7 @@ class Client(db.Model, UserMixin):
     unique_id = db.Column(db.String(36), unique=True, nullable=False, default=lambda: str(uuid.uuid4()))
     email = db.Column(db.String(120), nullable=True, unique=True)
     first_name = db.Column(db.String(20), nullable=True)
+    last_name = db.Column(db.String(20), nullable=True)
     password = db.Column(db.String(80), nullable=False)
 
     @property
@@ -25,6 +26,7 @@ class ClientRegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": " "})
     email = StringField(validators=[Length(max=120)], render_kw={"placeholder": " "})
     first_name = StringField(validators=[Length(max=20)], render_kw={"placeholder": " "})
+    last_name = StringField(validators=[Length(max=20)], render_kw={"placeholder": " "})
     password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": " "})
     submit = SubmitField('Register')
 
@@ -93,6 +95,7 @@ def client_register():
             username=form.username.data,
             email=form.email.data,
             first_name=form.first_name.data,
+            last_name=form.last_name.data,
             password=hashed_password
         )
 
