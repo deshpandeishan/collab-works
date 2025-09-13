@@ -18,6 +18,7 @@ class Freelancer(db.Model, UserMixin):
     password = db.Column(db.String(200), nullable=False)
     tagline = db.Column(db.String(200))
     location = db.Column(db.String(100))
+    roles = db.Column(db.String(500))
 
     @property
     def role(self):
@@ -92,12 +93,14 @@ def freelancer_register():
             return render_template('auth/freelancer_register.html', form=form)
 
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        roles = request.form.get('roles')
         new_freelancer = Freelancer(
             username=form.username.data,
             email=form.email.data,
             first_name=form.first_name.data,
             last_name=form.last_name.data,
-            password=hashed_password
+            password=hashed_password,
+            roles=roles
         )
 
         db.session.add(new_freelancer)
@@ -122,6 +125,7 @@ def freelancer_register():
                 flash('Login unsuccessful. Please check your email and password.', 'danger')
             return redirect(url_for('index'))
     return render_template('auth/freelancer_register.html', form=form)
+
 
 @freelancer_bp.route('/delete-account', methods=['POST'])
 @login_required

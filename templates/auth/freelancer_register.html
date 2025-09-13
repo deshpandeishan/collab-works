@@ -214,6 +214,8 @@
                             {{ form.submit(class="btn btn-primary") }}
                         </div>
                     </div>
+                    <input type="hidden" name="roles" id="selectedRoles">
+
                 </form>
 
                 <div class="register-link">
@@ -370,20 +372,24 @@
             }
         }
 
+        const selectedRolesInput = document.getElementById('selectedRoles');
+
+        function updateSelectedRoles() {
+            const selectedRoles = Array.from(document.querySelectorAll('#roles-section ul li.selected'))
+                .map(li => li.textContent.trim());
+            selectedRolesInput.value = selectedRoles.join(', ');
+        }
+
         document.querySelectorAll('#roles-section ul li').forEach(item => {
             item.addEventListener('click', () => {
                 const icon = item.querySelector('i');
-                if (item.classList.contains('selected')) {
-                    item.classList.remove('selected');
-                    icon.classList.remove('fa-check');
-                    icon.classList.add('fa-plus');
-                } else {
-                    item.classList.add('selected');
-                    icon.classList.remove('fa-plus');
-                    icon.classList.add('fa-check');
-                }
+                item.classList.toggle('selected');
+                icon.classList.toggle('fa-plus');
+                icon.classList.toggle('fa-check');
+                updateSelectedRoles();
             });
         });
+
     </script>
 </body>
 </html>
