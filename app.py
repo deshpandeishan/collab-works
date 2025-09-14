@@ -104,7 +104,7 @@ def chat_page():
             "avatar": avatar,
             "last_message": last_msg.text,
             "timestamp": last_msg.time,
-            "last_seen": "online",
+            # "last_seen": "online",
             "unique_id": freelancer_user_id,
             "messages": [
                 {"text": m.text, "time": m.time, "from_me": m.from_me, "user": m.user}
@@ -146,7 +146,7 @@ def get_conversation(conv_id):
         "id": conv_id,
         "name": name,
         "avatar": avatar,
-        "last_seen": "online",
+        # "last_seen": "online",
         "unique_id": freelancer_id,
         "messages": [
             {

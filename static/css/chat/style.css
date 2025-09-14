@@ -16,30 +16,32 @@
 }
 
 html, body, #app {
-  height: 100%;
+    height: 100%;
+    background-color: #f1f1f1;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
   margin: 0;
-  background: linear-gradient(180deg, #eef3f6 0%, var(--bg) 100%);
-  height: 100vh;
+  /* background: linear-gradient(180deg, #eef3f6 0%, var(--bg) 100%); */
+
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
   color: #111827;
+  /* background-color: red; */
 }
 
 .app {
   width: 100%;
-  max-width: 1100px;
+  max-width: 100%;
   height: 90vh;
   background: transparent;
   display: flex;
   gap: 18px;
 }
 
-/* Sidebar */
 .sidebar {
   width: 330px;
   background: var(--sidebar);
@@ -56,10 +58,12 @@ body {
   border-bottom: 1px solid var(--glass);
 }
 
-.logo {
+.page-title {
   font-weight: 700;
+  font-size: 1.5rem;
   color: #0f172a;
-  margin-bottom: 8px;
+  margin: 15px 8px;
+  margin-top: 0;
 }
 
 .search input {
@@ -75,6 +79,7 @@ body {
 .conversations {
   overflow: auto;
   padding: 8px;
+  background-color: transparent;
 }
 
 .conversation-item {
@@ -142,12 +147,13 @@ body {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--shadow);
-  border: 1px solid var(--glass);
+  /* border: 1px solid var(--glass); */
 }
 
 .chat-header {
   padding: 14px 18px;
   border-bottom: 1px solid var(--glass);
+  box-shadow: 0 3px 4px rgba(0,0,0,0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -190,6 +196,10 @@ body {
   gap: 12px;
 }
 
+.messages::-webkit-scrollbar {
+  display: none;
+}
+
 .message {
   display: flex;
 }
@@ -209,6 +219,9 @@ body {
 .message.me .bubble {
   background: var(--bubble-me);
   border-bottom-right-radius: 6px;
+  background-color: #f1f1f1;
+  max-width: 500px;
+  border-radius: 12px 12px 0 12px;
 }
 
 .message.them .bubble {
@@ -227,13 +240,13 @@ body {
   display: flex;
   gap: 12px;
   padding: 12px;
-  border-top: 1px solid var(--glass);
+  /* border-top: 1px solid var(--glass); */
   align-items: center;
 }
 
 .composer input {
   flex: 1;
-  padding: 12px 14px;
+  padding: 20px 18px;
   border-radius: 999px;
   border: 1px solid rgba(15,23,42,0.06);
   outline: none;
@@ -241,9 +254,10 @@ body {
 }
 
 .send {
-  padding: 10px 18px;
+  padding: 18px 24px;
   border-radius: 999px;
   background: var(--accent);
+  background-color: black;
   color: white;
   border: none;
   cursor: pointer;
