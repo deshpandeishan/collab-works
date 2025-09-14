@@ -9,8 +9,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     </head>
     <body>
+    {% include 'header/header.html' %}
+
         <div class="app">
-            <aside class="sidebar">
+            <aside class="sidebar-left">
                 <div class="sidebar-top">
                     <div class="page-title">Messages</div>
                     <div class="search">
@@ -34,7 +36,7 @@
             </aside>
 
             <main class="chat-area">
-                <header class="chat-header" id="chatHeader">
+                <div class="chat-header" id="chatHeader">
                     <div class="left">
                         {% if conversations and conversations|length > 0 %}
                             <img id="headerAvatar" class="avatar-lg" src="{{ conversations[0].avatar }}" alt="">
@@ -44,7 +46,7 @@
                             <p>No conversations available.</p>
                         {% endif %}
                     </div>
-                </header>
+                  </div>
 
                 <section class="messages" id="messages">
                     {% if conversations and conversations|length > 0 and conversations[0].messages %}
