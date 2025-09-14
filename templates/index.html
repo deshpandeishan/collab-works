@@ -276,10 +276,11 @@
             workBtn.addEventListener("click", async () => {
                 try {
                     const response = await fetch("/check_client_status");
-                    const data = await response.json();
+                    const statusData = await response.json();
 
-                    if (data.status === "ok") {
-                        window.location.href = "/chat";
+                    if (statusData.status === "ok") {
+                        // use freelancer ID from JSON
+                        window.location.href = `/start_chat/${data.unique_id}`;
                     } else {
                         alert("Please log in as a Client to choose a freelancer.");
                         window.location.href = "/client/login";
@@ -289,6 +290,7 @@
                     alert("Error checking login status. Try again.");
                 }
             });
+            console.log(data);
 
 
             const ratingWrapper = document.createElement("div");

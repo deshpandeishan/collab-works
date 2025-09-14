@@ -42,7 +42,6 @@
           {% else %}
             <p>No conversations available.</p>
           {% endif %}
-        
         </div>
       </header>
 
@@ -60,7 +59,6 @@
           <p>No messages yet.</p>
         {% endif %}
       </section>
-      
 
       <footer class="composer">
         <input id="messageBox" placeholder="Type a message" autocomplete="off" />
@@ -69,178 +67,141 @@
     </main>
   </div>
 
-    <script>
-
-    </script>
-
-  <script src="/socket.io/socket.io.js"></script>
-</body>
-
 <script>
-    const convListEl = document.getElementById("conversationsList");
-    const messagesEl = document.getElementById("messages");
-    const headerName = document.getElementById("headerName");
-    const headerAvatar = document.getElementById("headerAvatar");
-    const headerStatus = document.getElementById("headerStatus");
-    const messageBox = document.getElementById("messageBox");
-    const sendBtn = document.getElementById("sendBtn");
-    const searchInput = document.getElementById("searchInput");
+const convListEl = document.getElementById("conversationsList");
+const messagesEl = document.getElementById("messages");
+const headerName = document.getElementById("headerName");
+const headerAvatar = document.getElementById("headerAvatar");
+const headerStatus = document.getElementById("headerStatus");
+const messageBox = document.getElementById("messageBox");
+const sendBtn = document.getElementById("sendBtn");
+const searchInput = document.getElementById("searchInput");
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentUser = urlParams.get("user") || "Guest";
+const currentUser = "{{ user }}";
+let activeId = {{ active_id }};
+let initialConversations = {{ conversations|tojson|safe }};
 
-    let activeId = (typeof window.activeId !== "undefined") ? parseInt(window.activeId, 10) : 1;
+function escapeHtml(unsafe){
+    return String(unsafe).replace(/[&<"'>]/g, m => {
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#039;"}[m];
+    });
+}
 
-    if (!Number.isInteger(activeId)) activeId = 1;
-
-    let initialConversations = window.initialConversations || [];
-
-
-    function getReceiverUniqueId(convId) {
-    const conv = initialConversations.find(c => c.id === convId);
-    if(!conv) return null;
-    return conv.unique_id || null;
-    }
-
-
-    function escapeHtml(unsafe){
-        return String(unsafe).replace(/[&<"'>]/g, m => {
-            return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#039;"}[m];
-        });
-    }
-
-    function formatMessage(msg){
+function formatMessage(msg){
     const wrap = document.createElement("div");
-    const isMe = msg.from_me && msg.user === currentUser;
+    const isMe = msg.from_me && msg.user == currentUser;
     wrap.className = "message " + (isMe ? "me" : "them");
     const bubble = document.createElement("div");
     bubble.className = "bubble";
     bubble.innerHTML = `<div class="text">${escapeHtml(msg.text)}</div><div class="msg-time">${msg.time}</div>`;
     wrap.appendChild(bubble);
     return wrap;
-    }
+}
 
+function getReceiverUniqueId(convId){
+    const conv = initialConversations.find(c => c.id === convId);
+    return conv ? conv.unique_id : null;
+}
 
-    function renderConversations(list){
-        convListEl.innerHTML = "";
-        list.forEach(c => {
-            const div = document.createElement("div");
-            div.className = "conversation-item" + (c.id === activeId ? " active" : "");
-            div.dataset.id = c.id;
-            div.innerHTML = `
-                <img class="avatar" src="${c.avatar}" />
-                <div class="meta">
-                    <div class="row">
-                        <div class="name">${escapeHtml(c.name)}</div>
-                        <div class="time">${escapeHtml(c.timestamp || "")}</div>
-                    </div>
-                    <div class="last">${escapeHtml(c.last_message || "")}</div>
+function renderConversations(list){
+    convListEl.innerHTML = "";
+    list.forEach(c => {
+        const div = document.createElement("div");
+        div.className = "conversation-item" + (c.id === activeId ? " active" : "");
+        div.dataset.id = c.id;
+        div.innerHTML = `
+            <img class="avatar" src="${c.avatar}" />
+            <div class="meta">
+                <div class="row">
+                    <div class="name">${escapeHtml(c.name)}</div>
+                    <div class="time">${escapeHtml(c.timestamp || "")}</div>
                 </div>
-            `;
-            div.addEventListener("click", () => loadConversation(c.id));
-            convListEl.appendChild(div);
+                <div class="last">${escapeHtml(c.last_message || "")}</div>
+            </div>
+        `;
+        div.addEventListener("click", () => loadConversation(c.id));
+        convListEl.appendChild(div);
+    });
+}
+
+function loadConversation(id){
+    if (!id) return;
+    fetch(`/chat/${id}`)
+        .then(r => r.json())
+        .then(conv => {
+            activeId = conv.id;
+            headerName.textContent = conv.name;
+            if(conv.avatar) headerAvatar.src = conv.avatar;
+            headerStatus.textContent = conv.last_seen;
+            messagesEl.innerHTML = "";
+            (conv.messages || []).forEach(m => messagesEl.appendChild(formatMessage(m)));
+            document.querySelectorAll(".conversation-item").forEach(el => el.classList.remove("active"));
+            const activeEl = document.querySelector(`.conversation-item[data-id='${id}']`);
+            if(activeEl) activeEl.classList.add("active");
+            messagesEl.scrollTop = messagesEl.scrollHeight;
         });
-    }
+}
 
-    function loadConversation(id){
-        if (!id) return;
-        fetch(`/chat/${id}`)
-            .then(r => {
-                if(!r.ok) throw new Error(`HTTP ${r.status}`);
-                return r.json();
-            })
-            .then(conv => {
-                activeId = conv.id;
-                headerName.textContent = conv.name || `Conversation ${conv.id}`;
-                if (conv.avatar && headerAvatar) headerAvatar.src = conv.avatar;
-                if (headerStatus) headerStatus.textContent = conv.last_seen || "";
-                messagesEl.innerHTML = "";
-                (conv.messages || []).forEach(m => {
-                    messagesEl.appendChild(formatMessage(m));
-                });
-                document.querySelectorAll(".conversation-item").forEach(el => el.classList.remove("active"));
-                const activeEl = document.querySelector(`.conversation-item[data-id='${id}']`);
-                if(activeEl) activeEl.classList.add("active");
-                messagesEl.scrollTop = messagesEl.scrollHeight;
-            })
-            .catch(err => {
-                console.error("Failed to load conversation:", err);
-            });
-    }
-
-    function sendMessage(){
+function sendMessage(){
     const text = messageBox.value.trim();
     if(!text) return;
-    if(!activeId) return console.error("No active conversation id.");
-
     const receiverId = getReceiverUniqueId(activeId);
-    if(!receiverId) return console.error("No receiver unique_id found.");
+    if(!receiverId) return;
 
     fetch("/send", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({
-            conv_id: activeId,
-            text,
-            user: currentUser,
-            receiver_id: receiverId
-        })
+        body: JSON.stringify({conv_id: activeId, text, user: currentUser, receiver_id: receiverId})
     })
     .then(r => r.json())
     .then(res => {
         if(res.status === "ok"){
-
             messagesEl.appendChild(formatMessage(res.message));
             messagesEl.scrollTop = messagesEl.scrollHeight;
             messageBox.value = "";
             updateConversationPreview(activeId, res.message.text, res.message.time);
-        } else {
-            console.error("send error:", res.error);
-        }
-    })
-    .catch(err => console.error("send error:", err));
-    }
-
-
-    function updateConversationPreview(id, lastText, time){
-        const el = document.querySelector(`.conversation-item[data-id='${id}']`);
-        if(el){
-            const last = el.querySelector(".last");
-            const t = el.querySelector(".time");
-            if(last) last.textContent = lastText;
-            if(t) t.textContent = time;
-        }
-        const conv = initialConversations.find(c => c.id === id);
-        if(conv){
-            conv.last_message = lastText;
-            conv.timestamp = time;
-        }
-    }
-
-    searchInput.addEventListener("input", () => {
-        const q = searchInput.value.trim().toLowerCase();
-        const filtered = initialConversations.filter(c =>
-            (c.name || "").toLowerCase().includes(q) ||
-            (c.last_message || "").toLowerCase().includes(q)
-        );
-        renderConversations(filtered);
-    });
-
-    sendBtn.addEventListener("click", sendMessage);
-    messageBox.addEventListener("keydown", e => {
-        if(e.key === "Enter" && !e.shiftKey){
-            e.preventDefault();
-            sendMessage();
         }
     });
+}
 
-    setInterval(() => {
-        if (activeId) loadConversation(activeId);
-    }, 2000);
+function updateConversationPreview(id, lastText, time){
+    const el = document.querySelector(`.conversation-item[data-id='${id}']`);
+    if(el){
+        const last = el.querySelector(".last");
+        const t = el.querySelector(".time");
+        if(last) last.textContent = lastText;
+        if(t) t.textContent = time;
+    }
+    const conv = initialConversations.find(c => c.id === id);
+    if(conv){
+        conv.last_message = lastText;
+        conv.timestamp = time;
+    }
+}
 
-    renderConversations(initialConversations);
-    loadConversation(activeId);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+searchInput.addEventListener("input", () => {
+    const q = searchInput.value.trim().toLowerCase();
+    renderConversations(initialConversations.filter(c =>
+        (c.name || "").toLowerCase().includes(q) || (c.last_message || "").toLowerCase().includes(q)
+    ));
+});
 
+sendBtn.addEventListener("click", sendMessage);
+messageBox.addEventListener("keydown", e => {
+    if(e.key === "Enter" && !e.shiftKey){
+        e.preventDefault();
+        sendMessage();
+    }
+});
+
+setInterval(() => {
+    if(activeId) loadConversation(activeId);
+}, 2000);
+
+renderConversations(initialConversations);
+loadConversation(activeId);
+messagesEl.scrollTop = messagesEl.scrollHeight;
 </script>
+<script src="/socket.io/socket.io.js"></script>
+</body>
 </html>
