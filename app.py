@@ -1,11 +1,11 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, redirect, render_template, jsonify, request
 from flask_login import LoginManager
 from datetime import datetime
 import requests, os, json
 from extensions import db, bcrypt
 from client_routes import client_bp, Client
 from freelancer_routes import freelancer_bp, Freelancer
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 
 app = Flask(__name__)
@@ -112,6 +112,13 @@ def check_client_status():
     if current_user.is_authenticated and isinstance(current_user, Client):
         return jsonify({"status": "ok"})
     return jsonify({"status": "unauthorized"})
+
+@app.route('/chat')
+@login_required
+def chat():
+    if isinstance(current_user, Client):
+        return render_template('chat/chat.html')
+    return redirect('/client/login')
 
 @app.route('/')
 def index():

@@ -279,7 +279,7 @@
                     const data = await response.json();
 
                     if (data.status === "ok") {
-                        alert(`You chose to work with ${data.name || "this freelancer"}`);
+                        window.location.href = "/chat";
                     } else {
                         alert("Please log in as a Client to choose a freelancer.");
                         window.location.href = "/client/login";
