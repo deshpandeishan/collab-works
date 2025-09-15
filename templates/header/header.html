@@ -1007,7 +1007,7 @@
                         </a>
                         <div id="dropdown-menu" class="dropdown-menu">
                           <a href="#"> Profile</a>
-                          <a href="#"> Community</a>
+                          <a href="{{ url_for('chat_page') }}"> Chat</a>
                           <a href="#"> Subscription <span class="pro-badge">PRO</span></a>
                           <a href="#"> Settings</a>
                           <hr>
@@ -1122,27 +1122,6 @@
             }
         });
     });
-
-    // const userMenuBtn = document.getElementById('user-menu-btn');
-    // const dropdownMenu = document.getElementById('dropdown-menu');
-    // let hideTimeout;
-
-    // userMenuBtn.addEventListener('mouseenter', () => {
-    // clearTimeout(hideTimeout);
-    // dropdownMenu.classList.add('show');
-    // });
-
-    // userMenuBtn.addEventListener('mouseleave', () => {
-    // hideTimeout = setTimeout(() => dropdownMenu.classList.remove('show'), 200);
-    // });
-
-    // dropdownMenu.addEventListener('mouseenter', () => {
-    // clearTimeout(hideTimeout);
-    // });
-
-    // dropdownMenu.addEventListener('mouseleave', () => {
-    // hideTimeout = setTimeout(() => dropdownMenu.classList.remove('show'), 2000);
-    // });
 
     document.addEventListener('DOMContentLoaded', function() {
         const header = document.querySelector('header');
