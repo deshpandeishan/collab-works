@@ -14,6 +14,7 @@
         transform: translateX(-50%);
         width: 1100px;
         z-index: 1000;
+        font: normal 16px 'Poppins', sans-serif;
         height: 80px;
         /* transition: background-color 0.1s ease; */
     }
@@ -704,6 +705,85 @@
         display: block;
     }
 
+    .user-menu {
+        position: relative;
+        display: inline-block;
+    }
+
+    #user-menu-btn {
+        cursor: pointer;
+    }
+
+    .user-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #000;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 50px;
+        background: #fff;
+        min-width: 220px;
+        border-radius: 14px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        padding: 8px 0;
+        z-index: 10;
+    }
+
+    .user-menu:hover .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 10px; 
+        padding: 12px 16px;
+        font-size: 15px;
+        color: #000;
+        text-decoration: none;
+        border-radius: 8px;
+        margin: 2px 8px;
+    }
+
+    .dropdown-menu a i {
+        margin: 0; 
+        font-size: 20px;
+        flex-shrink: 0;
+        display: none
+    }
+
+    .dropdown-menu a:hover {
+        background: #f5f5f5;
+    }
+
+    #pro-icon {
+        font-size: 1rem;
+        margin: 2px auto;
+
+    }
+
+    .pro-badge {
+        background: #f4c2f4;
+        color: #000;
+        font-size: 11px;
+        font-weight: bold;
+        padding: 6px;
+        border-radius: 6px;
+        margin-left: auto;
+    }
+
+    .dropdown-menu hr {
+        border: none;
+        border-top: 1px solid #e6e6e6;
+        margin: 6px 0;
+    }
+
+
 </style>
 <header>
     <div class="desktop-container">
@@ -919,23 +999,25 @@
         </nav>
         <div class="auth">
             {% if current_user.is_authenticated %}
-                <div class="user-menu">
-                    <div class="dropdown">
-                        <a href="#" id="user-menu-btn">
-                            <img src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="user-icon">
-                        </a>
-                        <div id="dropdown-menu" class="dropdown-content">
-                            <span>{{ current_user.first_name }}</span>
-                            {% if current_user.role == "client" %}
-                                <a href="{{ url_for('client.client_delete_account') }}" class="delete-account-btn">Delete Account</a>
-                                <a href="{{ url_for('client.client_logout') }}">Logout</a>
-                            {% elif current_user.role == "freelancer" %}
-                                <a href="{{ url_for('freelancer.freelancer_delete_account') }}" class="delete-account-btn">Delete Account</a>
-                                <a href="{{ url_for('freelancer.freelancer_logout') }}">Logout</a>
-                            {% endif %}
-                        </div>
+            <div class="user-menu">
+                <div class="dropdown">
+                    <a href="#" id="user-menu-btn">
+                      <img src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="user-icon">
+                    </a>
+                    <div id="dropdown-menu" class="dropdown-menu">
+                      <a href="#"><i class="fa-solid fa-user"></i> Profile</a>
+                      <a href="{{ url_for('chat_page') }}"><i class="fa-solid fa-comments"></i> Chat</a>
+                      <a href="#"><i class="fa-solid fa-credit-card"></i> Subscription <span class="pro-badge"><i id="pro-icon" class="fa-solid fa-bolt"></i> PRO</span></a>
+                      <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+                      <hr>
+                      <a href="#"><i class="fa-solid fa-question"></i> Help center</a>
+                      {% if current_user.role == "client" %}
+                        <a href="{{ url_for('client.client_logout') }}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</a>
+                      {% elif current_user.role == "freelancer" %}
+                        <a href="{{ url_for('freelancer.freelancer_logout') }}"><i class="icon">🚪</i> Log out</a>
+                      {% endif %}
                     </div>
-                </div>
+                  </div>
             {% else %}
             <div class="auth-menu">
                 <div class="dropdown">
@@ -1036,6 +1118,27 @@
                 popup.style.display = "none";
             }
         });
+    });
+
+    const userMenuBtn = document.getElementById('user-menu-btn');
+    const dropdown = document.getElementById('dropdown-menu');
+    let hideTimeout;
+
+    userMenuBtn.addEventListener('mouseenter', () => {
+    clearTimeout(hideTimeout);
+    dropdown.classList.add('show');
+    });
+
+    userMenuBtn.addEventListener('mouseleave', () => {
+    hideTimeout = setTimeout(() => dropdown.classList.remove('show'), 200);
+    });
+
+    dropdown.addEventListener('mouseenter', () => {
+    clearTimeout(hideTimeout);
+    });
+
+    dropdown.addEventListener('mouseleave', () => {
+    hideTimeout = setTimeout(() => dropdown.classList.remove('show'), 2000);
     });
 
     document.addEventListener('DOMContentLoaded', function() {
