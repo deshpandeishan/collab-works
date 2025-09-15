@@ -92,8 +92,8 @@ def chat_page():
                     freelancer_user_id = m.receiver_id
                     break
 
-        freelancer = Freelancer.query.get(freelancer_user_id) if freelancer_user_id else None
-        name = f"{freelancer.first_name} {freelancer.last_name}" if freelancer else f"Conversation {cid}"
+        other = Freelancer.query.get(freelancer_user_id) or Client.query.get(freelancer_user_id)
+        name = f"{getattr(other,'first_name','')} {getattr(other,'last_name','')}".strip() if other else f"Conversation {cid}"
         avatar = "/static/img/search/male-pfp.webp"
 
         last_msg = msgs[-1]
@@ -177,31 +177,38 @@ def get_conversation(conv_id):
     if not msgs:
         return jsonify({"error": "No messages found"}), 404
 
-    freelancer_id = None
     current_user_id = str(current_user.id)
+    other_id = None
     for m in msgs:
         if str(m.user) != current_user_id:
-            freelancer_id = m.user
+            other_id = m.user
             break
         elif str(m.receiver_id) != current_user_id:
-            freelancer_id = m.receiver_id
+            other_id = m.receiver_id
             break
 
-    freelancer = Freelancer.query.get(freelancer_id) if freelancer_id else None
-    name = f"{freelancer.first_name} {freelancer.last_name}" if freelancer else f"Conversation {conv_id}"
+    # Try to find the other participant first as Freelancer, then as Client
+    other_user = Freelancer.query.get(other_id)
+    if not other_user:
+        other_user = Client.query.get(other_id)
+
+    if other_user:
+        name = f"{getattr(other_user,'first_name','')} {getattr(other_user,'last_name','')}".strip()
+    else:
+        name = f"Conversation {conv_id}"
+
     avatar = "/static/img/search/male-pfp.webp"
 
     data = {
         "id": conv_id,
         "name": name,
         "avatar": avatar,
-        "unique_id": freelancer_id,
+        "unique_id": other_id,
         "messages": [
             {
                 "text": m.text,
                 "time": m.time,
-                # set from_me relative to the current viewer
-                "from_me": True if str(m.user) == current_user_id else False,
+                "from_me": str(m.user) == current_user_id,
                 "user": m.user
             } for m in msgs
         ]
