@@ -729,19 +729,21 @@
         background: #fff;
         min-width: 220px;
         border-radius: 14px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         padding: 8px 0;
         z-index: 10;
     }
 
-    .user-menu:hover .dropdown-menu {
+    .user-menu:hover {
+        .dropdown-menu {
         display: block;
+    }
     }
 
     .dropdown-menu a {
         display: flex;
         align-items: center;
-        gap: 10px; 
+        gap: 10px;
         padding: 12px 16px;
         font-size: 15px;
         color: #000;
@@ -751,10 +753,10 @@
     }
 
     .dropdown-menu a i {
-        margin: 0; 
+        margin: 0;
         font-size: 20px;
         flex-shrink: 0;
-        display: none
+        display: none;
     }
 
     .dropdown-menu a:hover {
@@ -764,7 +766,6 @@
     #pro-icon {
         font-size: 1rem;
         margin: 2px auto;
-
     }
 
     .pro-badge {
@@ -999,25 +1000,27 @@
         </nav>
         <div class="auth">
             {% if current_user.is_authenticated %}
-            <div class="user-menu">
-                <div class="dropdown">
-                    <a href="#" id="user-menu-btn">
-                      <img src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="user-icon">
-                    </a>
-                    <div id="dropdown-menu" class="dropdown-menu">
-                      <a href="#"><i class="fa-solid fa-user"></i> Profile</a>
-                      <a href="{{ url_for('chat_page') }}"><i class="fa-solid fa-comments"></i> Chat</a>
-                      <a href="#"><i class="fa-solid fa-credit-card"></i> Subscription <span class="pro-badge"><i id="pro-icon" class="fa-solid fa-bolt"></i> PRO</span></a>
-                      <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
-                      <hr>
-                      <a href="#"><i class="fa-solid fa-question"></i> Help center</a>
-                      {% if current_user.role == "client" %}
-                        <a href="{{ url_for('client.client_logout') }}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</a>
-                      {% elif current_user.role == "freelancer" %}
-                        <a href="{{ url_for('freelancer.freelancer_logout') }}"><i class="icon">🚪</i> Log out</a>
-                      {% endif %}
-                    </div>
-                  </div>
+                <div class="user-menu">
+                    <div class="dropdown">
+                        <a href="#" id="user-menu-btn">
+                          <img src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="user-icon">
+                        </a>
+                        <div id="dropdown-menu" class="dropdown-menu">
+                          <a href="#"> Profile</a>
+                          <a href="#"> Community</a>
+                          <a href="#"> Subscription <span class="pro-badge">PRO</span></a>
+                          <a href="#"> Settings</a>
+                          <hr>
+                          <a href="#"> Help center</a>
+                          {% if current_user.role == "client" %}
+                            <a href="{{ url_for('client.client_logout') }}"> Sign out</a>
+                          {% elif current_user.role == "freelancer" %}
+                            <a href="{{ url_for('freelancer.freelancer_logout') }}"> Sign out</a>
+                          {% endif %}
+                        </div>
+                      </div>
+                      
+                </div>
             {% else %}
             <div class="auth-menu">
                 <div class="dropdown">
@@ -1120,26 +1123,26 @@
         });
     });
 
-    const userMenuBtn = document.getElementById('user-menu-btn');
-    const dropdown = document.getElementById('dropdown-menu');
-    let hideTimeout;
+    // const userMenuBtn = document.getElementById('user-menu-btn');
+    // const dropdownMenu = document.getElementById('dropdown-menu');
+    // let hideTimeout;
 
-    userMenuBtn.addEventListener('mouseenter', () => {
-    clearTimeout(hideTimeout);
-    dropdown.classList.add('show');
-    });
+    // userMenuBtn.addEventListener('mouseenter', () => {
+    // clearTimeout(hideTimeout);
+    // dropdownMenu.classList.add('show');
+    // });
 
-    userMenuBtn.addEventListener('mouseleave', () => {
-    hideTimeout = setTimeout(() => dropdown.classList.remove('show'), 200);
-    });
+    // userMenuBtn.addEventListener('mouseleave', () => {
+    // hideTimeout = setTimeout(() => dropdownMenu.classList.remove('show'), 200);
+    // });
 
-    dropdown.addEventListener('mouseenter', () => {
-    clearTimeout(hideTimeout);
-    });
+    // dropdownMenu.addEventListener('mouseenter', () => {
+    // clearTimeout(hideTimeout);
+    // });
 
-    dropdown.addEventListener('mouseleave', () => {
-    hideTimeout = setTimeout(() => dropdown.classList.remove('show'), 2000);
-    });
+    // dropdownMenu.addEventListener('mouseleave', () => {
+    // hideTimeout = setTimeout(() => dropdownMenu.classList.remove('show'), 2000);
+    // });
 
     document.addEventListener('DOMContentLoaded', function() {
         const header = document.querySelector('header');
