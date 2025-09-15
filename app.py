@@ -113,12 +113,61 @@ def chat_page():
         })
 
     return render_template(
-        "chat/chat.html",
+        "chat/client_chat.html",
         conversations=conversations,
         active_id=active_conv,
         user=user
     )
 
+@app.route("/freelancer_chat")
+@login_required
+def freelancer_chat():
+    # Ensure only freelancers can access
+    if not isinstance(current_user, Freelancer):
+        return redirect(url_for('freelancer_bp.login'))
+
+    conv_ids = db.session.query(Message.conv_id).distinct().all()
+    conversations = []
+    for cid_tuple in conv_ids:
+        cid = cid_tuple[0]
+        msgs = Message.query.filter_by(conv_id=cid).all()
+        if not msgs:
+            continue
+
+        # Identify client on the other side
+        client_id = None
+        for m in msgs:
+            if str(m.user) != str(current_user.id) and m.user != "Server":
+                client_id = m.user
+                break
+            elif str(m.receiver_id) != str(current_user.id):
+                client_id = m.receiver_id
+                break
+
+        client = Client.query.get(client_id) if client_id else None
+        name = f"{client.first_name} {client.last_name}" if client else f"Conversation {cid}"
+        avatar = "/static/img/search/male-pfp.webp"
+        last_msg = msgs[-1]
+
+        conversations.append({
+            "id": cid,
+            "name": name,
+            "avatar": avatar,
+            "last_message": last_msg.text,
+            "timestamp": last_msg.time,
+            "unique_id": client_id,
+            "messages": [
+                {"text": m.text, "time": m.time, "from_me": m.user == str(current_user.id), "user": m.user}
+                for m in msgs
+            ]
+        })
+
+    return render_template(
+        "chat/freelancer_chat.html",
+        conversations=conversations,
+        active_id=conversations[0]['id'] if conversations else 0,
+        user=current_user.id
+    )
 
 
 @app.route("/chat/<int:conv_id>")
@@ -146,18 +195,19 @@ def get_conversation(conv_id):
         "id": conv_id,
         "name": name,
         "avatar": avatar,
-        # "last_seen": "online",
         "unique_id": freelancer_id,
         "messages": [
             {
                 "text": m.text,
                 "time": m.time,
-                "from_me": m.from_me,
+                # set from_me relative to the current viewer
+                "from_me": True if str(m.user) == current_user_id else False,
                 "user": m.user
             } for m in msgs
         ]
     }
     return jsonify(data)
+
 
 
 @app.route("/send", methods=["POST"])
