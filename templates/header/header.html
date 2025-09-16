@@ -657,36 +657,13 @@
         display: flex;
         align-items: center;
         gap: 8px;
-    }
-
-    .dropdown-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
         line-height: 1; 
-    }
-
-    .dropdown-icon {
-        width: 20px;
-        height: 20px;
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 8px;
     }
 
     .login-dropdown,
     .signup-dropdown {
         min-width: 220px;
     }
-
-    .dropdown-content a {
-        display: flex;
-        align-items: center;
-        padding: 8px 12px;
-        /* gap: 10px; */
-        white-space: nowrap;
-    }
-
 
     .auth-menu .dropdown-content a {
         display: block;
@@ -740,27 +717,40 @@
     }
     }
 
+    #dropdown-icon {
+        all: unset;
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 16px;
+        margin-right: 0;
+    }
+
     .dropdown-menu a {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 12px 16px;
+        padding: 8px 12px;
+        width: 90%;
         font-size: 15px;
         color: #000;
         text-decoration: none;
         border-radius: 8px;
+        margin: 4px 6px;
+        margin-left: 0 !important;
+    }
+
+    .dropdown-item {
         margin: 2px 8px;
+        /* padding: 6px 12px; */
+        border-radius: 8px;
+        /* display: flex; */
     }
 
-    .dropdown-menu a i {
-        margin: 0;
-        font-size: 20px;
-        flex-shrink: 0;
-        display: none;
-    }
-
-    .dropdown-menu a:hover {
-        background: #f5f5f5;
+    .dropdown-item:hover {
+        cursor: pointer;
+        background-color: #f5f5f5;
     }
 
     #pro-icon {
@@ -777,14 +767,6 @@
         border-radius: 6px;
         margin-left: auto;
     }
-
-    .dropdown-menu hr {
-        border: none;
-        border-top: 1px solid #e6e6e6;
-        margin: 6px 0;
-    }
-
-
 </style>
 <header>
     <div class="desktop-container">
@@ -1006,17 +988,36 @@
                           <img src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="user-icon">
                         </a>
                         <div id="dropdown-menu" class="dropdown-menu">
-                          <a href="#"> Profile</a>
-                          <a href="{{ url_for('chat_page') }}"> Chat</a>
-                          <a href="#"> Subscription <span class="pro-badge">PRO</span></a>
-                          <a href="#"> Settings</a>
-                          <hr>
-                          <a href="#"> Help center</a>
-                          {% if current_user.role == "client" %}
-                            <a href="{{ url_for('client.client_logout') }}"> Sign out</a>
-                          {% elif current_user.role == "freelancer" %}
-                            <a href="{{ url_for('freelancer.freelancer_logout') }}"> Sign out</a>
-                          {% endif %}
+                            <div class="dropdown-item">
+                                <img id="dropdown-icon" src="{{ url_for('static', filename='img/index/icons/profile-icon.webp') }}" alt="User Icon" class="user-icon">
+                                <a href="#"> Profile</a>                                
+                            </div>
+                            <div class="dropdown-item">
+                                <img id="dropdown-icon" src="{{ url_for('static', filename='img/index/icons/chat-icon.webp') }}" alt="User Icon" class="user-icon">
+                                <a href="{{ url_for('chat_page') }}"> Chat</a>                             
+                            </div>
+                            <div class="dropdown-item">
+                                <img id="dropdown-icon" src="{{ url_for('static', filename='img/index/icons/subscription-icon.webp') }}" alt="User Icon" class="user-icon">
+                                <!-- <img src="{{ url_for('static', filename='img/index/icons/credit-card-icon.webp') }}" alt="User Icon" class="user-icon"> -->
+                                <a href="#"> Subscription <span class="pro-badge">PRO</span></a>                          
+                            </div>
+                            <div class="dropdown-item">
+                                <img id="dropdown-icon" src="{{ url_for('static', filename='img/index/icons/settings-icon.webp') }}" alt="User Icon" class="user-icon">
+                                <a href="#"> Settings</a>                             
+                            </div>
+                            <div class="dropdown-item">
+                                <img id="dropdown-icon" src="{{ url_for('static', filename='img/index/icons/help-icon.webp') }}" alt="User Icon" class="user-icon">
+                                <a href="#"> Help center</a>                           
+                            </div>
+                            <div class="dropdown-item">
+                                <img id="dropdown-icon" src="{{ url_for('static', filename='img/index/icons/log-out-icon.webp') }}" alt="User Icon" class="user-icon">
+                                <!-- <hr> -->
+                                {% if current_user.role == "client" %}
+                                  <a href="{{ url_for('client.client_logout') }}"> Sign out</a>
+                                {% elif current_user.role == "freelancer" %}
+                                  <a href="{{ url_for('freelancer.freelancer_logout') }}"> Sign out</a>
+                                {% endif %}
+                            </div>
                         </div>
                       </div>
                       
