@@ -767,6 +767,75 @@
         border-radius: 6px;
         margin-left: auto;
     }
+        .auth-menu .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .auth-menu .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        min-width: 120px;
+        width: min-content;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        border-radius: 8px;
+        z-index: 1000;
+        margin-top: 5px;
+        overflow: hidden;
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        line-height: 1; 
+    }
+
+    .dropdown-icon {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+
+    .login-dropdown,
+    .signup-dropdown {
+        min-width: 220px;
+    }
+
+    .dropdown-content a {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        /* gap: 10px; */
+        white-space: nowrap;
+    }
+
+
+    .auth-menu .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: #333;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: background-color 0.2s ease;
+    }
+
+    .auth-menu .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+
+    .auth-menu .dropdown-content.show {
+        display: block;
+    }
 </style>
 <header>
     <div class="desktop-container">
