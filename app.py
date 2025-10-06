@@ -247,7 +247,7 @@ def receive(conv_id):
     return jsonify({"status": "ok", "message": {"from_me": False, "text": reply.text, "time": now}})
 
 
-AZURE_API_URL = "https://roles-predictor-bzg4fdfwgzb0hjh7.eastasia-01.azurewebsites.net/predict"
+AZURE_API_URL = "https://npl-model-test-1.onrender.com/predict"
 
 @app.route('/predict_roles', methods=['POST'])
 def predict_roles():
