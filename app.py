@@ -5,6 +5,8 @@ import requests, os, json
 from extensions import db, bcrypt
 from client_routes import client_bp, Client
 from freelancer_routes import freelancer_bp, Freelancer
+import joblib
+import os, json, joblib
 
 
 app = Flask(__name__)
@@ -122,7 +124,6 @@ def chat_page():
 @app.route("/freelancer_chat")
 @login_required
 def freelancer_chat():
-    # Ensure only freelancers can access
     if not isinstance(current_user, Freelancer):
         return redirect(url_for('freelancer_bp.login'))
 
@@ -134,7 +135,6 @@ def freelancer_chat():
         if not msgs:
             continue
 
-        # Identify client on the other side
         client_id = None
         for m in msgs:
             if str(m.user) != str(current_user.id) and m.user != "Server":
@@ -187,7 +187,6 @@ def get_conversation(conv_id):
             other_id = m.receiver_id
             break
 
-    # Try to find the other participant first as Freelancer, then as Client
     other_user = Freelancer.query.get(other_id)
     if not other_user:
         other_user = Client.query.get(other_id)
@@ -247,39 +246,42 @@ def receive(conv_id):
     return jsonify({"status": "ok", "message": {"from_me": False, "text": reply.text, "time": now}})
 
 
-AZURE_API_URL = "https://npl-model-test-1.onrender.com/predict"
+clf = joblib.load("role_predictor.pkl")
+mlb = joblib.load("mlb.pkl")
+thresholds = joblib.load("thresholds.pkl")
+
+def predict_roles_local(text, top_n=3):
+    probas = clf.predict_proba([text])[0]
+    preds = []
+    for i, p in enumerate(probas):
+        if p >= thresholds[i]:
+            preds.append((mlb.classes_[i], p))
+    preds.sort(key=lambda x: x[1], reverse=True)
+    return [role for role, _ in preds[:top_n]]
 
 @app.route('/predict_roles', methods=['POST'])
 def predict_roles():
     need_statement = request.form.get("need_statement")
     top_n = int(request.form.get("top_n", 3))
     try:
-        response = requests.post(
-            AZURE_API_URL,
-            json={"need_statement": need_statement, "top_n": top_n},
-            headers={"Content-Type": "application/json"}
-        )
-        if response.status_code == 200:
-            result = response.json()
-            roles_file = "roles.json"
-            roles_data = []
-            if os.path.exists(roles_file):
-                with open(roles_file, "r") as f:
-                    try:
-                        roles_data = json.load(f)
-                    except json.JSONDecodeError:
-                        roles_data = []
-            entry = {
-                "timestamp": datetime.now().isoformat(),
-                "need_statement": result["need_statement"],
-                "roles": result["predicted_roles"]
-            }
-            roles_data.append(entry)
-            with open(roles_file, "w") as f:
-                json.dump(roles_data, f, indent=2)
-            return jsonify(result)
-        else:
-            return jsonify({"error": "Error fetching predictions from Azure API"}), 500
+        predicted_roles = predict_roles_local(need_statement, top_n)
+        roles_file = "roles.json"
+        roles_data = []
+        if os.path.exists(roles_file):
+            with open(roles_file, "r") as f:
+                try:
+                    roles_data = json.load(f)
+                except json.JSONDecodeError:
+                    roles_data = []
+        entry = {
+            "timestamp": datetime.now().isoformat(),
+            "need_statement": need_statement,
+            "roles": predicted_roles
+        }
+        roles_data.append(entry)
+        with open(roles_file, "w") as f:
+            json.dump(roles_data, f, indent=2)
+        return jsonify({"need_statement": need_statement, "predicted_roles": predicted_roles})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
