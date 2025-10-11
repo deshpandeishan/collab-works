@@ -97,6 +97,7 @@ p, .step p {
     color: #333;
     padding: 1rem;
     border: 1px solid #9e9e9e;
+    text-align: left;
     border-radius: 10px;
     width: 100%;
     height: 10px;
