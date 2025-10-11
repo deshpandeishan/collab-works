@@ -1059,11 +1059,15 @@
                         <div id="dropdown-menu" class="dropdown-menu">
                             <div class="dropdown-item">
                                 <img id="dropdown-icon" src="{{ url_for('static', filename='img/index/icons/profile-icon.webp') }}" alt="User Icon" class="user-icon">
-                                <a href="#"> Profile</a>                                
+                                {% if current_user.role == "freelancer" %}
+                                    <a href="{{ url_for('freelancer_dashboard') }}"> Profile</a>
+                                {% else %}
+                                    <a href="#"> Profile</a>
+                                {% endif %}
                             </div>
                             <div class="dropdown-item">
                                 <img id="dropdown-icon" src="{{ url_for('static', filename='img/index/icons/chat-icon.webp') }}" alt="User Icon" class="user-icon">
-                                <a href="{{ url_for('chat_page') }}"> Chat</a>                             
+                                <a href="{{ url_for('chat_page') }}"> Chat</a>
                             </div>
                             <div class="dropdown-item">
                                 <img id="dropdown-icon" src="{{ url_for('static', filename='img/index/icons/subscription-icon.webp') }}" alt="User Icon" class="user-icon">
@@ -1082,9 +1086,9 @@
                                 <img id="dropdown-icon" src="{{ url_for('static', filename='img/index/icons/log-out-icon.webp') }}" alt="User Icon" class="user-icon">
                                 <!-- <hr> -->
                                 {% if current_user.role == "client" %}
-                                  <a href="{{ url_for('client.client_logout') }}"> Sign out</a>
+                                    <a href="{{ url_for('client.client_logout') }}"> Sign out</a>
                                 {% elif current_user.role == "freelancer" %}
-                                  <a href="{{ url_for('freelancer.freelancer_logout') }}"> Sign out</a>
+                                    <a href="{{ url_for('freelancer.freelancer_logout') }}"> Sign out</a>
                                 {% endif %}
                             </div>
                         </div>

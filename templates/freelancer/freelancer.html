@@ -35,9 +35,10 @@
 
     .nav-item {
         width: 130px;
-        padding: 0.8rem 1.2rem;
+        padding: 0.6rem 1rem;
         cursor: pointer;
         margin-inline: 20px;
+        margin-block: 5px;
         color: #333;
         border-radius: 8px;
         display: flex;
@@ -46,20 +47,20 @@
     }
 
     .nav-item.active {
-        color: #fff;
+        background-color: #f0f0f0;
+        color: #000;
         border-radius: 8px;
-        margin: 0.3rem 1rem;
-        background-color: #000;
     }
+
     
     .nav-item:hover {
-        background: #f0f0f0;
+        background: #f6f5f5;
     }
 
     .main {
-      flex: 1;
-      padding: 2rem;
-      overflow-y: auto;
+        flex: 1;
+        padding: 2rem;
+        overflow-y: auto;
     }
 
     .profile-card {
@@ -78,17 +79,19 @@
         align-items: center;
         gap: 1.5rem;
     }
+    
     .avatar {
-        width: 60px;
-        height: 60px;
+        width: 90px;
+        height: 90px;
         background: #000;
         color: #fff;
         border-radius: 50%;
         display: flex;
+        align-self: flex-start;
         align-items: center;
         justify-content: center;
         font-weight: 600;
-        font-size: 1.2rem;
+        font-size: 3rem;
     }
 
     .details h3 {
@@ -243,27 +246,28 @@
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <div class="nav-item">
-        <img src="{{ url_for('static', filename='img/freelancer/svg/dashboard-icon.svg') }}" alt="Dashboard Icon">
-        Dashboard
+    <div class="sidebar">
+        <div class="nav-item active">
+            <img src="{{ url_for('static', filename='img/freelancer/svg/dashboard-icon.svg') }}" alt="Dashboard Icon">
+            Dashboard
+        </div>
+    
+        <a href="{{ url_for('chat_page') }}" class="nav-item" style="text-decoration: none;">
+            <img src="{{ url_for('static', filename='img/freelancer/svg/chat-icon.svg') }}" alt="Messages Icon">
+            Messages
+        </a>        
+    
+        <div class="nav-item">
+            <img src="{{ url_for('static', filename='img/freelancer/svg/profile-icon.svg') }}" alt="Profile Icon">
+            Profile
+        </div>
+    
+        <div class="nav-item">
+            <img src="{{ url_for('static', filename='img/freelancer/svg/settings-icon.svg') }}" alt="Settings Icon">
+            Settings
+        </div>
     </div>
-
-    <div class="nav-item">
-        <img src="{{ url_for('static', filename='img/freelancer/svg/chat-icon.svg') }}" alt="Messages Icon">
-        Messages
-    </div>
-
-    <div class="nav-item">
-        <img src="{{ url_for('static', filename='img/freelancer/svg/profile-icon.svg') }}" alt="Profile Icon">
-        Profile
-    </div>
-
-    <div class="nav-item">
-        <img src="{{ url_for('static', filename='img/freelancer/svg/settings-icon.svg') }}" alt="Settings Icon">
-        Settings
-    </div>
-  </div>
+    
 
   <div class="main">
     <div class="profile-card">
