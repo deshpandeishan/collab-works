@@ -17,7 +17,8 @@
         color: #222;
     }
 
-    .sidebar {
+    .dashboard-sidebar {
+        margin-top: 100px;
         width: 220px;
         background: #fff;
         border-right: 1px solid #e0e0e0;
@@ -27,7 +28,7 @@
         align-items: flex-start;
     }
 
-    .sidebar h2 {
+    .dashboard-sidebar h2 {
         font-size: 1.2rem;
         font-weight: 600;
         margin-left: 1.5rem;
@@ -59,8 +60,10 @@
 
     .main {
         flex: 1;
-        padding: 2rem;
+        padding-inline: 2rem;
         overflow-y: auto;
+        margin-top: 100px;
+
     }
 
     .profile-card {
@@ -239,14 +242,17 @@
         .stats {
             grid-template-columns: repeat(2, 1fr);
         }
-        .sidebar {
+        .dashboard-sidebar {
             display: none;
         }
     }
   </style>
 </head>
 <body>
-    <div class="sidebar">
+    {% include 'header/header.html' %}
+
+
+    <div class="dashboard-sidebar">
         <div class="nav-item active">
             <img src="{{ url_for('static', filename='img/freelancer/svg/dashboard-icon.svg') }}" alt="Dashboard Icon">
             Dashboard
