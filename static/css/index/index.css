@@ -914,11 +914,42 @@ body {
         line-height: 1.5;
     }
 
-    .clients-feedback-section {
-        display: none !important;
-    }
+    /* .clients-feedback-section {
+        display: block;
+    } */
 
-    footer {
+    #clients-feedback-section-heading {
+        font-size: 1.3rem;
+        margin-inline: 20px;
+        line-height: 1.5;
+    }
+    
+    .clients-logo-section {
+        max-width: 100%;
+        margin-top: 50px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+    }
+    
+    .clients-logo-section img {
+        width: 60px !important;
+        height: auto;
+        flex: none;
+        object-fit: contain;
+    }
+    
+    .clients-logo-section .logo {
         display: none;
     }
+    
+    .clients-logo-section .logo:nth-child(-n+4) {
+        display: inline-block;
+    }
+    
+    
+    /* footer {
+        display: none;
+    } */
 }
