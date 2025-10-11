@@ -9,6 +9,7 @@ import joblib
 import os, json, joblib
 import sqlite3
 
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'thisisasecretkey'
@@ -23,10 +24,11 @@ app.register_blueprint(freelancer_bp, url_prefix="/freelancer")
 
 @login_manager.user_loader
 def load_user(user_id):
-    user = Client.query.get(int(user_id))
+    user = db.session.get(Client, int(user_id))
     if not user:
-        user = Freelancer.query.get(int(user_id))
+        user = db.session.get(Freelancer, int(user_id))
     return user
+
 
 
 class Message(db.Model):
