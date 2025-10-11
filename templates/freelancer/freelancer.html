@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <title>Profile Dashboard</title>
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      display: flex;
+      height: 100vh;
+      color: #222;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #e0e0e0;
+      padding: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .sidebar h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-left: 1.5rem;
+    }
+    .nav-item {
+      width: 100%;
+      padding: 0.8rem 1.5rem;
+      cursor: pointer;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-item.active {
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      margin: 0.3rem 1rem;
+    }
+    .nav-item:hover {
+      background: #f0f0f0;
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .profile-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .avatar {
+      width: 60px;
+      height: 60px;
+      background: #000;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+    .details h3 {
+      margin: 0;
+    }
+    .details p {
+      margin: 0.2rem 0;
+      color: #555;
+      margin-block: 10px;
+    }
+
+    .rate {
+      display: inline-block;
+      background: #f1f1f1;
+      color: #000;
+      font-weight: 600;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      margin: 5px;
+      margin-right: 10px;
+      font-size: 0.9rem;
+    }
+
+    .portfolio {
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    #visit-icon {
+        cursor: pointer;
+    }
+
+    .edit-btn {
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: 0.2s ease-in-out;
+    }
+
+    .edit-btn:hover {
+        background-color: #000;
+        color: #fff;
+    }
+
+    #edit-icon {
+        transition: 0.2s ease-in-out;
+    }
+
+    .edit-btn:hover #edit-icon {
+        fill: #fff;
+    }
+
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .stat {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .stat h2 {
+      color: #16a34a;
+      margin: 0.2rem 0;
+    }
+
+    /* About */
+    .about, .skills, .projects {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .about p {
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* Skills */
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    .skill {
+      background: #f3f4f6;
+      padding: 0.5rem 0.9rem;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    /* Projects */
+    .project {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+    .project:first-child {
+      border-top: none;
+      margin-top: 0;
+      padding-top: 0;
+    }
+    .project h4 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    .project p {
+      color: #555;
+      font-size: 0.9rem;
+      margin: 0.2rem 0 0;
+    }
+    .rating {
+      color: #fbbf24;
+      font-weight: bold;
+      float: right;
+    }
+
+    @media (max-width: 900px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="nav-item">
+        <img src="{{ url_for('static', filename='img/freelancer/svg/dashboard-icon.svg') }}" alt="Dashboard Icon">
+        Dashboard
+    </div>
+
+    <div class="nav-item">
+        <img src="{{ url_for('static', filename='img/freelancer/svg/chat-icon.svg') }}" alt="Messages Icon">
+        Messages
+    </div>
+
+    <div class="nav-item">
+        <img src="{{ url_for('static', filename='img/freelancer/svg/profile-icon.svg') }}" alt="Profile Icon">
+        Profile
+    </div>
+
+    <div class="nav-item">
+        <img src="{{ url_for('static', filename='img/freelancer/svg/settings-icon.svg') }}" alt="Settings Icon">
+        Settings
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="profile-card">
+      <div class="profile-info">
+        <div class="avatar">JD</div>
+        <div class="details">
+            {% if freelancer %}
+                <h3>{{ freelancer.name }}</h3>
+                <p>
+                    <img src="{{ url_for('static', filename='img/freelancer/svg/location-icon.svg') }}" alt="Location Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:5px;">
+                    {{ freelancer.location or 'Location not specified' }}
+                </p>
+                <p>
+                    <img src="{{ url_for('static', filename='img/freelancer/svg/mail-icon.svg') }}" alt="Email Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:5px;">
+                    {{ freelancer.email }}
+                </p>
+                <p>
+                    <img src="{{ url_for('static', filename='img/freelancer/svg/roles-icon.svg') }}" alt="Roles Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:5px;">
+                    {{ freelancer.roles }}
+                </p>
+            {% else %}
+                <p>No freelancer data found.</p>
+            {% endif %}
+            <span class="rate">$75/hr</span>
+            <span class="portfolio">Portfolio</span>
+            <img id="visit-icon" src="{{ url_for('static', filename='img/freelancer/svg/open-icon.svg') }}" alt="Visit Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:5px;">
+        </div>
+      </div>
+      <button class="edit-btn">
+        <svg id="edit-icon" xmlns="http://www.w3.org/2000/svg" height="16px" width="16px" viewBox="0 -960 960 960" fill="#1f1f1f" style="vertical-align:middle; margin-right:5px;">
+            <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/>
+        </svg>
+        Edit Profile
+    </button>
+    
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <p>Projects Completed</p>
+        <h2>N/A</h2>
+      </div>
+      <div class="stat">
+        <p>Total Earned</p>
+        <h2>N/A</h2>
+      </div>
+      <div class="stat">
+        <p>Average Rating</p>
+        <h2>N/A</h2>
+      </div>
+      <div class="stat">
+        <p>Response Time</p>
+        <h2>N/A</h2>
+      </div>
+    </div>
+
+    <div class="about">
+      <h3>About</h3>
+      <p>Passionate developer with 5+ years of experience building web applications. Specialized in React, Node.js, and cloud technologies. I love creating elegant solutions to complex problems.</p>
+    </div>
+
+    <div class="skills">
+      <h3>Skills</h3>
+      <div class="skills-list">
+        <span class="skill">React</span>
+        <span class="skill">Node.js</span>
+        <span class="skill">TypeScript</span>
+        <span class="skill">Python</span>
+        <span class="skill">AWS</span>
+        <span class="skill">MongoDB</span>
+        <span class="skill">PostgreSQL</span>
+        <span class="skill">Docker</span>
+      </div>
+    </div>
+
+    <div class="projects">
+      <h3>Recent Projects</h3>
+      <div class="project">
+        <h4>E-commerce Platform <span class="rating">★ 5</span></h4>
+        <p>Client: TechCorp • 2024</p>
+      </div>
+      <div class="project">
+        <h4>Mobile App Development <span class="rating">★ 5</span></h4>
+        <p>Client: StartupXYZ • 2024</p>
+      </div>
+      <div class="project">
+        <h4>AI Chatbot Integration <span class="rating">★ 4.5</span></h4>
+        <p>Client: InnovateLab • 2023</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelector('.edit-btn').addEventListener('click', () => {
+      alert('Edit Profile Clicked!');
+    });
+  </script>
+</body>
+</html>

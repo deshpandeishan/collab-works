@@ -7,7 +7,7 @@ from client_routes import client_bp, Client
 from freelancer_routes import freelancer_bp, Freelancer
 import joblib
 import os, json, joblib
-
+import sqlite3
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -349,6 +349,35 @@ def terms_of_service():
 @app.route('/privacy-policy')
 def privacy_policy():
     return render_template('privacy_policy.html')
+
+@app.route('/freelancer')
+def freelancer_dashboard():
+    email = current_user.email
+
+    conn = sqlite3.connect('instance/database.db')
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT first_name, last_name, email, tagline, location, roles 
+        FROM freelancer 
+        WHERE email = ?
+    """, (email,))
+    row = cursor.fetchone()
+    conn.close()
+
+    if row:
+        freelancer = {
+            "name": f"{row[0]} {row[1]}" if row[1] else row[0],
+            "email": row[2],
+            "tagline": row[3],
+            "location": row[4],
+            "roles": row[5]
+        }
+    else:
+        freelancer = None
+
+    return render_template('freelancer/freelancer.html', freelancer=freelancer)
+
 
 
 if __name__ == '__main__':
