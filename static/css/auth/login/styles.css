@@ -44,7 +44,7 @@ body {
 }
 
 .logo-container img {
-    width: 50px;
+    width: 50px !important;
 }
 
 .login-section {

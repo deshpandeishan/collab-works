@@ -15,6 +15,7 @@
 <body>
     {% include 'header/header.html' %}
 
+    <!-- desktop section -->
     <div class="cta-section">
         <img id="upper-mockup" src="{{ url_for('static', filename='img/cta/upperside.png') }}" alt="Mockup" class="mockup">
 
@@ -31,6 +32,25 @@
         <img id="bottom-mockup" src="{{ url_for('static', filename='img/cta/bottomside.png') }}" alt="Mockup" class="mockup">
     </div>
 
+    <!-- mobile section -->
+    <div class="mobile-cta-section">
+        <img id="mobile-upper-mockup" src="{{ url_for('static', filename='img/cta/mobile-upperside.png') }}" alt="Mockup" class="mockup">
+
+
+        <div class="mobile-line-section">
+            <p>
+              <span id="mobile-firstline" class="cta-line">Find talent</span><br>
+              <span id="mobile-secondline" class="cta-line">for your next project</span>
+            </p>
+              
+        </div>
+
+        <button id="cta-btn" class="btn">Get Started <i class="fi fi-bs-arrow-up-right"></i></button>
+        <img id="mobile-bottom-mockup" src="{{ url_for('static', filename='img/cta/mobile-bottomside.png') }}" alt="Mockup" class="mockup">
+    </div>
+
+
+
     <div id="search-section" class="search-section">
 
         <span id="search-firstline">Describe your need or</span><br>
@@ -38,11 +58,12 @@
 
         <div class="search-bar-wrapper">
             <div class="search-input-wrapper">
-                <input id="search-bar" class="search-bar" type="text" placeholder="Search for projects, people, or topics...">
+                <input id="search-bar" class="search-bar" type="text" placeholder="What do you want to build?">
                 <span class="shortcut-hint">⌘ + K</span>
+                <button id="search-icon" class="btn" style="display: none;"><i class="fa-solid fa-arrow-up"></i></button>
             </div>
-            <!-- <button id="search-btn" class="btn">Search</button> -->
         </div>
+        
         <p id="search-instruction">We use Natural Language Processing to understand your request to show results.</p>
         
         <div id="search-results" class="search-results"></div>
@@ -51,7 +72,8 @@
 
     
     <div class="info-section">
-        <img id="info-image" src="{{ url_for('static', filename='img/info-section/image.jpg') }}" alt="People Working" class="info-img">
+        <img class="pc-image" id="info-image" src="{{ url_for('static', filename='img/info-section/pc.jpg') }}" alt="People Working" class="info-img">
+        <img class="mobile-image" id="info-image" src="{{ url_for('static', filename='img/info-section/mobile.jpg') }}" alt="People Working" class="info-img">
         <div class="info-text-container">
             <p id="left-side" class="info-text">WHERE IDEAS TALK</p>
             <p id="right-side" class="info-text">AND BUILDERS LISTEN</p>
@@ -59,7 +81,7 @@
     </div>
 
     <div class="clients-feedback-section">
-        <h1>Loved by agencies and their clients</h1>
+        <h1 id="clients-feedback-section-heading">Loved by <br>agencies and their clients</h1>
 
         <div class="clients-logo-section">
             <img src="{{ url_for('static', filename='img/clients-logo/out-brand-them.png') }}" alt="Agency 1" class="logo">
@@ -142,7 +164,7 @@
         document.getElementById('cta-btn').addEventListener('click', function(event) {
             event.preventDefault();
             document.querySelector('.search-section').scrollIntoView({ behavior: 'smooth' });
-            });
+        });
 
         function setupKeyboardShortcut() {
             document.addEventListener('keydown', function(event) {
@@ -162,55 +184,66 @@
             });
         }
 
-        document.getElementById("search-bar").addEventListener("keypress", async function(event) {
-            if (event.key === "Enter") {
-                const needStatement = event.target.value.trim();
-                if (!needStatement) return;
+        const searchBar = document.getElementById("search-bar");
+        const searchIcon = document.getElementById("search-icon");
 
-                const resultsDiv = document.getElementById("search-results");
-                resultsDiv.innerHTML = `
-                    <div class="searching-wrapper">
-                        <video src="/static/img/searching/searching.mp4" autoplay muted loop></video>
-                    </div>
-                `;
+        async function triggerSearch() {
+            const needStatement = searchBar.value.trim();
+            if (!needStatement) return;
 
-                const searchBar = document.getElementById("search-bar");
-                searchBar.scrollIntoView({ behavior: "smooth", block: "start" });
+            const resultsDiv = document.getElementById("search-results");
+            resultsDiv.innerHTML = `
+                <div class="searching-wrapper">
+                    <video src="/static/img/searching/searching.mp4" autoplay muted loop></video>
+                </div>
+            `;
 
-                try {
-                    const response = await fetch("/predict_roles", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: new URLSearchParams({ "need_statement": needStatement, "top_n": 3 })
-                    });
-                    const data = await response.json();
+            searchBar.scrollIntoView({ behavior: "smooth", block: "start" });
 
-                    resultsDiv.innerHTML = "";
+            try {
+                const response = await fetch("/predict_roles", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams({ "need_statement": needStatement, "top_n": 4 })
+                });
+                const data = await response.json();
 
-                    const rolesResponse = await fetch("/get_roles");
-                    let roles = [];
-                    if (rolesResponse.ok) {
-                        const rolesData = await rolesResponse.json();
-                        const latest = rolesData[rolesData.length - 1];
-                        roles = latest.roles;
-                    }
+                resultsDiv.innerHTML = "";
 
-                    const profilesResponse = await fetch("/get_freelancers");
-                    if (profilesResponse.ok) {
-                        const profiles = await profilesResponse.json();
-                        profiles.forEach(profile => {
-                            createCard(profile, roles.length ? roles : ["Developer"]);
-                        });
-                    } else {
-                        resultsDiv.innerHTML = "<p>Error fetching profiles from DB.</p>";
-                    }
-
-                } catch (err) {
-                    console.error(err);
-                    resultsDiv.innerHTML = "<p>Error fetching results.</p>";
+                const rolesResponse = await fetch("/get_roles");
+                let roles = [];
+                if (rolesResponse.ok) {
+                    const rolesData = await rolesResponse.json();
+                    const latest = rolesData[rolesData.length - 1];
+                    roles = latest.roles;
                 }
+
+                const profilesResponse = await fetch("/get_freelancers");
+                if (profilesResponse.ok) {
+                    const profiles = await profilesResponse.json();
+                    profiles.forEach(profile => {
+                        createCard(profile, roles.length ? roles : ["Developer"]);
+                    });
+                } else {
+                    resultsDiv.innerHTML = "<p>Error fetching profiles from DB.</p>";
+                }
+
+            } catch (err) {
+                console.error(err);
+                resultsDiv.innerHTML = "<p>Error fetching results.</p>";
+            }
+        }
+
+        searchBar.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                triggerSearch();
             }
         });
+
+        searchIcon.addEventListener("click", () => {
+            triggerSearch();
+        });
+
 
 
         function createCard(data, roles) {
