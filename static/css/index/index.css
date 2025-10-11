@@ -277,6 +277,8 @@ body {
         border-radius: 10px;
     }
 
+
+
     .info-section {
         display: none !important;
     }
@@ -670,6 +672,75 @@ body {
         transform: translateY(0);
     }
 }
+
+@media screen and (max-width: 768px) {
+    .search-results {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center;
+        width: 100% !important;
+        gap: 20px !important;
+    }
+
+    .card {
+        width: 90% !important;
+        max-width: 400px !important;
+    }
+
+    #card-data {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .name-title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: 4px;
+    }
+
+    #role {
+        margin: 0;
+    }
+
+    #tagline {
+        margin-top: 4px;
+    }
+
+    .extra-info {
+        justify-content: flex-start;
+        gap: 8px;
+        margin-top: 4px;
+    }
+
+    .skills {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 4px;
+    }
+
+    .bottom-wrapper {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 8px;
+    }
+
+    #work-btn {
+        width: auto;
+        text-align: center;
+    }
+
+    .rating-wrapper {
+        justify-content: flex-end;
+    }
+}
+
+
 
 
 /* info-section code */

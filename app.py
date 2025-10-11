@@ -262,7 +262,7 @@ def predict_roles_local(text, top_n=3):
 @app.route('/predict_roles', methods=['POST'])
 def predict_roles():
     need_statement = request.form.get("need_statement")
-    top_n = int(request.form.get("top_n", 3))
+    top_n = int(request.form.get("top_n", 4))
     try:
         predicted_roles = predict_roles_local(need_statement, top_n)
         roles_file = "roles.json"

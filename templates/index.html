@@ -203,7 +203,7 @@
                 const response = await fetch("/predict_roles", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams({ "need_statement": needStatement, "top_n": 3 })
+                    body: new URLSearchParams({ "need_statement": needStatement, "top_n": 4 })
                 });
                 const data = await response.json();
 
