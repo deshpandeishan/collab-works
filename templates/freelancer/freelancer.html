@@ -110,7 +110,23 @@
     .portfolio {
         font-weight: 500;
         cursor: pointer;
+        color: #000;
     }
+
+    .portfolio-wrapper {
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .portfolio-wrapper:hover .portfolio-text {
+        color: #555;
+    }
+
+    .portfolio-wrapper:hover #visit-icon {
+        filter: brightness(0) saturate(100%) invert(32%) sepia(0%) saturate(0%) hue-rotate(172deg) brightness(92%) contrast(86%);
+    }
+
 
     #visit-icon {
         cursor: pointer;
@@ -267,8 +283,11 @@
                 <p>No freelancer data found.</p>
             {% endif %}
             <span class="rate">$75/hr</span>
-            <span class="portfolio">Portfolio</span>
-            <img id="visit-icon" src="{{ url_for('static', filename='img/freelancer/svg/open-icon.svg') }}" alt="Visit Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:5px;">
+            <span class="portfolio-wrapper">
+                <span class="portfolio-text">Portfolio</span>
+                <img id="visit-icon" src="{{ url_for('static', filename='img/freelancer/svg/open-icon.svg') }}" alt="Visit Icon" style="width:16px; height:16px; vertical-align:middle; margin-left:5px;">
+            </span>
+            
         </div>
       </div>
       <button class="edit-btn">
