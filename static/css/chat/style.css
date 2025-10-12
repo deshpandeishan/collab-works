@@ -15,6 +15,12 @@
     box-sizing: border-box;
 }
 
+.sidebar-close,
+.sidebar-toggle-outside {
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
 html, body, #app {
     height: 100%;
     background-color: #f1f1f1;
@@ -28,13 +34,15 @@ body {
     justify-content: center;
     padding: 20px;
     color: #111827;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
 .app {
     width: 100%;
     max-width: 100%;
     margin-top: auto;
-    height: 100%;
+    height: 85vh;
     background: transparent;
     display: flex;
     gap: 18px;
@@ -142,6 +150,7 @@ body {
     background: var(--sidebar);
     overflow: hidden;
     box-shadow: var(--shadow);
+    border-radius: 16px;
 }
 
 .chat-header {
@@ -245,7 +254,7 @@ body {
     border-radius: 999px;
     border: 1px solid rgba(15,23,42,0.06);
     outline: none;
-    background: #fff;
+    background: #f5f5f5;
     max-width: auto;
 }
 
@@ -317,6 +326,10 @@ body {
         padding: 0;
     }
 
+    .app {
+        height: 100%;
+    }
+
     .sidebar-toggle-outside {
         padding: 0;
         padding-right: 40px;
@@ -370,8 +383,12 @@ body {
     }
 
     .attachments i {
-        font-size: 16px;
-        margin-inline: 3px;
+        font-size: 20px;
+        margin-inline: 5px;
+    }
+
+    .composer input {
+        min-width: 20%;
     }
 
     .avatar-lg {
