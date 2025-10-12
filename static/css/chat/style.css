@@ -68,12 +68,12 @@ body {
     font-weight: 700;
     font-size: 1.5rem;
     color: #0f172a;
-    margin: 15px 8px;
-    margin-top: 0;
+    text-align: center;
+    margin-top: 8px;
 }
 
 .search input {
-    width: 95%;
+    width: 100%;
     padding: 10px 12px;
     border-radius: 10px;
     border: 1px solid rgba(15,23,42,0.06);
@@ -259,27 +259,18 @@ body {
 }
 
 .send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 14px 20px;
     border-radius: 999px;
-    background: var(--accent);
-    background-color: black;
-    color: white;
+    background-color: #000;
+    color: #fff;
     border: none;
     cursor: pointer;
     font-weight: 600;
 }
 
-.send {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #000;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-}
 
 .send-icon {
     display: none;
@@ -294,7 +285,7 @@ body {
 }
 
 .sidebar-logo {
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     padding: 15px 0;
@@ -348,7 +339,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 0 10px 0;
 
 }
 
@@ -357,8 +347,16 @@ body {
         padding: 0;
     }
 
+    .page-title {
+        display: none;
+    }
+
     .app {
         height: 100%;
+    }
+
+    .sidebar-logo {
+        display: flex;
     }
 
     .sidebar-open {
@@ -426,6 +424,10 @@ body {
         width: 38px;
         height: auto;
         margin-left: 40px;
+    }
+
+    .app {
+        background-color: #fff;
     }
 
 }
