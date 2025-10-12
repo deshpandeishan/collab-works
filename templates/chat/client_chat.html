@@ -13,35 +13,43 @@
         {% include 'header/header.html' %}
 
         <div class="app">
-            <div class="sidebar-toggle-outside" id="sidebarToggleOutside">
-            <img src="{{ url_for('static', filename='img/chat/left-dock.svg') }}" alt="Open Sidebar" id="outsideToggleIcon">
+            <div class="sidebar-open" id="sidebarToggleOutside">
+                <img src="{{ url_for('static', filename='img/chat/left-dock.svg') }}" alt="Open Sidebar" id="outsideToggleIcon">
             </div>
         
             <aside class="sidebar-left">
-            <div class="sidebar-top">
-                <div class="sidebar-close" id="sidebarCloseBtn">
-                <img src="{{ url_for('static', filename='img/chat/right-dock.svg') }}" alt="Close Sidebar">
+                <div class="sidebar-top">
+                    <div class="sidebar-logo-close">
+                        <div class="sidebar-logo">
+                            <a href="{{ url_for('index') }}">
+                                <img src="{{ url_for('static', filename='img/logo/text-logo.png') }}" alt="CollabWorks">
+                            </a>                            
+                        </div>
+                        <div class="sidebar-close" id="sidebarCloseBtn">
+                            <img src="{{ url_for('static', filename='img/chat/right-dock.svg') }}" alt="Close Sidebar">
+                        </div>
+                    </div>
+                
+                    <div class="search">
+                        <input id="searchInput" placeholder="Search or start new chat">
+                    </div>
                 </div>
-                <!-- <div class="page-title">Messages</div> -->
-                <div class="search">
-                <input id="searchInput" placeholder="Search or start new chat">
-                </div>
-            </div>
+                
         
-            <div class="conversations" id="conversationsList">
-                {% for c in conversations %}
-                <div class="conversation-item {% if c.id == active_id %}active{% endif %}" data-id="{{ c.id }}">
-                    <img class="avatar" src="{{ c.avatar }}" alt="avatar">
-                    <div class="meta">
-                    <div class="row">
-                        <div class="name">{{ c.name }}</div>
-                        <div class="time">{{ c.timestamp }}</div>
+                <div class="conversations" id="conversationsList">
+                    {% for c in conversations %}
+                    <div class="conversation-item {% if c.id == active_id %}active{% endif %}" data-id="{{ c.id }}">
+                        <img class="avatar" src="{{ c.avatar }}" alt="avatar">
+                        <div class="meta">
+                        <div class="row">
+                            <div class="name">{{ c.name }}</div>
+                            <div class="time">{{ c.timestamp }}</div>
+                        </div>
+                        <div class="last">{{ c.last_message }}</div>
+                        </div>
                     </div>
-                    <div class="last">{{ c.last_message }}</div>
-                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
             </aside>
         
             <main class="chat-area">
