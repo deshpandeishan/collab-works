@@ -104,7 +104,6 @@ body {
     }
 }
 
-/* mockup image */
 #upper-mockup {
     max-width: 100vw;
     height: auto;
@@ -165,12 +164,6 @@ body {
     bottom: 0;
 }
 
-
-
-
-
-
-/* code for search bar */
 .search-section {
     display: flex;
     flex-direction: column;
@@ -333,7 +326,6 @@ body {
     }
 }
 
-/* search results */
 .search-results {
     margin-top: 100px;
     width: 76%;
@@ -548,14 +540,6 @@ body {
     }
 }
 
-/* @media screen and (max-width: 768px) {
-
-} */
-
-
-
-
-/* info-section code */
 .info-section {
     display: flex;
     flex-direction: column;
@@ -643,7 +627,6 @@ body {
     animation-delay: 1s;
 }
 
-/* feedback section code */
 .clients-feedback-section {
     display: flex;
     flex-direction: column;
@@ -714,7 +697,6 @@ body {
     }
 }
 
-/* mobile */
 @media screen and (max-width: 768px) {
     .cta-section {
         display: none;

@@ -1,389 +1,386 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CollabWorks</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo/collabWorks.ico') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index/index.css') }}">
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
-    
-    
-</head>
-<body>
-    {% include 'header/header.html' %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CollabWorks</title>
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo/collabWorks.ico') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/index/index.css') }}">
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css'>
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+        
+        
+    </head>
+    <body>
+        {% include 'header/header.html' %}
 
-    <!-- desktop section -->
-    <div class="cta-section">
-        <img id="upper-mockup" src="{{ url_for('static', filename='img/cta/upperside.png') }}" alt="Mockup" class="mockup">
+        <div class="cta-section">
+            <img id="upper-mockup" src="{{ url_for('static', filename='img/cta/upperside.png') }}" alt="Mockup" class="mockup">
 
 
-        <div class="line-section">
-            <p>
-              <span id="firstline" class="cta-line">Find talent</span><br>
-              <span id="secondline" class="cta-line">for your next project</span>
-            </p>
-              
+            <div class="line-section">
+                <p>
+                <span id="firstline" class="cta-line">Find talent</span><br>
+                <span id="secondline" class="cta-line">for your next project</span>
+                </p>
+                
+            </div>
+
+            <button id="cta-btn" class="btn">Get Started <i class="fi fi-bs-arrow-up-right"></i></button>
+            <img id="bottom-mockup" src="{{ url_for('static', filename='img/cta/bottomside.png') }}" alt="Mockup" class="mockup">
         </div>
 
-        <button id="cta-btn" class="btn">Get Started <i class="fi fi-bs-arrow-up-right"></i></button>
-        <img id="bottom-mockup" src="{{ url_for('static', filename='img/cta/bottomside.png') }}" alt="Mockup" class="mockup">
-    </div>
-
-    <!-- mobile section -->
-    <div class="mobile-cta-section">
-        <img id="mobile-upper-mockup" src="{{ url_for('static', filename='img/cta/mobile-upperside.png') }}" alt="Mockup" class="mockup">
+        <div class="mobile-cta-section">
+            <img id="mobile-upper-mockup" src="{{ url_for('static', filename='img/cta/mobile-upperside.png') }}" alt="Mockup" class="mockup">
 
 
-        <div class="mobile-line-section">
-            <p>
-              <span id="mobile-firstline" class="cta-line">Find talent</span><br>
-              <span id="mobile-secondline" class="cta-line">for your next project</span>
-            </p>
-              
+            <div class="mobile-line-section">
+                <p>
+                <span id="mobile-firstline" class="cta-line">Find talent</span><br>
+                <span id="mobile-secondline" class="cta-line">for your next project</span>
+                </p>
+                
+            </div>
+
+            <button id="cta-btn" class="btn">Get Started <i class="fi fi-bs-arrow-up-right"></i></button>
+            <img id="mobile-bottom-mockup" src="{{ url_for('static', filename='img/cta/mobile-bottomside.png') }}" alt="Mockup" class="mockup">
         </div>
 
-        <button id="cta-btn" class="btn">Get Started <i class="fi fi-bs-arrow-up-right"></i></button>
-        <img id="mobile-bottom-mockup" src="{{ url_for('static', filename='img/cta/mobile-bottomside.png') }}" alt="Mockup" class="mockup">
-    </div>
 
 
+        <div id="search-section" class="search-section">
 
-    <div id="search-section" class="search-section">
+            <span id="search-firstline">Describe your need or</span><br>
+            <span id="search-secondline">search by role</span>
 
-        <span id="search-firstline">Describe your need or</span><br>
-        <span id="search-secondline">search by role</span>
+            <div class="search-bar-wrapper">
+                <div class="search-input-wrapper">
+                    <input id="search-bar" class="search-bar" type="text" placeholder="What do you want to build?">
+                    <span class="shortcut-hint">⌘ + K</span>
+                    <button id="search-icon" class="btn" style="display: none;"><i class="fa-solid fa-arrow-up"></i></button>
+                </div>
+            </div>
+            
+            <p id="search-instruction">We use Natural Language Processing to understand your request to show results.</p>
+            
+            <div id="search-results" class="search-results"></div>
 
-        <div class="search-bar-wrapper">
-            <div class="search-input-wrapper">
-                <input id="search-bar" class="search-bar" type="text" placeholder="What do you want to build?">
-                <span class="shortcut-hint">⌘ + K</span>
-                <button id="search-icon" class="btn" style="display: none;"><i class="fa-solid fa-arrow-up"></i></button>
+        </div>
+
+        
+        <div class="info-section">
+            <img class="pc-image" id="info-image" src="{{ url_for('static', filename='img/info-section/pc.jpg') }}" alt="People Working" class="info-img">
+            <img class="mobile-image" id="info-image" src="{{ url_for('static', filename='img/info-section/mobile.jpg') }}" alt="People Working" class="info-img">
+            <div class="info-text-container">
+                <p id="left-side" class="info-text">WHERE IDEAS TALK</p>
+                <p id="right-side" class="info-text">AND BUILDERS LISTEN</p>
             </div>
         </div>
-        
-        <p id="search-instruction">We use Natural Language Processing to understand your request to show results.</p>
-        
-        <div id="search-results" class="search-results"></div>
 
-    </div>
+        <div class="clients-feedback-section">
+            <h1 id="clients-feedback-section-heading">Loved by <br>agencies and their clients</h1>
 
-    
-    <div class="info-section">
-        <img class="pc-image" id="info-image" src="{{ url_for('static', filename='img/info-section/pc.jpg') }}" alt="People Working" class="info-img">
-        <img class="mobile-image" id="info-image" src="{{ url_for('static', filename='img/info-section/mobile.jpg') }}" alt="People Working" class="info-img">
-        <div class="info-text-container">
-            <p id="left-side" class="info-text">WHERE IDEAS TALK</p>
-            <p id="right-side" class="info-text">AND BUILDERS LISTEN</p>
+            <div class="clients-logo-section">
+                <img src="{{ url_for('static', filename='img/clients-logo/out-brand-them.png') }}" alt="Agency 1" class="logo">
+                <img src="{{ url_for('static', filename='img/clients-logo/pro-narrative.png') }}" alt="Agency 2" class="logo">
+                <img src="{{ url_for('static', filename='img/clients-logo/ply.png') }}" alt="Agency 3" class="logo">
+                <img src="{{ url_for('static', filename='img/clients-logo/tsd.png') }}" alt="Agency 4" class="logo">
+                <img src="{{ url_for('static', filename='img/clients-logo/like-noa.png') }}" alt="Agency 5" class="logo">
+            </div>
         </div>
-    </div>
 
-    <div class="clients-feedback-section">
-        <h1 id="clients-feedback-section-heading">Loved by <br>agencies and their clients</h1>
+        {% include 'footer/footer.html' %}
 
-        <div class="clients-logo-section">
-            <img src="{{ url_for('static', filename='img/clients-logo/out-brand-them.png') }}" alt="Agency 1" class="logo">
-            <img src="{{ url_for('static', filename='img/clients-logo/pro-narrative.png') }}" alt="Agency 2" class="logo">
-            <img src="{{ url_for('static', filename='img/clients-logo/ply.png') }}" alt="Agency 3" class="logo">
-            <img src="{{ url_for('static', filename='img/clients-logo/tsd.png') }}" alt="Agency 4" class="logo">
-            <img src="{{ url_for('static', filename='img/clients-logo/like-noa.png') }}" alt="Agency 5" class="logo">
-        </div>
-    </div>
+        <script>
+            window.addEventListener("DOMContentLoaded", () => {
+                document.querySelectorAll(".cta-line").forEach((el, i) => {
+                    el.style.animationDelay = `${i * 0.3}s`;
+                    el.classList.add("animate");
+                });
 
-    {% include 'footer/footer.html' %}
+                document.getElementById("cta-btn").classList.add("animate");
 
-    <script>
-        window.addEventListener("DOMContentLoaded", () => {
+                document.getElementById("upper-mockup").classList.add("animate");
+                document.getElementById("bottom-mockup").classList.add("animate");
+            });
+
+            window.addEventListener("DOMContentLoaded", () => {
             document.querySelectorAll(".cta-line").forEach((el, i) => {
                 el.style.animationDelay = `${i * 0.3}s`;
                 el.classList.add("animate");
             });
 
             document.getElementById("cta-btn").classList.add("animate");
-
-            document.getElementById("upper-mockup").classList.add("animate");
-            document.getElementById("bottom-mockup").classList.add("animate");
-        });
-
-        window.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".cta-line").forEach((el, i) => {
-            el.style.animationDelay = `${i * 0.3}s`;
-            el.classList.add("animate");
-        });
-
-        document.getElementById("cta-btn").classList.add("animate");
-        });
-
-        const searchSection = document.getElementById("search-section");
-
-        const observer = new IntersectionObserver(
-        (entries, observer) => {
-            entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                searchSection.classList.add("animate");
-                observer.unobserve(searchSection);
-            }
-            });
-        },
-        { threshold: 0.3 }
-        );
-
-        observer.observe(searchSection);
-
-        function detectOS() {
-            const userAgent = window.navigator.userAgent;
-            if (userAgent.indexOf('Mac') !== -1) {
-                return 'mac';
-            } else if (userAgent.indexOf('Win') !== -1 || userAgent.indexOf('Linux') !== -1) {
-                return 'windows';
-            }
-            return 'other';
-        }
-
-        function updateShortcut() {
-            const os = detectOS();
-            const shortcutHint = document.querySelector('.shortcut-hint');
-            const searchBar = document.getElementById('search-bar');
-
-            if (!shortcutHint || !searchBar) return;
-
-            const defaultHint = os === 'mac' ? '⌘ + k' : 'Ctrl + k';
-            shortcutHint.textContent = defaultHint;
-
-            searchBar.addEventListener('focus', () => {
-                shortcutHint.textContent = '↵ Enter';
             });
 
-            searchBar.addEventListener('blur', () => {
-                shortcutHint.textContent = defaultHint;
-            });
-        }
+            const searchSection = document.getElementById("search-section");
 
-        document.getElementById('cta-btn').addEventListener('click', function(event) {
-            event.preventDefault();
-            document.querySelector('.search-section').scrollIntoView({ behavior: 'smooth' });
-        });
-
-        function setupKeyboardShortcut() {
-            document.addEventListener('keydown', function(event) {
-                const isCmd = (event.metaKey && event.key === 'k');
-                const isCtrl = (event.ctrlKey && event.key === 'k');
-
-                if (isCmd || isCtrl) {
-                    event.preventDefault();
-                    const searchBar = document.getElementById('search-bar');
-                    searchBar.focus();
+            const observer = new IntersectionObserver(
+            (entries, observer) => {
+                entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    searchSection.classList.add("animate");
+                    observer.unobserve(searchSection);
                 }
-
-                if (event.key === 'Escape') {
-                    const searchBar = document.getElementById('search-bar');
-                    searchBar.blur();
-                }
-            });
-        }
-
-        const searchBar = document.getElementById("search-bar");
-        const searchIcon = document.getElementById("search-icon");
-
-        async function triggerSearch() {
-            const needStatement = searchBar.value.trim();
-            if (!needStatement) return;
-
-            const resultsDiv = document.getElementById("search-results");
-            resultsDiv.innerHTML = `
-                <div class="searching-wrapper">
-                    <video src="/static/img/searching/searching.mp4" autoplay muted loop></video>
-                </div>
-            `;
-
-            searchBar.scrollIntoView({ behavior: "smooth", block: "start" });
-
-            try {
-                const response = await fetch("/predict_roles", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams({ "need_statement": needStatement, "top_n": 4 })
                 });
-                const data = await response.json();
+            },
+            { threshold: 0.3 }
+            );
 
-                resultsDiv.innerHTML = "";
+            observer.observe(searchSection);
 
-                const rolesResponse = await fetch("/get_roles");
-                let roles = [];
-                if (rolesResponse.ok) {
-                    const rolesData = await rolesResponse.json();
-                    const latest = rolesData[rolesData.length - 1];
-                    roles = latest.roles;
+            function detectOS() {
+                const userAgent = window.navigator.userAgent;
+                if (userAgent.indexOf('Mac') !== -1) {
+                    return 'mac';
+                } else if (userAgent.indexOf('Win') !== -1 || userAgent.indexOf('Linux') !== -1) {
+                    return 'windows';
                 }
-
-                const profilesResponse = await fetch("/get_freelancers");
-                if (profilesResponse.ok) {
-                    const profiles = await profilesResponse.json();
-                    profiles.forEach(profile => {
-                        createCard(profile, roles.length ? roles : ["Developer"]);
-                    });
-                } else {
-                    resultsDiv.innerHTML = "<p>Error fetching profiles from DB.</p>";
-                }
-
-            } catch (err) {
-                console.error(err);
-                resultsDiv.innerHTML = "<p>Error fetching results.</p>";
+                return 'other';
             }
-        }
 
-        searchBar.addEventListener("keypress", (event) => {
-            if (event.key === "Enter") {
-                triggerSearch();
+            function updateShortcut() {
+                const os = detectOS();
+                const shortcutHint = document.querySelector('.shortcut-hint');
+                const searchBar = document.getElementById('search-bar');
+
+                if (!shortcutHint || !searchBar) return;
+
+                const defaultHint = os === 'mac' ? '⌘ + k' : 'Ctrl + k';
+                shortcutHint.textContent = defaultHint;
+
+                searchBar.addEventListener('focus', () => {
+                    shortcutHint.textContent = '↵ Enter';
+                });
+
+                searchBar.addEventListener('blur', () => {
+                    shortcutHint.textContent = defaultHint;
+                });
             }
-        });
 
-        searchIcon.addEventListener("click", () => {
-            triggerSearch();
-        });
-
-
-
-        function createCard(data, roles) {
-            const card = document.createElement("div");
-            card.className = "card";
-
-            const cardData = document.createElement("div");
-            cardData.id = "card-data";
-
-            const img = document.createElement("img");
-            img.src = data.image;
-            img.alt = "User pfp";
-            img.className = "result-image";
-
-            const nameTitle = document.createElement("div");
-            nameTitle.className = "name-title";
-
-            const name = document.createElement("span");
-            name.id = "name";
-            name.textContent = data.name;
-
-            const role = document.createElement("span");
-            role.id = "role";
-            role.textContent = data.role;
-
-            const tagline = document.createElement("span");
-            tagline.id = "tagline";
-            tagline.textContent = data.tagline;
-
-            const extraInfo = document.createElement("div");
-            extraInfo.className = "extra-info";
-
-            const location = document.createElement("span");
-            location.className = "location";
-            location.textContent = data.location;
-
-            const rate = document.createElement("span");
-            rate.className = "rate";
-            rate.textContent = data.rate;
-
-            extraInfo.append(location, rate);
-
-            const skillsDiv = document.createElement("div");
-            skillsDiv.className = "skills";
-            roles.forEach(roleName => {
-                const skillTag = document.createElement("span");
-                skillTag.className = "skill-tag";
-                skillTag.textContent = roleName;
-                skillsDiv.appendChild(skillTag);
+            document.getElementById('cta-btn').addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelector('.search-section').scrollIntoView({ behavior: 'smooth' });
             });
 
-            nameTitle.append(name, role, tagline, extraInfo, skillsDiv);
-            cardData.append(img, nameTitle);
+            function setupKeyboardShortcut() {
+                document.addEventListener('keydown', function(event) {
+                    const isCmd = (event.metaKey && event.key === 'k');
+                    const isCtrl = (event.ctrlKey && event.key === 'k');
 
-            const bottomWrapper = document.createElement("div");
-            bottomWrapper.className = "bottom-wrapper";
-
-            const workBtn = document.createElement("button");
-            workBtn.id = "work-btn";
-            workBtn.className = "btn";
-            workBtn.textContent = "Choose to work";
-
-            workBtn.addEventListener("click", async () => {
-                try {
-                    const response = await fetch("/check_client_status");
-                    const statusData = await response.json();
-
-                    if (statusData.status === "ok") {
-                        // use freelancer ID from JSON
-                        window.location.href = `/start_chat/${data.unique_id}`;
-                    } else {
-                        alert("Please log in as a Client to choose a freelancer.");
-                        window.location.href = "/client/login";
+                    if (isCmd || isCtrl) {
+                        event.preventDefault();
+                        const searchBar = document.getElementById('search-bar');
+                        searchBar.focus();
                     }
+
+                    if (event.key === 'Escape') {
+                        const searchBar = document.getElementById('search-bar');
+                        searchBar.blur();
+                    }
+                });
+            }
+
+            const searchBar = document.getElementById("search-bar");
+            const searchIcon = document.getElementById("search-icon");
+
+            async function triggerSearch() {
+                const needStatement = searchBar.value.trim();
+                if (!needStatement) return;
+
+                const resultsDiv = document.getElementById("search-results");
+                resultsDiv.innerHTML = `
+                    <div class="searching-wrapper">
+                        <video src="/static/img/searching/searching.mp4" autoplay muted loop></video>
+                    </div>
+                `;
+
+                searchBar.scrollIntoView({ behavior: "smooth", block: "start" });
+
+                try {
+                    const response = await fetch("/predict_roles", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams({ "need_statement": needStatement, "top_n": 4 })
+                    });
+                    const data = await response.json();
+
+                    resultsDiv.innerHTML = "";
+
+                    const rolesResponse = await fetch("/get_roles");
+                    let roles = [];
+                    if (rolesResponse.ok) {
+                        const rolesData = await rolesResponse.json();
+                        const latest = rolesData[rolesData.length - 1];
+                        roles = latest.roles;
+                    }
+
+                    const profilesResponse = await fetch("/get_freelancers");
+                    if (profilesResponse.ok) {
+                        const profiles = await profilesResponse.json();
+                        profiles.forEach(profile => {
+                            createCard(profile, roles.length ? roles : ["Developer"]);
+                        });
+                    } else {
+                        resultsDiv.innerHTML = "<p>Error fetching profiles from DB.</p>";
+                    }
+
                 } catch (err) {
                     console.error(err);
-                    alert("Error checking login status. Try again.");
+                    resultsDiv.innerHTML = "<p>Error fetching results.</p>";
+                }
+            }
+
+            searchBar.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    triggerSearch();
                 }
             });
-            console.log(data);
+
+            searchIcon.addEventListener("click", () => {
+                triggerSearch();
+            });
 
 
-            const ratingWrapper = document.createElement("div");
-            ratingWrapper.className = "rating-wrapper";
-            ratingWrapper.title = `Based on ${data.ratingCount} reviews`;
 
-            const ratingIcon = document.createElement("img");
-            ratingIcon.src = data.ratingIcon;
-            ratingIcon.alt = "Rating Icon";
-            ratingIcon.id = "rating-icon";
-            ratingIcon.className = "rating-icon";
+            function createCard(data, roles) {
+                const card = document.createElement("div");
+                card.className = "card";
 
-            const rateSpan = document.createElement("span");
-            rateSpan.id = "rate";
-            rateSpan.textContent = data.rating;
+                const cardData = document.createElement("div");
+                cardData.id = "card-data";
 
-            const ratingCount = document.createElement("span");
-            ratingCount.id = "rating-count";
-            ratingCount.textContent = `(${data.ratingCount})`;
+                const img = document.createElement("img");
+                img.src = data.image;
+                img.alt = "User pfp";
+                img.className = "result-image";
 
-            ratingWrapper.append(ratingIcon, rateSpan, ratingCount);
-            bottomWrapper.append(workBtn, ratingWrapper);
-            
+                const nameTitle = document.createElement("div");
+                nameTitle.className = "name-title";
 
-            card.append(cardData, bottomWrapper);
-            card.style.animationDelay = `${document.querySelectorAll(".card").length * 0.1}s`;
-            document.getElementById("search-results").appendChild(card);
-        }
+                const name = document.createElement("span");
+                name.id = "name";
+                name.textContent = data.name;
 
-        updateShortcut();
-        setupKeyboardShortcut();
+                const role = document.createElement("span");
+                role.id = "role";
+                role.textContent = data.role;
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        document.getElementById('left-side').classList.add('fade-in-left');
-                        document.getElementById('right-side').classList.add('fade-in-right');
-                        observer.disconnect();
+                const tagline = document.createElement("span");
+                tagline.id = "tagline";
+                tagline.textContent = data.tagline;
+
+                const extraInfo = document.createElement("div");
+                extraInfo.className = "extra-info";
+
+                const location = document.createElement("span");
+                location.className = "location";
+                location.textContent = data.location;
+
+                const rate = document.createElement("span");
+                rate.className = "rate";
+                rate.textContent = data.rate;
+
+                extraInfo.append(location, rate);
+
+                const skillsDiv = document.createElement("div");
+                skillsDiv.className = "skills";
+                roles.forEach(roleName => {
+                    const skillTag = document.createElement("span");
+                    skillTag.className = "skill-tag";
+                    skillTag.textContent = roleName;
+                    skillsDiv.appendChild(skillTag);
+                });
+
+                nameTitle.append(name, role, tagline, extraInfo, skillsDiv);
+                cardData.append(img, nameTitle);
+
+                const bottomWrapper = document.createElement("div");
+                bottomWrapper.className = "bottom-wrapper";
+
+                const workBtn = document.createElement("button");
+                workBtn.id = "work-btn";
+                workBtn.className = "btn";
+                workBtn.textContent = "Choose to work";
+
+                workBtn.addEventListener("click", async () => {
+                    try {
+                        const response = await fetch("/check_client_status");
+                        const statusData = await response.json();
+
+                        if (statusData.status === "ok") {
+                            window.location.href = `/start_chat/${data.unique_id}`;
+                        } else {
+                            alert("Please log in as a Client to choose a freelancer.");
+                            window.location.href = "/client/login";
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert("Error checking login status. Try again.");
                     }
                 });
-            }, { threshold: 0.5 });
+                console.log(data);
 
-            const target = document.querySelector('.info-section');
-            if (target) observer.observe(target);
 
-            const feedbackSection = document.querySelector('.clients-feedback-section');
-            const feedbackObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        feedbackSection.classList.add('fade-in');
-                        feedbackObserver.disconnect();
-                    }
-                });
-            }, { threshold: 0.5 });
+                const ratingWrapper = document.createElement("div");
+                ratingWrapper.className = "rating-wrapper";
+                ratingWrapper.title = `Based on ${data.ratingCount} reviews`;
 
-            const feedbackTarget = document.querySelector('.clients-logo-section');
-            if (feedbackTarget) feedbackObserver.observe(feedbackTarget);
-        });
+                const ratingIcon = document.createElement("img");
+                ratingIcon.src = data.ratingIcon;
+                ratingIcon.alt = "Rating Icon";
+                ratingIcon.id = "rating-icon";
+                ratingIcon.className = "rating-icon";
 
-    </script>
-</body>
+                const rateSpan = document.createElement("span");
+                rateSpan.id = "rate";
+                rateSpan.textContent = data.rating;
+
+                const ratingCount = document.createElement("span");
+                ratingCount.id = "rating-count";
+                ratingCount.textContent = `(${data.ratingCount})`;
+
+                ratingWrapper.append(ratingIcon, rateSpan, ratingCount);
+                bottomWrapper.append(workBtn, ratingWrapper);
+                
+
+                card.append(cardData, bottomWrapper);
+                card.style.animationDelay = `${document.querySelectorAll(".card").length * 0.1}s`;
+                document.getElementById("search-results").appendChild(card);
+            }
+
+            updateShortcut();
+            setupKeyboardShortcut();
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            document.getElementById('left-side').classList.add('fade-in-left');
+                            document.getElementById('right-side').classList.add('fade-in-right');
+                            observer.disconnect();
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                const target = document.querySelector('.info-section');
+                if (target) observer.observe(target);
+
+                const feedbackSection = document.querySelector('.clients-feedback-section');
+                const feedbackObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            feedbackSection.classList.add('fade-in');
+                            feedbackObserver.disconnect();
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                const feedbackTarget = document.querySelector('.clients-logo-section');
+                if (feedbackTarget) feedbackObserver.observe(feedbackTarget);
+            });
+
+        </script>
+    </body>
 </html>

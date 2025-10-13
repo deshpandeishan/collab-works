@@ -143,17 +143,14 @@ def freelancer_chat():
         if not msgs:
             continue
 
-        # Include only conversations this freelancer is part of
         if not any(
             str(m.user) == current_freelancer_id or str(m.receiver_id) == current_freelancer_id
             for m in msgs
         ):
             continue
 
-        # Correctly identify the client in this conversation
         client_id = None
         for m in msgs:
-            # If current user is freelancer, the other participant must be a client
             if str(m.user) != current_freelancer_id and Client.query.get(int(m.user)):
                 client_id = m.user
                 break
@@ -203,11 +200,8 @@ def get_conversation(conv_id):
         return jsonify({"error": "No messages found"}), 404
 
     current_user_id = str(current_user.id)
-
-    # Identify the other participant based on current user type
     other_id = None
     if isinstance(current_user, Freelancer):
-        # Find the client in this conversation
         for m in msgs:
             if str(m.user) != current_user_id and Client.query.get(int(m.user)):
                 other_id = m.user
@@ -217,7 +211,6 @@ def get_conversation(conv_id):
                 break
         other_user = Client.query.get(int(other_id)) if other_id else None
     else:
-        # Current user is client → find the freelancer
         for m in msgs:
             if str(m.user) != current_user_id and Freelancer.query.get(int(m.user)):
                 other_id = m.user

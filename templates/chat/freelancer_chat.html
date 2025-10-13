@@ -1,179 +1,179 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Freelancer Chat</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/chat/style.css') }}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-{% include 'header/header.html' %}
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>CollabWorks - Freelancer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat/style.css') }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+    <body>
+        {% include 'header/header.html' %}
 
-<div class="app">
-  <aside class="sidebar-left">
-    <div class="sidebar-top">
-      <div class="page-title">Chats</div>
-      <div class="search">
-        <input id="searchInput" placeholder="Search or start new chat"/>
-      </div>
-    </div>
-    <div class="conversations" id="conversationsList">
-      {% for c in conversations %}
-      <div class="conversation-item {% if c.id == active_id %}active{% endif %}" data-id="{{ c.id }}">
-        <img class="avatar" src="{{ c.avatar }}" alt="avatar"/>
-        <div class="meta">
-          <div class="row">
-            <div class="name">{{ c.name }}</div>
-            <div class="time">{{ c.timestamp }}</div>
-          </div>
-          <div class="last">{{ c.last_message }}</div>
+        <div class="app">
+            <aside class="sidebar-left">
+                <div class="sidebar-top">
+                <div class="page-title">Chats</div>
+                <div class="search">
+                    <input id="searchInput" placeholder="Search or start new chat"/>
+                </div>
+                </div>
+                <div class="conversations" id="conversationsList">
+                {% for c in conversations %}
+                <div class="conversation-item {% if c.id == active_id %}active{% endif %}" data-id="{{ c.id }}">
+                    <img class="avatar" src="{{ c.avatar }}" alt="avatar"/>
+                    <div class="meta">
+                    <div class="row">
+                        <div class="name">{{ c.name }}</div>
+                        <div class="time">{{ c.timestamp }}</div>
+                    </div>
+                    <div class="last">{{ c.last_message }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+                </div>
+            </aside>
+
+            <main class="chat-area">
+                <div class="chat-header" id="chatHeader">
+                    <div class="left">
+                        {% if conversations %}
+                        <img id="headerAvatar" class="avatar-lg" src="{{ conversations[0].avatar }}" alt="">
+                        <div id="headerName">{{ conversations[0].name }}</div>
+                        <div id="headerStatus"></div>
+                        {% else %}
+                        <p>No conversations yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <section class="messages" id="messages">
+                    {% if conversations and conversations[0].messages %}
+                        {% for msg in conversations[0].messages %}
+                        <div class="message {% if msg.from_me %}me{% else %}them{% endif %}">
+                        <div class="bubble">
+                            <div class="text">{{ msg.text }}</div>
+                            <div class="msg-time">{{ msg.time }}</div>
+                        </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No messages yet.</p>
+                    {% endif %}
+                </section>
+
+                <footer class="composer">
+                    <div class="attachments">
+                        <i class="fa-solid fa-paperclip"></i>
+                        <i class="fa-regular fa-image"></i>
+                    </div>
+                    <input id="messageBox" placeholder="Type your message..." autocomplete="off"/>
+                    <button id="sendBtn" class="send">Send</button>
+                </footer>
+            </main>
         </div>
-      </div>
-      {% endfor %}
-    </div>
-  </aside>
 
-  <main class="chat-area">
-    <div class="chat-header" id="chatHeader">
-      <div class="left">
-        {% if conversations %}
-          <img id="headerAvatar" class="avatar-lg" src="{{ conversations[0].avatar }}" alt="">
-          <div id="headerName">{{ conversations[0].name }}</div>
-          <div id="headerStatus"></div>
-        {% else %}
-          <p>No conversations yet.</p>
-        {% endif %}
-      </div>
-    </div>
+        <script>
+            const convListEl = document.getElementById("conversationsList");
+            const messagesEl = document.getElementById("messages");
+            const headerName = document.getElementById("headerName");
+            const headerAvatar = document.getElementById("headerAvatar");
+            const messageBox = document.getElementById("messageBox");
+            const sendBtn = document.getElementById("sendBtn");
+            const searchInput = document.getElementById("searchInput");
 
-    <section class="messages" id="messages">
-      {% if conversations and conversations[0].messages %}
-        {% for msg in conversations[0].messages %}
-        <div class="message {% if msg.from_me %}me{% else %}them{% endif %}">
-          <div class="bubble">
-            <div class="text">{{ msg.text }}</div>
-            <div class="msg-time">{{ msg.time }}</div>
-          </div>
-        </div>
-        {% endfor %}
-      {% else %}
-        <p>No messages yet.</p>
-      {% endif %}
-    </section>
+            const currentUser = "{{ user }}";
+            let activeId = {{ active_id }};
+            let initialConversations = {{ conversations|tojson|safe }};
 
-    <footer class="composer">
-      <div class="attachments">
-        <i class="fa-solid fa-paperclip"></i>
-        <i class="fa-regular fa-image"></i>
-      </div>
-      <input id="messageBox" placeholder="Type your message..." autocomplete="off"/>
-      <button id="sendBtn" class="send">Send</button>
-    </footer>
-  </main>
-</div>
+            function escapeHtml(unsafe){
+                return String(unsafe).replace(/[&<"'>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#039;"}[m]));
+            }
 
-<script>
-  const convListEl = document.getElementById("conversationsList");
-  const messagesEl = document.getElementById("messages");
-  const headerName = document.getElementById("headerName");
-  const headerAvatar = document.getElementById("headerAvatar");
-  const messageBox = document.getElementById("messageBox");
-  const sendBtn = document.getElementById("sendBtn");
-  const searchInput = document.getElementById("searchInput");
+            function formatMessage(msg){
+                const wrap = document.createElement("div");
+                wrap.className = "message " + (msg.from_me ? "me" : "them");
+                const bubble = document.createElement("div");
+                bubble.className = "bubble";
+                bubble.innerHTML = `<div class="text">${escapeHtml(msg.text)}</div><div class="msg-time">${msg.time}</div>`;
+                wrap.appendChild(bubble);
+                return wrap;
+            }
 
-  const currentUser = "{{ user }}";
-  let activeId = {{ active_id }};
-  let initialConversations = {{ conversations|tojson|safe }};
+            function getReceiverUniqueId(convId){
+                const conv = initialConversations.find(c=>c.id===convId);
+                return conv ? conv.unique_id : null;
+            }
 
-  function escapeHtml(unsafe){
-    return String(unsafe).replace(/[&<"'>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#039;"}[m]));
-  }
+            function renderConversations(list){
+                convListEl.innerHTML = "";
+                list.forEach(c=>{
+                const div=document.createElement("div");
+                div.className="conversation-item"+(c.id===activeId?" active":"");
+                div.dataset.id=c.id;
+                div.innerHTML=`<img class="avatar" src="${c.avatar}"/>
+                <div class="meta"><div class="row"><div class="name">${escapeHtml(c.name)}</div>
+                <div class="time">${escapeHtml(c.timestamp||"")}</div></div>
+                <div class="last">${escapeHtml(c.last_message||"")}</div></div>`;
+                div.addEventListener("click",()=>loadConversation(c.id));
+                convListEl.appendChild(div);
+                });
+            }
 
-  function formatMessage(msg){
-    const wrap = document.createElement("div");
-    wrap.className = "message " + (msg.from_me ? "me" : "them");
-    const bubble = document.createElement("div");
-    bubble.className = "bubble";
-    bubble.innerHTML = `<div class="text">${escapeHtml(msg.text)}</div><div class="msg-time">${msg.time}</div>`;
-    wrap.appendChild(bubble);
-    return wrap;
-  }
+            function loadConversation(id){
+                fetch(`/chat/${id}`)
+                .then(r=>r.json())
+                .then(conv=>{
+                activeId=conv.id;
+                headerName.textContent=conv.name;
+                headerAvatar.src=conv.avatar;
+                messagesEl.innerHTML="";
+                (conv.messages||[]).forEach(m=>messagesEl.appendChild(formatMessage(m)));
+                document.querySelectorAll(".conversation-item").forEach(el=>el.classList.remove("active"));
+                const activeEl=document.querySelector(`.conversation-item[data-id='${id}']`);
+                if(activeEl)activeEl.classList.add("active");
+                messagesEl.scrollTop=messagesEl.scrollHeight;
+                });
+            }
 
-  function getReceiverUniqueId(convId){
-    const conv = initialConversations.find(c=>c.id===convId);
-    return conv ? conv.unique_id : null;
-  }
+            function sendMessage(){
+                const text=messageBox.value.trim();
+                if(!text)return;
+                const receiverId=getReceiverUniqueId(activeId);
+                fetch("/send",{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({conv_id:activeId,text,user:currentUser,receiver_id:receiverId})
+                })
+                .then(r=>r.json())
+                .then(res=>{
+                if(res.status==="ok"){
+                    messagesEl.appendChild(formatMessage(res.message));
+                    messagesEl.scrollTop=messagesEl.scrollHeight;
+                    messageBox.value="";
+                }
+                });
+            }
 
-  function renderConversations(list){
-    convListEl.innerHTML = "";
-    list.forEach(c=>{
-      const div=document.createElement("div");
-      div.className="conversation-item"+(c.id===activeId?" active":"");
-      div.dataset.id=c.id;
-      div.innerHTML=`<img class="avatar" src="${c.avatar}"/>
-      <div class="meta"><div class="row"><div class="name">${escapeHtml(c.name)}</div>
-      <div class="time">${escapeHtml(c.timestamp||"")}</div></div>
-      <div class="last">${escapeHtml(c.last_message||"")}</div></div>`;
-      div.addEventListener("click",()=>loadConversation(c.id));
-      convListEl.appendChild(div);
-    });
-  }
+            sendBtn.addEventListener("click",sendMessage);
+            messageBox.addEventListener("keydown",e=>{
+                if(e.key==="Enter"&&!e.shiftKey){
+                e.preventDefault();
+                sendMessage();
+                }
+            });
 
-  function loadConversation(id){
-    fetch(`/chat/${id}`)
-    .then(r=>r.json())
-    .then(conv=>{
-      activeId=conv.id;
-      headerName.textContent=conv.name;
-      headerAvatar.src=conv.avatar;
-      messagesEl.innerHTML="";
-      (conv.messages||[]).forEach(m=>messagesEl.appendChild(formatMessage(m)));
-      document.querySelectorAll(".conversation-item").forEach(el=>el.classList.remove("active"));
-      const activeEl=document.querySelector(`.conversation-item[data-id='${id}']`);
-      if(activeEl)activeEl.classList.add("active");
-      messagesEl.scrollTop=messagesEl.scrollHeight;
-    });
-  }
+            searchInput.addEventListener("input",()=>{
+                const q=searchInput.value.trim().toLowerCase();
+                renderConversations(initialConversations.filter(c=>
+                (c.name||"").toLowerCase().includes(q)||(c.last_message||"").toLowerCase().includes(q)
+                ));
+            });
 
-  function sendMessage(){
-    const text=messageBox.value.trim();
-    if(!text)return;
-    const receiverId=getReceiverUniqueId(activeId);
-    fetch("/send",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({conv_id:activeId,text,user:currentUser,receiver_id:receiverId})
-    })
-    .then(r=>r.json())
-    .then(res=>{
-      if(res.status==="ok"){
-        messagesEl.appendChild(formatMessage(res.message));
-        messagesEl.scrollTop=messagesEl.scrollHeight;
-        messageBox.value="";
-      }
-    });
-  }
+            setInterval(()=>{if(activeId)loadConversation(activeId);},2000);
 
-  sendBtn.addEventListener("click",sendMessage);
-  messageBox.addEventListener("keydown",e=>{
-    if(e.key==="Enter"&&!e.shiftKey){
-      e.preventDefault();
-      sendMessage();
-    }
-  });
-
-  searchInput.addEventListener("input",()=>{
-    const q=searchInput.value.trim().toLowerCase();
-    renderConversations(initialConversations.filter(c=>
-      (c.name||"").toLowerCase().includes(q)||(c.last_message||"").toLowerCase().includes(q)
-    ));
-  });
-
-  setInterval(()=>{if(activeId)loadConversation(activeId);},2000);
-
-  renderConversations(initialConversations);
-  loadConversation(activeId);
-</script>
-</body>
+            renderConversations(initialConversations);
+            loadConversation(activeId);
+        </script>
+    </body>
 </html>

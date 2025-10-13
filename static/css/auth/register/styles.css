@@ -280,7 +280,6 @@ p, .step p {
     animation: pop-in 0.5s forwards;
 }
 
-/* transition of sliding in from right side with an fade in effect */
 @keyframes pop-in {
     from {
         opacity: 0;
