@@ -315,6 +315,7 @@
         let freelancerEmailValid = false;
 
         freelancerEmailInput.addEventListener('input', function () {
+            this.value = this.value.toLowerCase();
             const email = this.value.trim();
             clearTimeout(freelancerDebounceTimeoutEmail);
 
@@ -347,6 +348,7 @@
                 }
             }, 500);
         });
+
 
         function freelancerToggleNextButton() {
             freelancerNextButton2.disabled = !freelancerEmailValid;
