@@ -218,13 +218,17 @@
 
                     const profilesResponse = await fetch("/get_freelancers");
                     if (profilesResponse.ok) {
-                        const profiles = await profilesResponse.json();
+                        let profiles = await profilesResponse.json();
+
+                        profiles.sort((a, b) => b.rating - a.rating);
+
                         profiles.forEach(profile => {
                             createCard(profile, roles.length ? roles : ["Developer"]);
                         });
                     } else {
                         resultsDiv.innerHTML = "<p>Error fetching profiles from DB.</p>";
                     }
+
 
                 } catch (err) {
                     console.error(err);
