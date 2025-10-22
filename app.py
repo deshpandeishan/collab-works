@@ -369,7 +369,7 @@ def footer():
 
 @app.route('/terms-of-service')
 def terms_of_service():
-    return render_template('terms_of_service.html')
+    return render_template('docs/terms_of_service.html')
 
 
 @app.route('/privacy-policy')
