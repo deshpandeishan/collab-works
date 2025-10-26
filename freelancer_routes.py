@@ -9,16 +9,18 @@ from extensions import db, bcrypt
 
 freelancer_bp = Blueprint('freelancer', __name__)
 
-class Freelancer(db.Model, UserMixin):
+class Freelancer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
+    username = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50), nullable=True)
+    last_name = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(200), nullable=False)
     tagline = db.Column(db.String(200))
     location = db.Column(db.String(100))
-    roles = db.Column(db.String(500))
+    rating = db.Column(db.Float)
+    price = db.Column(db.Integer)
+
 
     @property
     def role(self):

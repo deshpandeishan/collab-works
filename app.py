@@ -272,9 +272,9 @@ def receive(conv_id):
     return jsonify({"status": "ok", "message": {"from_me": False, "text": reply.text, "time": now}})
 
 
-clf = joblib.load("role_predictor.pkl")
-mlb = joblib.load("mlb.pkl")
-thresholds = joblib.load("thresholds.pkl")
+clf = joblib.load("role_predictor_new.pkl")
+mlb = joblib.load("mlb_new.pkl")
+thresholds = joblib.load("thresholds_new.pkl")
 
 def predict_roles_local(text, top_n=3):
     probas = clf.predict_proba([text])[0]
