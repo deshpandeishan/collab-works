@@ -471,10 +471,10 @@ body {
     margin-bottom: 5px;
 }
   
-#role {
+/* #role {
     font-size: 0.875rem;
     color: #777;
-}
+} */
 
 #card-data {
     display: flex;
@@ -493,7 +493,6 @@ body {
 #tagline {
     font-size: 0.85rem;
     color: #666;
-    margin-top: 2px;
 }
 
 .extra-info {
@@ -572,13 +571,13 @@ body {
 .name-title {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    /* gap: 4px; */
 }
 
 #tagline {
     font-size: 0.85rem;
     color: #666;
-    margin-top: 2px;
+    /* margin-top: 2px; */
     line-height: 1.4;
 }
 

@@ -265,7 +265,7 @@
                         profiles.sort((a, b) => b.rating - a.rating);
 
                         profiles.forEach(profile => {
-                            createCard(profile, roles.length ? roles : ["Developer"]);
+                            createCard(profile, roles);
                         });
                     } else {
                         resultsDiv.innerHTML = "";
@@ -327,9 +327,9 @@
                 name.id = "name";
                 name.textContent = data.name;
 
-                const role = document.createElement("span");
-                role.id = "role";
-                role.textContent = data.role;
+                // const role = document.createElement("span");
+                // role.id = "role";
+                // role.textContent = data.role;
 
                 const tagline = document.createElement("span");
                 tagline.id = "tagline";
@@ -357,7 +357,7 @@
                     skillsDiv.appendChild(skillTag);
                 });
 
-                nameTitle.append(name, role, tagline, extraInfo, skillsDiv);
+                nameTitle.append(name, tagline, extraInfo, skillsDiv);
                 cardData.append(img, nameTitle);
 
                 const bottomWrapper = document.createElement("div");
