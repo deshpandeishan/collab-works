@@ -251,11 +251,16 @@
     }
 
 
-    @media (max-width: 1024px) {
+    @media (max-width: 768px) {
         .desktop-container {
             display: none;
         }
+
+        header {
+            display: none;
+        }
     }
+
 
     @media only screen and (min-height: 500px) and (orientation: landscape) {
         .mobile-container {
@@ -272,210 +277,6 @@
         }
     }
 
-    .sidebar {
-        width: 250px;
-        position: fixed;
-        left: -250px;
-        top: 0;
-        bottom: 0;
-        background: #ffffff;
-        color: white;
-        transition: left 0.3s;
-        border-radius: 0px 20px 20px 0px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .sidebar.open {
-        left: 0;
-    }
-
-    .toggle-switch {
-        position: absolute;
-        top: 25px;
-        right: 25px;
-        cursor: pointer;
-        color: rgb(0, 0, 0);
-        font-size: 26px;
-    }
-
-    .sidebar .logo {
-        padding-top: 20px;
-        padding-left: 6px;
-        text-align: left;
-    }
-
-    .sidebar .logo a {
-        text-decoration: none;
-        color: #000;
-        font-size: 20px;
-        font-weight: bold;
-        z-index: 1;
-    }
-
-    .sidebar .logo i {
-        top: 10px;
-        right: 20px;
-        position: absolute;
-        top: 28px;
-        cursor: pointer;
-        color: #000;
-        font-size: 26px;
-        transform: rotate(90deg);
-    }
-
-    .sidebar ul {
-        padding: 20px 0;
-        list-style: none;
-        padding: 20px;
-    }
-
-    .sidebar ul li {
-        padding: 10px;
-    }
-
-    .sidebar ul li:hover {
-        background-color: #f1f1f1;
-        color: #323232;
-        border-radius: 12px;
-    }
-
-    .sidebar ul li a {
-        text-decoration: none;
-        color: #3d3535;
-        font-weight: 600;
-    }
-
-    .sidebar ul li a i {
-        margin-right: 10px;
-    }
-
-    .sidebar ul li a span {
-        font-size: 18px;
-    }
-
-    .sidebar ul li a span:hover {
-        color: #333;
-    }
-
-    .sidebar {
-        width: 250px;
-        position: fixed;
-        left: -250px;
-        top: 0;
-        bottom: 0;
-        background: #ffffff;
-        color: white;
-        transition: left 0.3s;
-        border-radius: 0px 20px 20px 0px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .sidebar.open {
-        left: 0;
-    }
-
-    .toggle-switch {
-        position: absolute;
-        top: 25px;
-        right: 25px;
-        cursor: pointer;
-        color: rgb(0, 0, 0);
-        font-size: 26px;
-    }
-
-    .sidebar .logo {
-        padding-top: 20px;
-        padding-left: 6px;
-        text-align: left;
-    }
-
-    .sidebar .logo a {
-        text-decoration: none;
-        color: #000;
-        font-size: 20px;
-        font-weight: bold;
-        z-index: 1;
-    }
-
-    .sidebar .logo i {
-        top: 10px;
-        right: 20px;
-        position: absolute;
-        top: 28px;
-        cursor: pointer;
-        color: #000;
-        font-size: 26px;
-        transform: rotate(90deg);
-    }
-
-    .sidebar ul {
-        padding: 20px 0;
-        list-style: none;
-        padding: 20px;
-    }
-
-    .sidebar ul li {
-        padding: 10px;
-    }
-
-    .sidebar ul li:hover {
-        background-color: #f1f1f1;
-        color: #323232;
-        border-radius: 12px;
-    }
-
-    .sidebar ul li a {
-        text-decoration: none;
-        color: #3d3535;
-        font-weight: 600;
-    }
-
-    .sidebar ul li a i {
-        margin-right: 10px;
-    }
-
-    .sidebar ul li a span {
-        font-size: 18px;
-    }
-
-    .sidebar ul li a span:hover {
-        color: #333;
-    }
-
-    .login-signup {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        padding: 20px;
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-        margin-top: auto;
-    }
-    
-    #sidebar-login-btn {
-        border: 1px solid #000;
-        width: 100%;
-        text-align: center;
-        margin: 20px;
-    }
-
-    #sidebar-signup-btn {
-        border: 1px solid #000;
-        width: 100%;
-        text-align: center;
-    }
-
-    #sidebar-auth-menu {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        padding: 20px;
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-        margin-top: auto;
-    }
 
     .popup-overlay {
         display: none;
@@ -836,6 +637,180 @@
     .auth-menu .dropdown-content.show {
         display: block;
     }
+
+    .mobile-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 14px 20px;
+        background: #ffffff;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        position: fixed;
+        width: 100vw;
+        top: 0;
+        left: 0;
+        z-index: 1100;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .mobile-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .toggle-switch {
+        cursor: pointer;
+        color: #000;
+        font-size: 24px;
+        z-index: 1201;
+    }
+
+    .mobile-header-logo img {
+        width: 170px;
+        margin-left: 6px;
+    }
+
+    .mobile-sidebar {
+        position: fixed;
+        top: 0;
+        left: -270px;
+        width: 250px;
+        height: 100vh;
+        background: #ffffff;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        z-index: 1200;
+        border-radius: 0 20px 20px 0;
+        overflow-y: auto;
+    }
+
+    .mobile-sidebar.open {
+        left: 0;
+    }
+
+    .mobile-sidebar .logo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+    }
+
+    .mobile-sidebar .logo img {
+    width: 160px;
+    }
+
+    .mobile-sidebar .logo i {
+    cursor: pointer;
+    font-size: 22px;
+    color: #000;
+    }
+
+    .mobile-sidebar ul {
+    list-style: none;
+    margin-top: 20px;
+    padding: 0 10px;
+    }
+
+    .mobile-sidebar ul li {
+    margin: 10px 0;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background 0.3s;
+    }
+
+    .mobile-sidebar ul li:hover {
+    background: #f5f5f5;
+    }
+
+    .mobile-sidebar ul li a {
+    text-decoration: none;
+    color: #000;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    }
+
+    .mobile-sidebar ul li a i {
+    margin-right: 10px;
+    }
+
+    .login-signup a {
+    text-decoration: none;
+    color: #000;
+    border: 1px solid #000;
+    border-radius: 8px;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    margin: 8px 0;
+    transition: all 0.3s;
+    font-weight: 600;
+    }
+
+    .login-signup a:hover {
+    background: #000;
+    color: #fff;
+    }
+
+    @media (min-width: 1025px) {
+    .mobile-container,
+    .mobile-sidebar {
+        display: none;
+    }
+    }
+
+
+    .login-signup {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        margin-top: auto;
+    }
+    
+    #sidebar-login-btn {
+        border: 1px solid #000;
+        width: 100%;
+        text-align: center;
+        margin: 20px;
+    }
+
+    #sidebar-signup-btn {
+        border: 1px solid #000;
+        width: 100%;
+        text-align: center;
+    }
+
+    #sidebar-auth-menu {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        margin-top: auto;
+    }
+
+    .close-btn {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .close-btn svg {
+        width: 28px;
+        height: 28px;
+        fill: #000;
+        transition: transform 0.2s ease;
+    }
 </style>
 <header>
     <div class="desktop-container">
@@ -1128,9 +1103,6 @@
             {% endif %}
         </div>
         
-        
-
-
         <div id="delete-popup" class="popup-overlay">
             <div class="popup-content">
                 <h3>Confirm Deletion</h3>
@@ -1142,12 +1114,89 @@
             </div>
         </div>
     </div>
-
-
-
 </header>
 
+<div class="mobile-container">
+    <div class="mobile-left">
+      <div class="toggle-switch">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M500-640v320l160-160-160-160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/></svg>
+      </div>
+      <div class="mobile-header-logo">
+        <a href="{{ url_for('index') }}">
+          <img src="{{ url_for('static', filename='/img/logo/text-logo.png') }}" alt="CollabWorks" width="150">
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="mobile-sidebar" id="mobile-sidebar">
+    <div class="logo">
+        <a href="{{ url_for('index') }}">
+          <img src="{{ url_for('static', filename='/img/logo/text-logo.png') }}" alt="CollabWorks" width="160">
+        </a>
+        <div id="close-mobile-sidebar" class="close-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#000000">
+            <path d="M660-320v-320L500-480l160 160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/>
+          </svg>
+        </div>
+    </div>
+
+    <ul>
+      <li><a href="#tools-section"><i class="fas fa-compass"></i> <span>Explore</span></a></li>
+      <li><a href="#platform-section"><i class="fas fa-layer-group"></i> <span>Platform</span></a></li>
+      <li><a href="#features-section"><i class="fas fa-star"></i> <span>Features</span></a></li>
+      <li><a href="#support-section"><i class="fas fa-life-ring"></i> <span>Support</span></a></li>
+    </ul>
+  
+    {% if current_user.is_authenticated %}
+    <div class="mobile-sidebar-user-menu">
+      <img src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="mobile-sidebar-user-icon">
+      <p>{{ current_user.username }}</p>
+      <i class="bi bi-three-dots"></i>
+    </div>
+    {% else %}
+    <div class="login-signup">
+      <a id="mobile-sidebar-login-btn" href="{{ url_for('client.client_login') }}">Login</a>
+      <a id="mobile-sidebar-signup-btn" href="{{ url_for('client.client_register') }}">Sign Up</a>
+    </div>
+    {% endif %}
+  </div>
+  
+
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const mobileSidebar = document.getElementById("mobile-sidebar");
+    const toggleSwitch = document.querySelector(".toggle-switch");
+    const closeSidebar = document.getElementById("close-mobile-sidebar");
+    const mobileHeader = document.querySelector(".mobile-container");
+
+    toggleSwitch.addEventListener("click", () => {
+        mobileSidebar.classList.toggle("open");
+        const isOpen = mobileSidebar.classList.contains("open");
+        toggleSwitch.querySelector("i").classList.toggle("fa-bars");
+        toggleSwitch.querySelector("i").classList.toggle("fa-times");
+        mobileHeader.style.display = isOpen ? "none" : "flex";
+    });
+
+    closeSidebar.addEventListener("click", () => {
+        mobileSidebar.classList.remove("open");
+        toggleSwitch.querySelector("i").classList.add("fa-bars");
+        toggleSwitch.querySelector("i").classList.remove("fa-times");
+        mobileHeader.style.display = "flex";
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!mobileSidebar.contains(e.target) && !toggleSwitch.contains(e.target)) {
+        mobileSidebar.classList.remove("open");
+        toggleSwitch.querySelector("i").classList.add("fa-bars");
+        toggleSwitch.querySelector("i").classList.remove("fa-times");
+        mobileHeader.style.display = "flex";
+        }
+    });
+    });
+
+
+
     document.addEventListener("DOMContentLoaded", function () {
         const deleteButtons = document.querySelectorAll(".delete-account-btn");
         const popup = document.getElementById("delete-popup");

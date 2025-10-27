@@ -813,7 +813,7 @@ body {
     #mobile-upper-mockup {
         max-width: 100vw;
         height: auto;
-        top: 50px;
+        top: 70px;
         position: absolute;
         z-index: -1;
     }
@@ -821,7 +821,7 @@ body {
     #mobile-bottom-mockup {
         max-width: 100vw;
         height: auto;
-        bottom: 150px;
+        bottom: 170px;
         position: absolute;
         z-index: -1;
     }
