@@ -289,8 +289,21 @@ def predict_roles_local(text, top_n=3):
 def predict_roles():
     need_statement = request.form.get("need_statement")
     top_n = int(request.form.get("top_n", 4))
+
     try:
         predicted_roles = predict_roles_local(need_statement, top_n)
+        generic_roles = {"Developer", "Engineer", "Designer"}
+        if not predicted_roles or all(role in generic_roles for role in predicted_roles):
+            friendly_message = (
+                "Hmm, we couldn’t confidently match your request. "
+                "Try rephrasing it with more details like the task or domain."
+            )
+            return jsonify({
+                "need_statement": need_statement,
+                "predicted_roles": [],
+                "message": friendly_message
+            })
+
         roles_file = "roles.json"
         roles_data = []
         if os.path.exists(roles_file):
@@ -299,6 +312,7 @@ def predict_roles():
                     roles_data = json.load(f)
                 except json.JSONDecodeError:
                     roles_data = []
+
         entry = {
             "timestamp": datetime.now().isoformat(),
             "need_statement": need_statement,
@@ -307,9 +321,17 @@ def predict_roles():
         roles_data.append(entry)
         with open(roles_file, "w") as f:
             json.dump(roles_data, f, indent=2)
-        return jsonify({"need_statement": need_statement, "predicted_roles": predicted_roles})
+
+        return jsonify({
+            "need_statement": need_statement,
+            "predicted_roles": predicted_roles
+        })
+
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({
+            "error": "Something went wrong while processing your request. Please try again."
+        }), 500
+
 
 
 @app.route("/get_roles", methods=["GET"])

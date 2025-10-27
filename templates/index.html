@@ -8,9 +8,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/index/index.css') }}">
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-straight/css/uicons-bold-straight.css'>
-        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
-        
-        
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>        
     </head>
     <body>
         {% include 'header/header.html' %}
@@ -88,6 +86,14 @@
                 <button id="apply-filters-btn" class="btn">Apply</button>
             </div>
             
+            <div id="no-results-container" style="display:none; text-align:center; margin-top:30px;">
+                <div id="no-results-animation" style="width:250px; height:250px; margin:0 auto;"></div>
+                <p id="no-results-text" style="font-size:1.2rem; color:#555; margin-top:10px;">
+                  Oops! We couldn’t find any matching roles.<br>
+                  Try rephrasing your need statement.
+                </p>
+            </div>
+              
             <div id="search-results" class="search-results"></div>
 
         </div>
@@ -213,12 +219,24 @@
                 const needStatement = searchBar.value.trim();
                 if (!needStatement) return;
 
+                document.getElementById("no-results-container").style.display = "none";
+
                 const resultsDiv = document.getElementById("search-results");
                 resultsDiv.innerHTML = `
-                    <div class="searching-wrapper">
-                        <video src="/static/img/searching/searching.mp4" autoplay muted loop></video>
+                    <div id="searching-container" class="searching-wrapper">
+                        <div id="searching-animation" style="width: 250px; height: 250px; margin: auto;"></div>
+                        <p style="text-align:center; font-weight:500; color:#555;">Finding best freelancers for you...</p>
                     </div>
                 `;
+
+                lottie.loadAnimation({
+                    container: document.getElementById("searching-animation"),
+                    renderer: "svg",
+                    loop: true,
+                    autoplay: true,
+                    path: "/static/animations/searching.json"
+                });
+
 
                 searchBar.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -250,15 +268,33 @@
                             createCard(profile, roles.length ? roles : ["Developer"]);
                         });
                     } else {
-                        resultsDiv.innerHTML = "<p>Error fetching profiles from DB.</p>";
-                    }
+                        resultsDiv.innerHTML = "";
+                        document.getElementById("no-results-container").style.display = "block";
 
+                        lottie.loadAnimation({
+                            container: document.getElementById("no-results-animation"),
+                            renderer: "svg",
+                            loop: true,
+                            autoplay: true,
+                            path: "/static/animations/non data found.json"
+                        });
+                    }
 
                 } catch (err) {
                     console.error(err);
-                    resultsDiv.innerHTML = "<p>Error fetching results.</p>";
+                    resultsDiv.innerHTML = "";
+                    document.getElementById("no-results-container").style.display = "block";
+
+                    lottie.loadAnimation({
+                        container: document.getElementById("no-results-animation"),
+                        renderer: "svg",
+                        loop: true,
+                        autoplay: true,
+                        path: "/static/animations/non data found.json"
+                    });
                 }
             }
+
 
             searchBar.addEventListener("keypress", (event) => {
                 if (event.key === "Enter") {
@@ -505,5 +541,6 @@
             });
 
         </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.1/lottie.min.js"></script>
     </body>
 </html>
