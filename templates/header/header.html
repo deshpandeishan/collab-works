@@ -677,7 +677,7 @@
         top: 0;
         left: -270px;
         width: 250px;
-        height: 100vh;
+        height: 100%;
         background: #ffffff;
         transition: all 0.3s ease;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
@@ -695,73 +695,83 @@
         align-items: center;
         justify-content: space-between;
         padding: 16px;
+        padding-inline-start: 26px;
     }
 
     .mobile-sidebar .logo img {
-    width: 160px;
+        width: 160px;
     }
 
     .mobile-sidebar .logo i {
-    cursor: pointer;
-    font-size: 22px;
-    color: #000;
+        cursor: pointer;
+        font-size: 22px;
+        color: #000;
     }
 
     .mobile-sidebar ul {
-    list-style: none;
-    margin-top: 20px;
-    padding: 0 10px;
+        list-style: none;
+        padding: 0 10px;
     }
 
     .mobile-sidebar ul li {
-    margin: 10px 0;
-    padding: 10px 15px;
-    border-radius: 8px;
-    transition: background 0.3s;
+        margin: 10px 0;
+        padding: 10px 15px;
+        border-radius: 8px;
+        transition: background 0.3s;
     }
 
     .mobile-sidebar ul li:hover {
-    background: #f5f5f5;
+        background: #f5f5f5;
     }
 
     .mobile-sidebar ul li a {
-    text-decoration: none;
-    color: #000;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
+        text-decoration: none;
+        color: #000;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
     }
 
     .mobile-sidebar ul li a i {
-    margin-right: 10px;
+        margin-right: 10px;
     }
 
     .login-signup a {
-    text-decoration: none;
-    color: #000;
-    border: 1px solid #000;
-    border-radius: 8px;
-    width: 100%;
-    text-align: center;
-    padding: 10px;
-    margin: 8px 0;
-    transition: all 0.3s;
-    font-weight: 600;
+        text-decoration: none;
+        color: #000;
+        border: 1px solid #000;
+        border-radius: 8px;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        margin: 8px 0;
+        transition: all 0.3s;
+        font-weight: 600;
     }
 
     .login-signup a:hover {
-    background: #000;
-    color: #fff;
+        background: #000;
+        color: #fff;
     }
 
     @media (min-width: 1025px) {
-    .mobile-container,
-    .mobile-sidebar {
-        display: none;
-    }
+        .mobile-container,
+        .mobile-sidebar {
+            display: none;
+        }
     }
 
+    #mobile-sidebar-login-btn {
+        background-color: #e3e3e3;
+        border: none;
+    }
+
+    #mobile-sidebar-signup-btn {
+        background-color: #000;
+        color: white;
+        border: none;
+    }
 
     .login-signup {
         display: flex;
@@ -778,6 +788,8 @@
         border: 1px solid #000;
         width: 100%;
         text-align: center;
+        background-color: black !important;
+        color: white !important;
         margin: 20px;
     }
 
@@ -1149,53 +1161,48 @@
     </ul>
   
     {% if current_user.is_authenticated %}
-    <div class="mobile-sidebar-user-menu">
-      <img src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="mobile-sidebar-user-icon">
-      <p>{{ current_user.username }}</p>
-      <i class="bi bi-three-dots"></i>
-    </div>
+        <div class="mobile-sidebar-user-menu">
+            <img src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="mobile-sidebar-user-icon">
+            <p>{{ current_user.username }}</p>
+            <i class="bi bi-three-dots"></i>
+        </div>
     {% else %}
-    <div class="login-signup">
-      <a id="mobile-sidebar-login-btn" href="{{ url_for('client.client_login') }}">Login</a>
-      <a id="mobile-sidebar-signup-btn" href="{{ url_for('client.client_register') }}">Sign Up</a>
-    </div>
+        <div class="login-signup">
+            <a id="mobile-sidebar-login-btn" href="{{ url_for('client.client_login') }}">Login</a>
+            <a id="mobile-sidebar-signup-btn" href="{{ url_for('client.client_register') }}">Sign Up</a>
+        </div>
     {% endif %}
-  </div>
-  
+</div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-    const mobileSidebar = document.getElementById("mobile-sidebar");
-    const toggleSwitch = document.querySelector(".toggle-switch");
-    const closeSidebar = document.getElementById("close-mobile-sidebar");
-    const mobileHeader = document.querySelector(".mobile-container");
+        const mobileSidebar = document.getElementById("mobile-sidebar");
+        const toggleSwitch = document.querySelector(".toggle-switch");
+        const closeSidebar = document.getElementById("close-mobile-sidebar");
+        const mobileHeader = document.querySelector(".mobile-container");
 
-    toggleSwitch.addEventListener("click", () => {
-        mobileSidebar.classList.toggle("open");
-        const isOpen = mobileSidebar.classList.contains("open");
-        toggleSwitch.querySelector("i").classList.toggle("fa-bars");
-        toggleSwitch.querySelector("i").classList.toggle("fa-times");
-        mobileHeader.style.display = isOpen ? "none" : "flex";
+        toggleSwitch.addEventListener("click", () => {
+            mobileSidebar.classList.toggle("open");
+            const isOpen = mobileSidebar.classList.contains("open");
+
+            mobileHeader.style.display = isOpen ? "none" : "flex";
+            document.body.style.overflow = isOpen ? "hidden" : "auto";
+        });
+
+        closeSidebar.addEventListener("click", () => {
+            mobileSidebar.classList.remove("open");
+            mobileHeader.style.display = "flex";
+            document.body.style.overflow = "auto";
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!mobileSidebar.contains(e.target) && !toggleSwitch.contains(e.target)) {
+            mobileSidebar.classList.remove("open");
+            mobileHeader.style.display = "flex";
+            document.body.style.overflow = "auto";
+            }
+        });
     });
-
-    closeSidebar.addEventListener("click", () => {
-        mobileSidebar.classList.remove("open");
-        toggleSwitch.querySelector("i").classList.add("fa-bars");
-        toggleSwitch.querySelector("i").classList.remove("fa-times");
-        mobileHeader.style.display = "flex";
-    });
-
-    document.addEventListener("click", (e) => {
-        if (!mobileSidebar.contains(e.target) && !toggleSwitch.contains(e.target)) {
-        mobileSidebar.classList.remove("open");
-        toggleSwitch.querySelector("i").classList.add("fa-bars");
-        toggleSwitch.querySelector("i").classList.remove("fa-times");
-        mobileHeader.style.display = "flex";
-        }
-    });
-    });
-
-
 
     document.addEventListener("DOMContentLoaded", function () {
         const deleteButtons = document.querySelectorAll(".delete-account-btn");
