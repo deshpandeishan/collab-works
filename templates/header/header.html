@@ -7,8 +7,8 @@
 </head>
 <style>
     * {
-    -webkit-tap-highlight-color: transparent;
-    outline: none;
+        -webkit-tap-highlight-color: transparent;
+        outline: none;
     }
 
     header {
@@ -256,6 +256,32 @@
     @media (max-width: 768px) {
         .logo img {
             width: 190px;
+        }
+
+        .mobile-container {
+            padding: 18px !important;
+        }
+
+        .mobile-left {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 18px;
+        }
+
+        .mobile-header-logo {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        #mobile-header-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
         }
 
         .mobile-sidebar-user-menu {
@@ -1276,10 +1302,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M500-640v320l160-160-160-160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/></svg>
       </div>
       <div class="mobile-header-logo">
-        <a href="{{ url_for('index') }}">
-          <img src="{{ url_for('static', filename='/img/logo/text-logo.png') }}" alt="CollabWorks" width="150">
-        </a>
+            <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='/img/logo/text-logo.png') }}" alt="CollabWorks" width="150">
+            </a>
       </div>
+      <img id="mobile-header-icon" src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="user-icon">
     </div>
   </div>
   
