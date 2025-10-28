@@ -254,14 +254,16 @@
         }
 
         .mobile-sidebar-user-menu {
-            position: relative;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             align-items: center;
             justify-content: space-between;
             background: #fafafa !important;
             padding: 14px 18px;
             border-radius: 12px;
-            margin: 20px auto;
             width: 85%;
             box-shadow: none !important;
         }
@@ -295,7 +297,7 @@
             display: none;
             position: absolute;
             right: 10px;
-            top: 60px;
+            bottom: 60px;
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -303,6 +305,7 @@
             z-index: 2000;
             padding: 10px 0;
         }
+
 
         .mobile-dropdown-item {
             display: flex;
