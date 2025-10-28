@@ -252,8 +252,96 @@
         .logo img {
             width: 190px;
         }
-    }
 
+        .mobile-sidebar-user-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fafafa !important;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin: 20px auto;
+            width: 85%;
+            box-shadow: none !important;
+        }
+
+        .mobile-sidebar-user-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+        }
+
+        .mobile-sidebar-user-menu p {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .mobile-sidebar-user-menu i {
+            font-size: 20px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .mobile-dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 60px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            z-index: 2000;
+            padding: 10px 0;
+        }
+
+        .mobile-dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            transition: background 0.2s ease;
+        }
+
+        .mobile-dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .mobile-dropdown-item a {
+            color: #333;
+            text-decoration: none;
+            font-size: 15px;
+            margin-left: 10px;
+            flex: 1;
+        }
+
+        .mobile-dropdown-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .pro-badge {
+            color: #fff;
+            font-size: 11px;
+            border-radius: 4px;
+            padding: 2px 5px;
+            margin-left: 4px;
+        }
+
+        .mobile-dropdown-menu.active {
+            display: block;
+        }
+
+    }
 
     @media (max-width: 768px) {
         .desktop-container {
@@ -831,6 +919,46 @@
         fill: #000;
         transition: transform 0.2s ease;
     }
+
+    .mobile-sidebar-user-menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 14px 18px;
+  border-radius: 12px;
+  margin: 20px auto;
+  width: 85%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.mobile-sidebar-user-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 12px;
+}
+
+.mobile-sidebar-user-menu p {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-sidebar-user-menu i {
+  font-size: 20px;
+  color: #555;
+  cursor: pointer;
+}
+
+
+
 </style>
 <header>
     <div class="desktop-container">
@@ -892,7 +1020,7 @@
                 <li>
                     <a id="platform-btn" href="#platform-section">Platform</a>
                     <div class="dropdown-tooltip" id="platform-area">
-                        <h2 class="dropdown-heading">Explore CollabWorks</h2>
+                        <h2 class="dropdown-heading">Explore Platform</h2>
                 
                         <div class="column">
                             <h3 class="dropdown-subheading">Core Features</h3>
@@ -1169,11 +1297,47 @@
     </ul>
   
     {% if current_user.is_authenticated %}
-        <div class="mobile-sidebar-user-menu">
-            <img src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="mobile-sidebar-user-icon">
-            <p>{{ current_user.username }}</p>
-            <i class="bi bi-three-dots"></i>
+    <div class="mobile-sidebar-user-menu">
+        <img src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="mobile-sidebar-user-icon">
+        <p>{{ current_user.username }}</p>
+        <i class="bi bi-three-dots" id="mobile-dropdown-toggle"></i>
+    
+        <div id="mobile-dropdown-menu" class="mobile-dropdown-menu">
+            <div class="mobile-dropdown-item">
+                <img src="{{ url_for('static', filename='img/index/icons/profile-icon.webp') }}" alt="User Icon" class="mobile-dropdown-icon">
+                {% if current_user.role == "freelancer" %}
+                    <a href="{{ url_for('freelancer_dashboard') }}">Profile</a>
+                {% else %}
+                    <a href="#">Profile</a>
+                {% endif %}
+            </div>
+            <div class="mobile-dropdown-item">
+                <img src="{{ url_for('static', filename='img/index/icons/chat-icon.webp') }}" alt="Chat Icon" class="mobile-dropdown-icon">
+                <a href="{{ url_for('chat_page') }}">Chat</a>
+            </div>
+            <div class="mobile-dropdown-item">
+                <img src="{{ url_for('static', filename='img/index/icons/subscription-icon.webp') }}" alt="Subscription Icon" class="mobile-dropdown-icon">
+                <a href="#">Subscription <span class="pro-badge">PRO</span></a>
+            </div>
+            <div class="mobile-dropdown-item">
+                <img src="{{ url_for('static', filename='img/index/icons/settings-icon.webp') }}" alt="Settings Icon" class="mobile-dropdown-icon">
+                <a href="#">Settings</a>
+            </div>
+            <div class="mobile-dropdown-item">
+                <img src="{{ url_for('static', filename='img/index/icons/help-icon.webp') }}" alt="Help Icon" class="mobile-dropdown-icon">
+                <a href="#">Help center</a>
+            </div>
+            <div class="mobile-dropdown-item">
+                <img src="{{ url_for('static', filename='img/index/icons/log-out-icon.webp') }}" alt="Logout Icon" class="mobile-dropdown-icon">
+                {% if current_user.role == "client" %}
+                    <a href="{{ url_for('client.client_logout') }}">Sign out</a>
+                {% elif current_user.role == "freelancer" %}
+                    <a href="{{ url_for('freelancer.freelancer_logout') }}">Sign out</a>
+                {% endif %}
+            </div>
         </div>
+    </div>
+    
     {% else %}
         <div class="login-signup">
             <a id="mobile-sidebar-login-btn" href="{{ url_for('client.client_login') }}">Login</a>
@@ -1336,4 +1500,23 @@
             }
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const dropdownToggle = document.getElementById("mobile-dropdown-toggle");
+    const dropdownMenu = document.getElementById("mobile-dropdown-menu");
+
+    if (dropdownToggle && dropdownMenu) {
+        dropdownToggle.addEventListener("click", function (e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (e) {
+            if (!dropdownMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
+                dropdownMenu.classList.remove("active");
+            }
+        });
+    }
+});
+
 </script>

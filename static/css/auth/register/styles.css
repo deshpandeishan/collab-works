@@ -82,7 +82,7 @@ h4 {
 p, .step p {
     font-size: 0.9rem;
     color: #555555;
-    margin-bottom: 2rem;
+    /* margin-bottom: 2rem; */
     text-align: center;
 }
 
@@ -320,7 +320,7 @@ p, .step p {
     }
 
     #freelancer_email, #client_email {
-        margin-bottom: -20px !important;
+        margin-bottom: 0px !important;
     }
 
     /* #freelancer_password, #client_password {

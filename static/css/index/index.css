@@ -80,7 +80,6 @@ body {
     background-color: #0c0c0c;
     color: #e3e3e3;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-
 }
 
 .fi-bs-arrow-up-right {
@@ -785,6 +784,19 @@ body {
         display: none;
     }
 
+    #cta-btn {
+        display: block !important;
+        opacity: 1;
+        margin-inline: auto;
+    }
+    
+    #cta-btn.animate {
+        animation: popIn 1s cubic-bezier(0.25, 1.25, 0.5, 1) forwards;
+        animation-delay: 0.8s;
+        opacity: 1 !important;
+    }
+    
+
     .mobile-cta-section {
         display: flex;
         height: 100vh;
@@ -821,13 +833,9 @@ body {
     #mobile-bottom-mockup {
         max-width: 100vw;
         height: auto;
-        bottom: 170px;
+        bottom: 100px;
         position: absolute;
         z-index: -1;
-    }
-
-    #mobile-cta-btn {
-        display: block !important;
     }
 
     .search-bar-wrapper {
