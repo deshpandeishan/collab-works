@@ -4,12 +4,13 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from urllib.parse import urlparse, urljoin
+from flask_login import UserMixin
 
 from extensions import db, bcrypt
 
 freelancer_bp = Blueprint('freelancer', __name__)
 
-class Freelancer(db.Model):
+class Freelancer(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -101,8 +102,7 @@ def freelancer_register():
             email=form.email.data,
             first_name=form.first_name.data,
             last_name=form.last_name.data,
-            password=hashed_password,
-            roles=roles
+            password=hashed_password
         )
 
         db.session.add(new_freelancer)
