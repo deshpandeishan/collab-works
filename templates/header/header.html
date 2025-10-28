@@ -6,6 +6,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
 </head>
 <style>
+    * {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    }
+
     header {
         background-color: transparent;
         position: fixed;
@@ -924,44 +929,41 @@
     }
 
     .mobile-sidebar-user-menu {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #ffffff;
-  padding: 14px 18px;
-  border-radius: 12px;
-  margin: 20px auto;
-  width: 85%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #ffffff;
+        padding: 14px 18px;
+        border-radius: 12px;
+        margin: 20px auto;
+        width: 85%;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
 
-.mobile-sidebar-user-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 12px;
-}
+    .mobile-sidebar-user-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 12px;
+    }
 
-.mobile-sidebar-user-menu p {
-  flex: 1;
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+    .mobile-sidebar-user-menu p {
+        flex: 1;
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
-.mobile-sidebar-user-menu i {
-  font-size: 20px;
-  color: #555;
-  cursor: pointer;
-}
-
-
-
+    .mobile-sidebar-user-menu i {
+        font-size: 20px;
+        color: #555;
+        cursor: pointer;
+    }
 </style>
 <header>
     <div class="desktop-container">
@@ -1267,6 +1269,7 @@
     </div>
 </header>
 
+{% if not hide_mobile_container %}
 <div class="mobile-container">
     <div class="mobile-left">
       <div class="toggle-switch">
@@ -1348,6 +1351,8 @@
         </div>
     {% endif %}
 </div>
+{% endif %}
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
