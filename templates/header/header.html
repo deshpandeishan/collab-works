@@ -38,6 +38,22 @@
         border-radius: 0 0 20px 20px;
     }
 
+    .desktop-container {
+        opacity: 0;
+        transform: translateY(-30px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .desktop-container.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .desktop-container.scroll-animate {
+        transform: scale(1.02);
+        transition: all 0.3s ease;
+    }
+
     .logo img {
         width: 200px;
     }
@@ -375,7 +391,24 @@
             display: block;
         }
 
+        .mobile-container {
+            opacity: 0;
+            transform: translateY(-30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .mobile-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-container.scroll-animate {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: scale(1.02);
+            transition: all 0.3s ease;
+        }
     }
+    
 
     @media (max-width: 768px) {
         .desktop-container {
@@ -1537,21 +1570,56 @@
     });
 
     document.addEventListener("DOMContentLoaded", function () {
-    const dropdownToggle = document.getElementById("mobile-dropdown-toggle");
-    const dropdownMenu = document.getElementById("mobile-dropdown-menu");
+        const dropdownToggle = document.getElementById("mobile-dropdown-toggle");
+        const dropdownMenu = document.getElementById("mobile-dropdown-menu");
 
-    if (dropdownToggle && dropdownMenu) {
-        dropdownToggle.addEventListener("click", function (e) {
-            e.stopPropagation();
-            dropdownMenu.classList.toggle("active");
-        });
+        if (dropdownToggle && dropdownMenu) {
+            dropdownToggle.addEventListener("click", function (e) {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle("active");
+            });
 
-        document.addEventListener("click", function (e) {
-            if (!dropdownMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
-                dropdownMenu.classList.remove("active");
-            }
-        });
-    }
-});
+            document.addEventListener("click", function (e) {
+                if (!dropdownMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
+                    dropdownMenu.classList.remove("active");
+                }
+            });
+        }
+    });
 
+    document.addEventListener("DOMContentLoaded", function () {
+        const mobileContainer = document.querySelector(".mobile-container");
+
+        if (mobileContainer) {
+            setTimeout(() => {
+                mobileContainer.classList.add("visible");
+            }, 200);
+
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 20) {
+                    mobileContainer.classList.add("scroll-animate");
+                } else {
+                    mobileContainer.classList.remove("scroll-animate");
+                }
+            });
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const desktopContainer = document.querySelector(".desktop-container");
+
+        if (desktopContainer) {
+            setTimeout(() => {
+                desktopContainer.classList.add("visible");
+            }, 200);
+
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 20) {
+                    desktopContainer.classList.add("scroll-animate");
+                } else {
+                    desktopContainer.classList.remove("scroll-animate");
+                }
+            });
+        }
+    });
 </script>
