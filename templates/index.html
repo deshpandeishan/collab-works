@@ -36,7 +36,7 @@
                     <span id="mobile-firstline" class="cta-line">Find talent</span><br>
                     <span id="mobile-secondline" class="cta-line">for your next project</span>
                 </p>
-            <button id="cta-btn" class="btn">Get Started <i class="fi fi-bs-arrow-up-right"></i></button>
+            <button id="cta-btn-mobile" class="btn">Get Started <i class="fi fi-bs-arrow-up-right"></i></button>
 
             </div>
             <img id="mobile-bottom-mockup" src="{{ url_for('static', filename='img/cta/mobile-bottomside.png') }}" alt="Mockup" class="mockup">
@@ -128,20 +128,17 @@
                     el.classList.add("animate");
                 });
 
-                document.getElementById("cta-btn").classList.add("animate");
+                document.querySelectorAll("#cta-btn, #cta-btn-mobile").forEach(btn => {
+                    btn.classList.add("animate");
+                });
 
-                document.getElementById("upper-mockup").classList.add("animate");
-                document.getElementById("bottom-mockup").classList.add("animate");
+                const upperMockup = document.getElementById("upper-mockup");
+                const bottomMockup = document.getElementById("bottom-mockup");
+
+                if (upperMockup) upperMockup.classList.add("animate");
+                if (bottomMockup) bottomMockup.classList.add("animate");
             });
 
-            window.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll(".cta-line").forEach((el, i) => {
-                el.style.animationDelay = `${i * 0.3}s`;
-                el.classList.add("animate");
-            });
-
-            document.getElementById("cta-btn").classList.add("animate");
-            });
 
             const searchSection = document.getElementById("search-section");
 
@@ -188,9 +185,11 @@
                 });
             }
 
-            document.getElementById('cta-btn').addEventListener('click', function(event) {
-                event.preventDefault();
-                document.querySelector('.search-section').scrollIntoView({ behavior: 'smooth' });
+            document.querySelectorAll('#cta-btn, #cta-btn-mobile, #cta-btn-desktop').forEach(btn => {
+                btn.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    document.querySelector('.search-section').scrollIntoView({ behavior: 'smooth' });
+                });
             });
 
             function setupKeyboardShortcut() {
@@ -412,101 +411,6 @@
                 card.style.animationDelay = `${document.querySelectorAll(".card").length * 0.1}s`;
                 document.getElementById("search-results").appendChild(card);
             }
-
-
-            // let allProfiles = [];
-
-            // async function triggerSearch() {
-            //     const needStatement = searchBar.value.trim();
-            //     if (!needStatement) return;
-
-            //     const resultsDiv = document.getElementById("search-results");
-            //     resultsDiv.innerHTML = `<div class="searching-wrapper"><video src="/static/img/searching/searching.mp4" autoplay muted loop></video></div>`;
-            //     searchBar.scrollIntoView({ behavior: "smooth", block: "start" });
-
-            //     try {
-            //         const response = await fetch("/predict_roles", {
-            //             method: "POST",
-            //             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            //             body: new URLSearchParams({ "need_statement": needStatement, "top_n": 4 })
-            //         });
-            //         const data = await response.json();
-
-            //         const rolesResponse = await fetch("/get_roles");
-            //         let roles = [];
-            //         if (rolesResponse.ok) {
-            //             const rolesData = await rolesResponse.json();
-            //             const latest = rolesData[rolesData.length - 1];
-            //             roles = latest.roles;
-            //         }
-
-            //         const profilesResponse = await fetch("/get_freelancers");
-            //         if (profilesResponse.ok) {
-            //             allProfiles = await profilesResponse.json();
-            //             renderProfiles(allProfiles, roles.length ? roles : ["Developer"]);
-            //             populateFilters(allProfiles);
-            //         } else {
-            //             resultsDiv.innerHTML = "<p>Error fetching profiles from DB.</p>";
-            //         }
-            //     } catch (err) {
-            //         console.error(err);
-            //         resultsDiv.innerHTML = "<p>Error fetching results.</p>";
-            //     }
-            // }
-
-            // // Render cards after sorting/filtering
-            // function renderProfiles(profiles, roles) {
-            //     const resultsDiv = document.getElementById("search-results");
-            //     resultsDiv.innerHTML = "";
-            //     profiles.forEach(profile => createCard(profile, roles));
-            // }
-
-            // // Populate Role & Location filters dynamically
-            // function populateFilters(profiles) {
-            //     const roleSet = new Set();
-            //     const locationSet = new Set();
-
-            //     profiles.forEach(p => {
-            //         roleSet.add(p.role);
-            //         locationSet.add(p.location);
-            //     });
-
-            //     const roleFilter = document.getElementById("role-filter");
-            //     const locationFilter = document.getElementById("location-filter");
-
-            //     roleFilter.innerHTML = `<option value="all">All</option>`;
-            //     locationFilter.innerHTML = `<option value="all">All</option>`;
-
-            //     roleSet.forEach(r => roleFilter.innerHTML += `<option value="${r}">${r}</option>`);
-            //     locationSet.forEach(l => locationFilter.innerHTML += `<option value="${l}">${l}</option>`);
-            // }
-
-            // // Apply filters & sorting
-            // document.getElementById("apply-filters-btn").addEventListener("click", () => {
-            //     const roleVal = document.getElementById("role-filter").value;
-            //     const locationVal = document.getElementById("location-filter").value;
-            //     const ratingVal = parseFloat(document.getElementById("rating-filter").value);
-            //     const sortVal = document.getElementById("sort-select").value;
-
-            //     let filtered = allProfiles.filter(p => 
-            //         (roleVal === "all" || p.role === roleVal) &&
-            //         (locationVal === "all" || p.location === locationVal) &&
-            //         (p.rating >= ratingVal)
-            //     );
-
-            //     switch(sortVal) {
-            //         case "rating-desc": filtered.sort((a,b) => b.rating - a.rating); break;
-            //         case "rating-asc": filtered.sort((a,b) => a.rating - b.rating); break;
-            //         case "rate-desc": filtered.sort((a,b) => parseFloat(b.rate) - parseFloat(a.rate)); break;
-            //         case "rate-asc": filtered.sort((a,b) => parseFloat(a.rate) - parseFloat(b.rate)); break;
-            //         case "reviews-desc": filtered.sort((a,b) => b.ratingCount - a.ratingCount); break;
-            //         case "reviews-asc": filtered.sort((a,b) => a.ratingCount - b.ratingCount); break;
-            //     }
-
-            //     const roles = []; // We can pass empty roles or maintain the previous role array
-            //     renderProfiles(filtered, roles);
-            // });
-
 
             updateShortcut();
             setupKeyboardShortcut();

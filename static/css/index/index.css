@@ -129,18 +129,7 @@ body {
       opacity: 1;
     }
 }
-  
-/* @keyframes zoomFadeIn {
-    0% {
-      transform: scale(1.2);
-      opacity: 0;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-} */
-  
+
 .mockup {
     opacity: 0;
     transform: scale(1.2);
@@ -325,7 +314,7 @@ body {
     }
 }
 
-.filter-sort-section {
+/* .filter-sort-section {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -375,7 +364,12 @@ body {
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
+} */
+
+.filter-sort-section {
+    display: none !important; /* delete this style later */
 }
+
 
 @media (max-width: 768px) {
     .filter-sort-section {
@@ -784,18 +778,31 @@ body {
         display: none;
     }
 
-    #cta-btn {
+    #cta-btn-mobile {
+        background-color: black !important;
+        color: white;
         display: block !important;
-        opacity: 1;
+        opacity: 0;
         margin-inline: auto;
+        transform: scale(0.8);
+        margin-top: 10px !important;
     }
-    
-    #cta-btn.animate {
+      
+    #cta-btn-mobile.animate {
         animation: popIn 1s cubic-bezier(0.25, 1.25, 0.5, 1) forwards;
-        animation-delay: 0.8s;
-        opacity: 1 !important;
+        animation-delay: 1.6s;
     }
-    
+      
+    @keyframes popIn {
+            0% {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
 
     .mobile-cta-section {
         display: flex;
@@ -813,6 +820,10 @@ body {
         margin-bottom: 180px;
     }
 
+    #mobile-firstline {
+        margin-top: 30px ;
+    }
+
     #mobile-firstline, #mobile-secondline {
         font-size: 1.8rem;
         line-height: 1.5;
@@ -825,7 +836,7 @@ body {
     #mobile-upper-mockup {
         max-width: 100vw;
         height: auto;
-        top: 70px;
+        top: 80px;
         position: absolute;
         z-index: -1;
     }
@@ -833,7 +844,7 @@ body {
     #mobile-bottom-mockup {
         max-width: 100vw;
         height: auto;
-        bottom: 100px;
+        bottom: 30px;
         position: absolute;
         z-index: -1;
     }
@@ -896,6 +907,10 @@ body {
     .searching-wrapper video {
         width: 220px !important;
         border-radius: 10px;
+    }
+
+    #no-results-text {
+        font-size: 0.8rem !important;
     }
 
     .search-results {
