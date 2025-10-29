@@ -422,6 +422,103 @@
         .mobile-container {
             display: block !important;
         }
+
+        .mobile-auth-wrapper {
+            position: relative;
+        }
+
+        .mobile-auth-dropdown {
+            display: none;
+            position: absolute;
+            top: 36px;
+            right: 0;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 10px;
+            width: 180px;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .mobile-auth-dropdown.show {
+            display: block;
+        }
+
+        .mobile-dropdown {
+            margin-bottom: 10px;
+        }
+
+        .mobile-dropdown-btn {
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            padding: 8px 10px;
+            color: #000;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.2s ease;
+        }
+
+        #mobile-login-btn {
+            background-color: #f1f1f1;
+        }
+
+        #mobile-signup-btn {
+            background-color: black;
+            color: white;
+        }
+
+        .mobile-dropdown-btn:hover {
+            background-color: #f3f3f3;
+        }
+
+        .mobile-dropdown-content {
+            display: none;
+            margin-top: 6px;
+            padding-left: 10px;
+        }
+
+        .mobile-dropdown.open .mobile-dropdown-content {
+            display: block;
+        }
+
+        .arrow-icon {
+            display: inline-flex;
+            transition: transform 0.25s ease;
+        }
+
+        .mobile-dropdown.open .arrow-icon {
+            transform: rotate(90deg);
+        }
+
+        .mobile-auth-link {
+            display: block;
+            text-decoration: none;
+            color: #000;
+            font-size: 13px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin: 3px 0;
+            background: #f8f8f8;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .mobile-auth-link:hover {
+            background: #e6e6e6;
+            transform: translateX(2px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     }
 
 
@@ -1330,88 +1427,146 @@
 
 {% if not hide_mobile_container %}
 <div class="mobile-container">
-    <div class="mobile-left">
-      <div class="toggle-switch">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M500-640v320l160-160-160-160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/></svg>
-      </div>
-      <div class="mobile-header-logo">
-            <a href="{{ url_for('index') }}">
-            <img src="{{ url_for('static', filename='/img/logo/text-logo.png') }}" alt="CollabWorks" width="150">
-            </a>
-      </div>
-      <img id="mobile-header-icon" src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="user-icon">
-    </div>
-  </div>
-  
-  <div class="mobile-sidebar" id="mobile-sidebar">
-    <div class="logo">
-        <a href="{{ url_for('index') }}">
-          <img src="{{ url_for('static', filename='/img/logo/text-logo.png') }}" alt="CollabWorks" width="160">
-        </a>
-        <div id="close-mobile-sidebar" class="close-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#000000">
-            <path d="M660-320v-320L500-480l160 160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/>
-          </svg>
-        </div>
+  <div class="mobile-left">
+    <div class="toggle-switch">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+        <path d="M500-640v320l160-160-160-160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/>
+      </svg>
     </div>
 
-    <ul>
-      <li><a href="#tools-section"><i class="fas fa-compass"></i> <span>Explore</span></a></li>
-      <li><a href="#platform-section"><i class="fas fa-layer-group"></i> <span>Platform</span></a></li>
-      <li><a href="#features-section"><i class="fas fa-star"></i> <span>Features</span></a></li>
-      <li><a href="#support-section"><i class="fas fa-life-ring"></i> <span>Support</span></a></li>
-    </ul>
-  
-    {% if current_user.is_authenticated %}
-    <div class="mobile-sidebar-user-menu">
-        <img src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="mobile-sidebar-user-icon">
-        <p>{{ current_user.username }}</p>
-        <i class="bi bi-three-dots" id="mobile-dropdown-toggle"></i>
-    
-        <div id="mobile-dropdown-menu" class="mobile-dropdown-menu">
-            <div class="mobile-dropdown-item">
-                <img src="{{ url_for('static', filename='img/index/icons/profile-icon.webp') }}" alt="User Icon" class="mobile-dropdown-icon">
-                {% if current_user.role == "freelancer" %}
-                    <a href="{{ url_for('freelancer_dashboard') }}">Profile</a>
-                {% else %}
-                    <a href="#">Profile</a>
-                {% endif %}
-            </div>
-            <div class="mobile-dropdown-item">
-                <img src="{{ url_for('static', filename='img/index/icons/chat-icon.webp') }}" alt="Chat Icon" class="mobile-dropdown-icon">
-                <a href="{{ url_for('chat_page') }}">Chat</a>
-            </div>
-            <div class="mobile-dropdown-item">
-                <img src="{{ url_for('static', filename='img/index/icons/subscription-icon.webp') }}" alt="Subscription Icon" class="mobile-dropdown-icon">
-                <a href="#">Subscription <span class="pro-badge">PRO</span></a>
-            </div>
-            <div class="mobile-dropdown-item">
-                <img src="{{ url_for('static', filename='img/index/icons/settings-icon.webp') }}" alt="Settings Icon" class="mobile-dropdown-icon">
-                <a href="#">Settings</a>
-            </div>
-            <div class="mobile-dropdown-item">
-                <img src="{{ url_for('static', filename='img/index/icons/help-icon.webp') }}" alt="Help Icon" class="mobile-dropdown-icon">
-                <a href="#">Help center</a>
-            </div>
-            <div class="mobile-dropdown-item">
-                <img src="{{ url_for('static', filename='img/index/icons/log-out-icon.webp') }}" alt="Logout Icon" class="mobile-dropdown-icon">
-                {% if current_user.role == "client" %}
-                    <a href="{{ url_for('client.client_logout') }}">Sign out</a>
-                {% elif current_user.role == "freelancer" %}
-                    <a href="{{ url_for('freelancer.freelancer_logout') }}">Sign out</a>
-                {% endif %}
-            </div>
-        </div>
+    <div class="mobile-header-logo">
+      <a href="{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='/img/logo/text-logo.png') }}" alt="CollabWorks" width="150">
+      </a>
     </div>
-    
+
+    {% if current_user.is_authenticated %}
+      <img id="mobile-header-icon" src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="user-icon">
     {% else %}
-        <div class="login-signup">
-            <a id="mobile-sidebar-login-btn" href="{{ url_for('client.client_login') }}">Login</a>
-            <a id="mobile-sidebar-signup-btn" href="{{ url_for('client.client_register') }}">Sign Up</a>
+      <div class="mobile-auth-wrapper">
+        <svg id="mobile-auth-icon" xmlns="http://www.w3.org/2000/svg" height="26px" viewBox="0 -960 960 960" width="26px" fill="#000000" style="cursor:pointer;">
+          <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Z"/>
+        </svg>
+
+        <div class="mobile-auth-dropdown" id="mobile-auth-dropdown">
+            <div class="mobile-dropdown">
+              <button id="mobile-login-btn" class="mobile-dropdown-btn">
+                Login
+                <span class="arrow-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#000000">
+                    <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/>
+                  </svg>
+                </span>
+              </button>
+              <div class="mobile-dropdown-content">
+                <a href="{{ url_for('client.client_login') }}" class="mobile-auth-link">
+                  <img src="{{ url_for('static', filename='img/index/icons/client.png') }}" alt="Client Icon" class="dropdown-icon">
+                  Client
+                </a>
+                <a href="{{ url_for('freelancer.freelancer_login') }}" class="mobile-auth-link">
+                  <img src="{{ url_for('static', filename='img/index/icons/freelancer.png') }}" alt="Freelancer Icon" class="dropdown-icon">
+                  Freelancer
+                </a>
+              </div>
+            </div>
+          
+            <div class="mobile-dropdown">
+              <button id="mobile-signup-btn" class="mobile-dropdown-btn">
+                Sign Up
+                <span class="arrow-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#ffffff">
+                    <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/>
+                  </svg>
+                </span>
+              </button>
+              <div class="mobile-dropdown-content">
+                <a href="{{ url_for('client.client_register') }}" class="mobile-auth-link">
+                  <img src="{{ url_for('static', filename='img/index/icons/client.png') }}" alt="Client Icon" class="dropdown-icon">
+                  Client
+                </a>
+                <a href="{{ url_for('freelancer.freelancer_register') }}" class="mobile-auth-link">
+                  <img src="{{ url_for('static', filename='img/index/icons/freelancer.png') }}" alt="Freelancer Icon" class="dropdown-icon">
+                  Freelancer
+                </a>
+              </div>
+            </div>
+          </div>
+          
         </div>
+      </div>
     {% endif %}
+  </div>
+</div>
+
+<div class="mobile-sidebar" id="mobile-sidebar">
+  <div class="logo">
+    <a href="{{ url_for('index') }}">
+      <img src="{{ url_for('static', filename='/img/logo/text-logo.png') }}" alt="CollabWorks" width="160">
+    </a>
+    <div id="close-mobile-sidebar" class="close-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#000000">
+        <path d="M660-320v-320L500-480l160 160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/>
+      </svg>
+    </div>
+  </div>
+
+  <ul>
+    <li><a href="#tools-section"><i class="fas fa-compass"></i> <span>Explore</span></a></li>
+    <li><a href="#platform-section"><i class="fas fa-layer-group"></i> <span>Platform</span></a></li>
+    <li><a href="#features-section"><i class="fas fa-star"></i> <span>Features</span></a></li>
+    <li><a href="#support-section"><i class="fas fa-life-ring"></i> <span>Support</span></a></li>
+  </ul>
+
+  {% if current_user.is_authenticated %}
+    <div class="mobile-sidebar-user-menu">
+      <img src="{{ url_for('static', filename='img/index/user.webp') }}" alt="User Icon" class="mobile-sidebar-user-icon">
+      <p>{{ current_user.username }}</p>
+      <i class="bi bi-three-dots" id="mobile-dropdown-toggle"></i>
+
+      <div id="mobile-dropdown-menu" class="mobile-dropdown-menu">
+        <div class="mobile-dropdown-item">
+          <img src="{{ url_for('static', filename='img/index/icons/profile-icon.webp') }}" alt="User Icon" class="mobile-dropdown-icon">
+          {% if current_user.role == "freelancer" %}
+            <a href="{{ url_for('freelancer_dashboard') }}">Profile</a>
+          {% else %}
+            <a href="#">Profile</a>
+          {% endif %}
+        </div>
+        <div class="mobile-dropdown-item">
+          <img src="{{ url_for('static', filename='img/index/icons/chat-icon.webp') }}" alt="Chat Icon" class="mobile-dropdown-icon">
+          <a href="{{ url_for('chat_page') }}">Chat</a>
+        </div>
+        <div class="mobile-dropdown-item">
+          <img src="{{ url_for('static', filename='img/index/icons/subscription-icon.webp') }}" alt="Subscription Icon" class="mobile-dropdown-icon">
+          <a href="#">Subscription <span class="pro-badge">PRO</span></a>
+        </div>
+        <div class="mobile-dropdown-item">
+          <img src="{{ url_for('static', filename='img/index/icons/settings-icon.webp') }}" alt="Settings Icon" class="mobile-dropdown-icon">
+          <a href="#">Settings</a>
+        </div>
+        <div class="mobile-dropdown-item">
+          <img src="{{ url_for('static', filename='img/index/icons/help-icon.webp') }}" alt="Help Icon" class="mobile-dropdown-icon">
+          <a href="#">Help center</a>
+        </div>
+        <div class="mobile-dropdown-item">
+          <img src="{{ url_for('static', filename='img/index/icons/log-out-icon.webp') }}" alt="Logout Icon" class="mobile-dropdown-icon">
+          {% if current_user.role == "client" %}
+            <a href="{{ url_for('client.client_logout') }}">Sign out</a>
+          {% elif current_user.role == "freelancer" %}
+            <a href="{{ url_for('freelancer.freelancer_logout') }}">Sign out</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="login-signup">
+      <a id="mobile-sidebar-login-btn" href="{{ url_for('client.client_login') }}">Login</a>
+      <a id="mobile-sidebar-signup-btn" href="{{ url_for('client.client_register') }}">Sign Up</a>
+    </div>
+  {% endif %}
 </div>
 {% endif %}
+
 
 
 <script>
@@ -1623,3 +1778,36 @@
         }
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const authIcon = document.getElementById('mobile-auth-icon');
+      const authDropdown = document.getElementById('mobile-auth-dropdown');
+      const dropdownButtons = document.querySelectorAll('.mobile-dropdown-btn');
+    
+      if (authIcon && authDropdown) {
+        authIcon.addEventListener('click', (e) => {
+          e.stopPropagation();
+          authDropdown.classList.toggle('show');
+        });
+    
+        dropdownButtons.forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const parent = btn.parentElement;
+            parent.classList.toggle('open');
+            document.querySelectorAll('.mobile-dropdown').forEach(d => {
+              if (d !== parent) d.classList.remove('open');
+            });
+          });
+        });
+    
+        document.addEventListener('click', (e) => {
+          if (!authDropdown.contains(e.target) && e.target !== authIcon) {
+            authDropdown.classList.remove('show');
+            document.querySelectorAll('.mobile-dropdown').forEach(d => d.classList.remove('open'));
+          }
+        });
+      }
+    });
+</script>
+    
