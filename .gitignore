@@ -2,6 +2,6 @@ venv/
 seed_profiles.py
 __pycache__/
 db.py
-instance/
+
 names.csv
 add_data.py
