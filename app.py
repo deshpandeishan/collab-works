@@ -12,7 +12,7 @@ import sqlite3
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SECRET_KEY'] = 'thisisasecretkey'
+app.config['SECRET_KEY'] = 'b7c4f2e9a1dd4c0fb2e8a6d7c3f9b1a2'
 
 db.init_app(app)
 bcrypt.init_app(app)
