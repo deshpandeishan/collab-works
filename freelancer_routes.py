@@ -21,6 +21,8 @@ class Freelancer(UserMixin, db.Model):
     location = db.Column(db.String(100))
     rating = db.Column(db.Float)
     price = db.Column(db.Integer)
+    gender = db.Column(db.String(10))
+    roles = db.Column(db.String(500))
 
 
     @property
@@ -97,13 +99,26 @@ def freelancer_register():
 
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         roles = request.form.get('roles')
+        gender = request.form.get("gender")
+        tagline = request.form.get("tagline")
+        location = request.form.get("location")
+        rating = request.form.get("rating")
+        price = request.form.get("price")
+
         new_freelancer = Freelancer(
             username=form.username.data,
             email=form.email.data,
             first_name=form.first_name.data,
             last_name=form.last_name.data,
-            password=hashed_password
+            password=hashed_password,
+            gender=gender,
+            tagline=tagline,
+            location=location,
+            rating=rating,
+            price=price,
+            roles=roles
         )
+
 
         db.session.add(new_freelancer)
         db.session.commit()

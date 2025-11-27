@@ -119,6 +119,72 @@
     .step { 
         display: none;
     }
+
+    .custom-gender-container {
+        max-width: 85%;
+        margin: 20px auto;
+        position: relative;
+    }
+
+    .gender-label {
+        font-size: 14px;
+        color: #5c5c5c;
+        font-weight: 600;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .custom-gender-select {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px 14px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        justify-content: space-between;
+        position: relative;
+    }
+
+    .gender-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .gender-arrow {
+        color: #777;
+        margin-left: 10px;
+    }
+
+    .gender-options {
+        display: none;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-top: 5px;
+        width: 100%;
+        position: absolute;
+        z-index: 20;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .gender-option {
+        display: flex;
+        align-items: center;
+        padding: 6px 10px;
+        width: 97%;
+        border-radius: 8px;
+        margin: 5px auto;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .gender-option:hover {
+        background: #f2f2f2;
+    }
+
 </style>
 <body>
     <div class="container fade-in">
@@ -185,11 +251,34 @@
                                 <label id="sn_label" for="freelancer_last_name" class="label">Last Name</label>
                             </div>
                         </div>
+
+                        <div class="custom-gender-container">
+                            <label class="gender-label">Gender</label>
+                        
+                            <div class="custom-gender-select" onclick="toggleGenderMenu()">
+                                <img id="gender_selected_icon" src="/static/img/search/male-pfp.webp" class="gender-icon" style="display:none;">
+                                <span id="gender_selected_text">Select Gender</span>
+                                <i class="fa-solid fa-chevron-down gender-arrow"></i>
+                            </div>
+                        
+                            <div class="gender-options" id="gender_options">
+                                <div class="gender-option" onclick="setGender('Male', '/static/img/search/male-pfp.webp')">
+                                    <img src="/static/img/search/male-pfp.webp" class="gender-icon">
+                                    <span>Male</span>
+                                </div>
+                        
+                                <div class="gender-option" onclick="setGender('Female', '/static/img/search/female-pfp.webp')">
+                                    <img src="/static/img/search/female-pfp.webp" class="gender-icon">
+                                    <span>Female</span>
+                                </div>
+                            </div>
+                        
+                            <input type="hidden" name="gender" id="gender_hidden">
+                        </div>
                         
                         <div class="submit-container">
                             <button type="button" class="btn btn-primary" onclick="freelancerNextStep(4)">Next</button>
-                        </div>
-                          
+                        </div>                          
                     </div>
 
                     <div class="step" id="freelancer_step4">
@@ -243,11 +332,21 @@
         function freelancerNextStep(step) {
             const currentStep = document.querySelector('.step.active');
             const nextStep = document.getElementById('freelancer_step' + step);
-            if (freelancerValidateStep(currentStep)) {
-                currentStep.classList.remove('active');
-                nextStep.classList.add('active');
+
+            if (!freelancerValidateStep(currentStep)) return;
+
+            if (currentStep.id === 'freelancer_step3') {
+                const genderValue = document.getElementById('gender_hidden').value;
+                if (!genderValue) {
+                    alert('Please select your gender before proceeding.');
+                    return;
+                }
             }
+
+            currentStep.classList.remove('active');
+            nextStep.classList.add('active');
         }
+
 
         function freelancerPrevStep(step) {
             const currentStep = document.querySelector('.step.active');
@@ -392,6 +491,23 @@
                 updateSelectedRoles();
             });
         });
+
+        function toggleGenderMenu() {
+            const menu = document.getElementById("gender_options");
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+        }
+
+        function setGender(gender, iconUrl) {
+            document.getElementById("gender_selected_text").innerText = gender;
+            document.getElementById("gender_hidden").value = gender;
+
+            const icon = document.getElementById("gender_selected_icon");
+            icon.src = iconUrl;
+            icon.style.display = "inline-block";
+
+            document.getElementById("gender_options").style.display = "none";
+        }
+
 
     </script>
 </body>
