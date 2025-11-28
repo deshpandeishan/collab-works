@@ -73,7 +73,7 @@ def freelancer_login():
             next_page = request.args.get('next')
             if next_page and is_safe_url(next_page):
                 return redirect(next_page)
-            return redirect(url_for('index'))
+            return redirect(url_for('freelancer_dashboard'))
         else:
             flash('Login unsuccessful. Please check your email and password.', 'danger')
 
