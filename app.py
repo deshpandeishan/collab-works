@@ -346,11 +346,32 @@ def get_roles():
     return jsonify({"error": "roles.json not found"}), 404
 
 
+import random
+
 @app.route("/get_freelancers", methods=["GET"])
 def get_freelancers():
+    male_images = [
+        "/static/img/search/male-1.webp",
+        "/static/img/search/male-2.webp",
+        "/static/img/search/male-3.webp",
+        "/static/img/search/male-4.webp"
+    ]
+
+    female_images = [
+        "/static/img/search/female-1.webp",
+        "/static/img/search/female-2.webp",
+        "/static/img/search/female-3.webp",
+        "/static/img/search/female-4.webp"
+    ]
+
     freelancers = Freelancer.query.all()
     result = []
+
     for f in freelancers:
+        image = random.choice(
+            female_images if f.gender.lower() == "female" else male_images
+        )
+
         result.append({
             "unique_id": f.id,
             "name": f"{f.first_name} {f.last_name}".strip(),
@@ -358,13 +379,15 @@ def get_freelancers():
             "role": "Developer",
             "tagline": f.tagline,
             "location": f.location,
-            "image": "/static/img/search/male-pfp.webp" if f.username[-1] not in "aeiou" else "/static/img/search/female-pfp.webp",
+            "image": image,
             "rate": f"₹{(50 + f.id*10)}/hr",
             "rating": round(3.5 + (f.id % 15)/10, 1),
             "ratingCount": 20 + f.id*5,
             "ratingIcon": "/static/img/search/rating-icon.webp"
         })
+
     return jsonify(result)
+
 
 
 @app.route("/check_client_status", methods=["GET"])
